@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.feed)
+    path('', views.feed, name='feed'),
 ]

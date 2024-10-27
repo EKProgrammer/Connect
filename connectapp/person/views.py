@@ -1,5 +1,5 @@
 from django.shortcuts import render
 
 
-def person(request):
-    return render(request, "person/person.html")
+def profile(request):
+    return render(request, "person/profile.html")
