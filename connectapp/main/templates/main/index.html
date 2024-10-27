@@ -19,11 +19,11 @@
                 <form action="{% url 'home' %}" method="post">
                     {% csrf_token %}
                     <div class="form-group mt-3">
-                        <label for="{{ form.username.id_for_label }}" class="form-label">Имя пользователя</label>
-                        {{ form.username }}
-                        {% if form.username.errors %}
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Электронная почта</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
                             <div class="alert alert-danger" role="alert">
-                                {% for error in form.username.errors %}
+                                {% for error in form.email.errors %}
                                     {{ error }}<br>
                                 {% endfor %}
                             </div>

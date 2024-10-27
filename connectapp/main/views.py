@@ -9,12 +9,14 @@ def index(request):
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
-            username = request.POST["username"]
+            print("valid")
+            email = request.POST["email"]
             password = request.POST["password"]
-            user = auth.authenticate(username=username, password=password)
+            user = auth.authenticate(email=email, password=password)
             if user:
                 auth.login(request, user)
                 return redirect("/feed")
+            print(user)
         print(form.errors)
     else:
         form = UserLoginForm()
@@ -27,6 +29,8 @@ def register(request):
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
             form.save()
+            user = auth.authenticate(email=request.POST["email"], password=request.POST["password1"])
+            auth.login(request, user)
             return redirect("/person")
     else:
         form = UserRegisterForm()
