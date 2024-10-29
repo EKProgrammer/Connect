@@ -6,8 +6,25 @@
 
 {% block content %}
 
-<main class="container mt-5">
-    <h2>Профиль</h2>
-</main>
+<div class="container mt-5">
+        <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
+        <img src = "{% static 'person/img/default.png' %}" alt="person">
+        <h2 class="first_name">{{ user.first_name }}</h2> 
+        <h2 class="last_name">{{ user.last_name }}</h2>
+        <p class="username">{{ user.username }}</p>
+        <p class="about">{{ user.about }}</p>
+        <container class="posts">Посты</container>
+        {% if profile %}
+                {% for el in  news1 %}
+                        <div class="alert alert-warning">
+                                <h3>{{ el.title }}</h3>
+                                <p>{{ el.anons }}</p>
+                        </div>
+                {% endfor %}
+        {% else %}  
+                <p class="commentary">У вас нет записей</p>
+        {% endif %}
+        <a href="{% url 'create' %}"><li><button="btn btn-info"><i class="fas fa-plus-circle"></i>Добавить запись</i></button></li></a>
+</div>
 
 {% endblock %}
