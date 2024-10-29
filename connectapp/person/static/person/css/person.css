@@ -1,0 +1,45 @@
+div img {
+    float: right;
+    transform: translateY(-40%)
+}
+.first_name {
+    transform: translate(55%, -35px);
+}
+.last_name {
+    transform: translate(50%, -35px);
+}
+.username {
+    transform: translate(86%, 50px);
+}
+.about {
+    transform: translate(10%, -130px);
+}
+
+.posts {
+    margin-left: 40%;
+    bottom: 60%;
+    font-weight:bolder;
+    font-size: 30px;
+    background-color: #212529;
+
+}
+.container {
+    /* Стили для формы входа */
+    background-color: #212529;
+    padding: 150px;
+    border-radius: 30px;
+}
+.alert-warning {
+    float: left;
+    clear: both;
+    width: 400px;
+    margin: 20px 34%;
+    text-align: left;
+}
+.commentary {
+    transform: translate(38%, 35px);
+    color: rgb(106, 106, 106);
+}
+.create {
+    transform: translate(50%, 35px);
+}

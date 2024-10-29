@@ -10,7 +10,7 @@ class User(AbstractUser):
     password = models.CharField("Пароль", max_length=20)
     image = models.ImageField("Аватар", upload_to='users_images', blank=True, null=True)
     about = models.TextField("О себе", max_length=100, blank=True, null=True)
-
+ 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
