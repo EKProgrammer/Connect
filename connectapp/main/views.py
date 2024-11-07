@@ -6,18 +6,17 @@ from users.forms import UserRegisterForm
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect("/feed")
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
-            print("valid")
             email = request.POST["email"]
             password = request.POST["password"]
             user = auth.authenticate(email=email, password=password)
             if user:
                 auth.login(request, user)
                 return redirect("/feed")
-            print(user)
-        print(form.errors)
     else:
         form = UserLoginForm()
 

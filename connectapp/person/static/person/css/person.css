@@ -1,45 +1,62 @@
-div img {
-    float: right;
-    transform: translateY(-40%)
+.person_name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
 }
-.first_name {
-    transform: translate(55%, -35px);
+
+.about-section {
+    margin-top: 2rem;
 }
-.last_name {
-    transform: translate(50%, -35px);
+
+.about-section h3 {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 1rem;
 }
-.username {
-    transform: translate(86%, 50px);
-}
+
 .about {
-    transform: translate(10%, -130px);
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.profile-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .posts {
-    margin-left: 40%;
-    bottom: 60%;
-    font-weight:bolder;
-    font-size: 30px;
-    background-color: #212529;
+    font-size: 2rem;
+    color: #333;
+}
 
+.posts-list {
+    margin-top: 2rem;
 }
-.container {
-    /* Стили для формы входа */
-    background-color: #212529;
-    padding: 150px;
-    border-radius: 30px;
+
+.post-item {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-.alert-warning {
-    float: left;
-    clear: both;
-    width: 400px;
-    margin: 20px 34%;
-    text-align: left;
+
+.post-item h3 {
+    font-size: 1.3rem;
+    color: #444;
+    margin-bottom: 0.5rem;
 }
+
+.post-item p {
+    font-size: 1rem;
+    color: #666;
+}
+
 .commentary {
-    transform: translate(38%, 35px);
-    color: rgb(106, 106, 106);
-}
-.create {
-    transform: translate(50%, 35px);
+    font-style: italic;
+    color: #888;
 }
