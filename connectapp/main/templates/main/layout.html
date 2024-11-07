@@ -23,7 +23,7 @@
             <img src="{% static 'main/img/logo.svg' %}" width="20%" height="auto" alt="Логотип">
         </a>
         {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}">Выйти</a>
+            <button class="btn btn-outline-danger" href="{% url 'logout' %}">Выйти</button>
         {% endif %}
     </header>
 

@@ -22,49 +22,49 @@ header {
 }
 
 .gradient-btn {
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  position: relative;
-  z-index: 1;
-  border-radius: 5px;
-  background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-  cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    position: relative;
+    z-index: 1;
+    border-radius: 5px;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    cursor: pointer;
 }
 
 .gradient-btn::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  right: 2px;
-  top: 2px;
-  bottom: 2px;
-  border-radius: 4px;
-  background-color: #212529;
-  z-index: -1;
-  transition: 200ms
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 2px;
+    bottom: 2px;
+    border-radius: 4px;
+    background-color: #212529;
+    z-index: -1;
+    transition: 200ms
 }
 
 .gradient-btn::after {
-  content: attr(data);
-  font-size: 16px;
-  font-weight: bold;
-  background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-  -webkit-background-clip: text;
-  color: transparent;
-  transition: 200ms
+    content: attr(data);
+    font-size: 16px;
+    font-weight: bold;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: 200ms
 }
 
 .gradient-btn:hover::before {
-  opacity: 0%;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
+    opacity: 0%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
 }
 
 .gradient-btn:hover::after{
-  color: #fff;
+    color: #fff;
 }
 
 footer {
