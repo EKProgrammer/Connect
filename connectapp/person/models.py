@@ -1,13 +1,11 @@
 from django.db import models
+from users.models import User
 
-class Article(models.Model):
-    title = models.CharField('Название', max_length=50)
-    anons = models.CharField('Анонс', max_length=250)
-    full_text = models.TextField('Статья')
+
+class Post(models.Model):
+    text = models.TextField('Текст', max_length=5000)
     date = models.DateTimeField('Дата публикации')
-
-    def __str__(self):
-        return self.title
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Пост'

@@ -16,11 +16,15 @@
             <div class="col-md-8">
                 <h2 class="person_name mb-4">{{ user.first_name }} {{ user.last_name }}</h2>
                 <div class="about-section">
-                    <h2>О себе</h2>
+                    <h2>О себе
+                        <a href="#" class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </h2>
                     {% if user.about %}
                         <p class="about">{{ user.about }}</p>
                     {% else %}
-                        <p class="commentary">Отсутвует</p>
+                        <p class="commentary">Информация отсутвует</p>
                     {% endif %}
                 </div>
             </div>
@@ -30,18 +34,68 @@
         </div>
     </section>
 
+    <!-- Модальное окно для редактирования "О себе" -->
+    <div class="modal fade" id="editAboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header border-secondary">
+                    <h1 class="modal-title fs-5" id="editAboutModalLabel">Редактировать информацию о себе</h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'edit_about' %}" id="edit-about-modal-form" method="post">
+                        {% csrf_token %}
+                        <textarea name="about" class="form-control bg-secondary text-light modal-textarea" rows="5" placeholder="Напишите информацию о себе">{{ user.about }}</textarea>
+                    </form>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="submit" class="gradient-btn" form="edit-about-modal-form" data="Сохранить изменения"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="container container-profile mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="posts">Посты</h2>
-            <button href="{% url 'create' %}" class="gradient-btn" data="Добавить запись"></button>
+            <h2>Посты</h2>
+            <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
+            <!-- Кнопка-триггер модального окна -->
+            <button type="button" class="gradient-btn" data-bs-toggle="modal" data-bs-target="#createPostModal" data="Создать пост"></button>
+            <!-- Модальное окно -->
+            <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark text-light">
+                        <div class="modal-header border-secondary">
+                            <h1 class="modal-title fs-5" id="createPostModalLabel">Создать новый пост</h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'create_post' %}" id="create-post-modal-form" method="post">
+                                {% csrf_token %}
+                                {{ form.text }}
+                                {% if form.text.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {% for error in form.text.errors %}
+                                            {{ error }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </form>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <button type="submit" class="gradient-btn" form="create-post-modal-form" data="Опубликовать"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        {% if profile %}
+        {% if posts %}
             <div class="posts-list">
-                {% for el in news1 %}
+                {% for el in posts %}
                     <div class="post-item">
-                        <h3>{{ el.title }}</h3>
-                        <p>{{ el.anons }}</p>
+                        <p class="post-date">{{ el.date }}</p>
+                        <p class="post-text">{{ el.text }}</p>
                     </div>
                 {% endfor %}
             </div>

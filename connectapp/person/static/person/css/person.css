@@ -19,9 +19,22 @@
 }
 
 .about {
-    font-size: 1rem;
+    font-style: italic;
+    color: #888;
+    font-size: 1.4rem;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: pre-wrap;
+}
+
+.edit-about-btn {
+    font-size: 0.8em;
+    color: #888;
+    margin-left: 10px;
+}
+
+.edit-about-btn:hover {
     color: #666;
-    line-height: 1.6;
 }
 
 .profile-image {
@@ -32,35 +45,37 @@
     object-fit: cover;
 }
 
-.posts {
-    font-size: 2rem;
-}
-
 .posts-list {
     margin-top: 2rem;
 }
 
 .post-item {
-    background-color: #f9f9f9;
-    border-radius: 8px;
+    background-color: #212529;
+    border-radius: 20px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 2px solid #888;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
-.post-item h3 {
-    font-size: 1.3rem;
-    color: #444;
-    margin-bottom: 0.5rem;
-}
-
-.post-item p {
+.post-date {
     font-size: 1rem;
-    color: #666;
+}
+
+.post-text {
+    font-size: 1.3rem;
+    white-space: pre-wrap;
 }
 
 .commentary {
     font-style: italic;
     color: #888;
     font-size: 1.4rem;
+}
+
+.modal-textarea {
+    height: 70vh;
+    resize: none;
 }

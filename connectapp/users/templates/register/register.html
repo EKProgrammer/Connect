@@ -6,30 +6,34 @@
 
 {% block content %}
 
-<main class="container mt-5" style="width: 30%">
-    <div class="login-form">
-        <h2>Регистрация</h2>
+<div class="container">
+    <section class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="login-form">
+                <h2>Регистрация</h2>
 
-        <form action="{% url 'register' %}" method="post">
-            {% csrf_token %}
-            {% for item in form %}
-                <div class="form-group mt-3">
-                    <label for="{{ item.id_for_label }}" class="form-label">{{ item.label }}</label>
-                    {{ item }}
-                    {% if item.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {% for error in item.errors %}
-                                {{ error }}<br>
-                            {% endfor %}
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    {% for item in form %}
+                        <div class="form-group mt-3">
+                            <label for="{{ item.id_for_label }}" class="form-label">{{ item.label }}</label>
+                            {{ item }}
+                            {% if item.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {% for error in item.errors %}
+                                        {{ error }}<br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-            <div class="form-group mt-3">
-                <button type="submit" class="gradient-btn" data="Зарегистрироваться"></button>
+                    {% endfor %}
+                    <div class="form-group mt-3">
+                        <button type="submit" class="gradient-btn" data="Зарегистрироваться"></button>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-</main>
+        </div>
+    </section>
+</div>
 
 {% endblock %}

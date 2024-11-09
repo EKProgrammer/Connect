@@ -10,12 +10,16 @@ header {
     background-color: #212529;
 }
 
+.logo {
+     width: 45%;
+     max-width: 210px;
+}
+
 .gif-container {
     /* Стили для контейнера с гифкой */
 }
 
 .login-form {
-    /* Стили для формы входа */
     background-color: #212529;
     padding: 30px;
     border-radius: 20px;
@@ -73,8 +77,4 @@ footer {
 
 a {
     text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
 }
