@@ -18,6 +18,10 @@
     margin-bottom: 1rem;
 }
 
+.ai-button {
+    margin-right: auto;
+}
+
 .about {
     font-style: italic;
     color: #888;
