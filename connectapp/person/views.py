@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import PostForm
@@ -41,12 +41,6 @@ def edit_about(request):
         return redirect('profile')
     return redirect('profile')
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Post
-from .forms import PostForm
-
-# ... (keep existing imports and functions)
 
 @login_required
 def edit_post(request, post_id):
@@ -57,6 +51,7 @@ def edit_post(request, post_id):
         post.save()
         return redirect('profile')
     return render(request, 'person/edit_post.html', {'post': post})
+
 
 @login_required
 def delete_post(request, post_id):
