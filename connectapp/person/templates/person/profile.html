@@ -83,7 +83,7 @@
                             </form>
                         </div>
                         <div class="modal-footer border-secondary">
-                            <button type="submit" class="gradient-btn ai-button" form="ai-edit-modal-form" data="Помощь AI"></button>
+                            <button type="submit" class="gradient-btn ai-button" form="create-post-modal-form" data="Помощь AI"></button>
                             <button type="submit" class="gradient-btn" form="create-post-modal-form" data="Опубликовать"></button>
                         </div>
                     </div>
@@ -92,18 +92,40 @@
         </div>
 
         {% if posts %}
-            <div class="posts-list">
-                {% for el in posts %}
-                    <div class="post-item">
-                        <p class="post-date">{{ el.date }}</p>
-                        <p class="post-text">{{ el.text }}</p>
+        <div class="posts-list">
+            {% for el in posts %}
+                <div class="post-item">
+                    <p class="post-date">{{ el.date }}</p>
+                    <p class="post-text">{{ el.text }}</p>
+                    <button type="button" class="gradient-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ el.id }}" data="Редактировать"></button>
+    
+                    <!-- Модальное окно для редактирования поста -->
+                    <div class="modal fade" id="editPostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ el.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content bg-dark text-light">
+                                <div class="modal-header border-secondary">
+                                    <h1 class="modal-title fs-5" id="editPostModalLabel{{ el.id }}">Редактировать пост</h1>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'edit_post' el.id %}" id="edit-post-modal-form-{{ el.id }}" method="post">
+                                        {% csrf_token %}
+                                        <textarea name="text" class="form-control bg-secondary text-light modal-textarea" rows="5">{{ el.text }}</textarea>
+                                    </form>
+                                </div>
+                                <div class="modal-footer border-secondary">
+                                    <button type="submit" class="gradient-btn" form="edit-post-modal-form-{{ el.id }}" data="Сохранить изменения"></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
             </div>
         {% else %}
             <p class="commentary">У вас нет записей</p>
         {% endif %}
-    </section>
+        </section>
 </main>
 
 {% endblock %}

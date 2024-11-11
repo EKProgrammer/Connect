@@ -40,3 +40,20 @@ def edit_about(request):
         request.user.save()
         return redirect('profile')
     return redirect('profile')
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Post
+from .forms import PostForm
+
+# ... (keep existing imports and functions)
+
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, user=request.user)
+    if request.method == 'POST':
+        new_text = request.POST.get('text', '')
+        post.text = new_text
+        post.save()
+        return redirect('profile')
+    return render(request, 'person/edit_post.html', {'post': post})
