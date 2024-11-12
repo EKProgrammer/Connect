@@ -10,158 +10,158 @@
 
 {% block content %}
 
-<main>
-    <section class="container container-profile mt-5">
-        <div class="row">
-            <div class="col-md-8">
-                <h2 class="person_name mb-4">{{ user.first_name }} {{ user.last_name }}</h2>
-                <div class="about-section">
-                    <h2>О себе
-                        <a href="#" class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
-                    </h2>
-                    {% if user.about %}
-                        <p class="about">{{ user.about }}</p>
-                    {% else %}
-                        <p class="commentary">Информация отсутвует</p>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <img src="{% static 'person/img/default.png' %}" alt="person" class="profile-image">
-            </div>
+<section class="container container-profile mt-5">
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="person_name mb-4">{{ user.first_name }} {{ user.last_name }}</h2>
+        <div class="about-section">
+            <h2>О себе
+                <a href="#" class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </h2>
+            {% if user.about %}
+                <p class="about">{{ user.about }}</p>
+            {% else %}
+                <p class="commentary">Информация отсутвует</p>
+            {% endif %}
         </div>
-    </section>
+    </div>
+    <div class="col-md-4">
+        <img src="{% static 'person/img/default.jpg' %}" alt="person" class="profile-image">
+    </div>
+</div>
+</section>
 
-    <!-- Модальное окно для редактирования "О себе" -->
-    <div class="modal fade" id="editAboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAboutModalLabel" aria-hidden="true">
+<!-- Модальное окно для редактирования "О себе" -->
+<div class="modal fade" id="editAboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAboutModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-secondary">
+            <h1 class="modal-title fs-5" id="editAboutModalLabel">Редактировать информацию о себе</h1>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'edit_about' %}" id="edit-about-modal-form" method="post">
+                {% csrf_token %}
+                <textarea name="about" class="form-control bg-secondary text-light modal-textarea" rows="5" placeholder="Напишите информацию о себе">{{ user.about }}</textarea>
+            </form>
+        </div>
+        <div class="modal-footer border-secondary">
+            <button type="submit" class="gradient-btn" form="edit-about-modal-form" data="Сохранить изменения"></button>
+        </div>
+    </div>
+</div>
+</div>
+
+<section class="container container-profile mt-5">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Посты</h2>
+    <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
+    <!-- Кнопка-триггер модального окна -->
+    <button type="button" class="gradient-btn" data-bs-toggle="modal" data-bs-target="#createPostModal" data="Создать пост"></button>
+    <!-- Модальное окно для добавления поста -->
+    <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header border-secondary">
-                    <h1 class="modal-title fs-5" id="editAboutModalLabel">Редактировать информацию о себе</h1>
+                    <h1 class="modal-title fs-5" id="createPostModalLabel">Создать новый пост</h1>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'edit_about' %}" id="edit-about-modal-form" method="post">
+                    <form action="{% url 'create_post' %}" id="create-post-modal-form" method="post">
                         {% csrf_token %}
-                        <textarea name="about" class="form-control bg-secondary text-light modal-textarea" rows="5" placeholder="Напишите информацию о себе">{{ user.about }}</textarea>
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in form.text.errors %}
+                                    {{ error }}<br>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </form>
                 </div>
                 <div class="modal-footer border-secondary">
-                    <button type="submit" class="gradient-btn" form="edit-about-modal-form" data="Сохранить изменения"></button>
+                    <button type="submit" class="gradient-btn ai-button" id="aiHelpButton" data="Помощь AI"></button>
+                    <button type="submit" class="gradient-btn" form="create-post-modal-form" data="Опубликовать"></button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <section class="container container-profile mt-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Посты</h2>
-            <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
-            <!-- Кнопка-триггер модального окна -->
-            <button type="button" class="gradient-btn" data-bs-toggle="modal" data-bs-target="#createPostModal" data="Создать пост"></button>
-            <!-- Модальное окно -->
-            <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+{% if posts %}
+<div class="posts-list">
+    {% for el in posts %}
+        <div class="post-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="post-date mb-0">{{ el.date }}</p>
+                <div>
+                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ el.id }}">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ el.id }}">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="post-text-container">
+                <p class="post-text" id="post-text-{{ el.id }}">{{ el.text }}</p>
+                <div class="fade-out"></div>
+                <a class="read-more-btn" id="read-more-btn-{{ el.id }}" style="display: none;">Читать далее</a>
+            </div>
+
+            <!-- Модальное окно для редактирования поста -->
+            <div class="modal fade" id="editPostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ el.id }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content bg-dark text-light">
                         <div class="modal-header border-secondary">
-                            <h1 class="modal-title fs-5" id="createPostModalLabel">Создать новый пост</h1>
+                            <h1 class="modal-title fs-5" id="editPostModalLabel{{ el.id }}">Редактировать пост</h1>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{% url 'create_post' %}" id="create-post-modal-form" method="post">
+                            <form action="{% url 'edit_post' el.id %}" id="edit-post-modal-form-{{ el.id }}" method="post">
                                 {% csrf_token %}
-                                {{ form.text }}
-                                {% if form.text.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {% for error in form.text.errors %}
-                                            {{ error }}<br>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                <textarea name="text" class="form-control bg-secondary text-light modal-textarea" rows="5">{{ el.text }}</textarea>
                             </form>
                         </div>
                         <div class="modal-footer border-secondary">
-                            <button type="submit" class="gradient-btn ai-button" form="create-post-modal-form" data="Помощь AI"></button>
-                            <button type="submit" class="gradient-btn" form="create-post-modal-form" data="Опубликовать"></button>
+                            <button type="submit" class="gradient-btn" form="edit-post-modal-form-{{ el.id }}" data="Сохранить изменения"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно для удаления поста -->
+            <div class="modal fade" id="deletePostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ el.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark text-light">
+                        <div class="modal-header border-secondary">
+                            <h1 class="modal-title fs-5" id="deletePostModalLabel{{ el.id }}">Удалить пост</h1>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Вы уверены, что хотите удалить этот пост?</p>
+                            <p class="text-muted">{{ el.text|truncatechars:100 }}</p>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <button type="button" class="gradient-btn" data-bs-dismiss="modal" data="Отмена"></button>
+                            <form action="{% url 'delete_post' el.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="gradient-btn" data="Удалить"></button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p class="commentary">У вас нет записей</p>
+{% endif %}
+</section>
 
-        {% if posts %}
-        <div class="posts-list">
-            {% for el in posts %}
-                <div class="post-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="post-date mb-0">{{ el.date }}</p>
-                        <div>
-                            <button type="button" class="gradient-btn me-2" data-bs-toggle="modal" data-bs-target="#editPostModal{{ el.id }}" data="Редактировать"></button>
-                            <button type="button" class="gradient-btn delete-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ el.id }}" title="Удалить">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <p class="post-text">{{ el.text }}</p>
-                    
-                    <!-- Модальное окно для редактирования поста -->
-                    <div class="modal fade" id="editPostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ el.id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-dark text-light">
-                                <div class="modal-header border-secondary">
-                                    <h1 class="modal-title fs-5" id="editPostModalLabel{{ el.id }}">Редактировать пост</h1>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{% url 'edit_post' el.id %}" id="edit-post-modal-form-{{ el.id }}" method="post">
-                                        {% csrf_token %}
-                                        <textarea name="text" class="form-control bg-secondary text-light modal-textarea" rows="5">{{ el.text }}</textarea>
-                                    </form>
-                                </div>
-                                <div class="modal-footer border-secondary">
-                                    <button type="submit" class="gradient-btn" form="edit-post-modal-form-{{ el.id }}" data="Сохранить изменения"></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="deletePostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ el.id }}" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-dark text-light">
-                                <div class="modal-header border-secondary">
-                                    <h1 class="modal-title fs-5" id="deletePostModalLabel{{ el.id }}">Удалить пост</h1>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Вы уверены, что хотите удалить этот пост?</p>
-                                    <p class="text-muted">{{ el.text|truncatechars:100 }}</p>
-                                </div>
-                                <div class="modal-footer border-secondary">
-                                    <button type="button" class="gradient-btn" data-bs-dismiss="modal">Отмена</button>
-                                    <form action="{% url 'delete_post' el.id %}" method="post" style="display: inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="gradient-btn delete-btn" title="Удалить">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-        {% else %}
-            <p class="commentary">У вас нет записей</p>
-        {% endif %}
-        </section>
-</main>
-
+<script src="../../static/person/js/hide_text.js"></script>
+<script src="../../static/person/js/ai_request.js"></script>
 {% endblock %}
