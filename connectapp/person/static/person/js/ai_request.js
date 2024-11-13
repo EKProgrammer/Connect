@@ -1,36 +1,39 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const aiHelpButton = document.getElementById('aiHelpButton');
-    const postTextarea = document.querySelector('#create-post-modal-form textarea');
+    const aiHelpButtons = document.querySelectorAll('[id^="aiHelpButton"]');
 
-    aiHelpButton.addEventListener('click', function() {
-        const currentText = postTextarea.value;
+    aiHelpButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modalId = this.closest('.modal').id;
+            const textarea = document.querySelector(`#${modalId} textarea`);
+            const currentText = textarea.value;
 
-        // Показываем индикатор загрузки
-        aiHelpButton.disabled = true;
-        aiHelpButton.setAttribute('data', 'Загрузка...');
+            // Показываем индикатор загрузки
+            this.disabled = true;
+            this.setAttribute('data', 'Загрузка...');
 
-        // Отправляем запрос к API
-        fetch('/person/api/chatgpt/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({ prompt: currentText })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Обновляем текстовое поле с полученным результатом
-            postTextarea.value = data.response;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Произошла ошибка при обращении к AI. Пожалуйста, попробуйте еще раз.');
-        })
-        .finally(() => {
-            // Возвращаем кнопку в исходное состояние
-            aiHelpButton.disabled = false;
-            aiHelpButton.setAttribute('data', 'Помощь AI');
+            // Отправляем запрос к API
+            fetch('/person/api/chatgpt/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ prompt: currentText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Обновляем текстовое поле с полученным результатом
+                textarea.value = data.response;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Произошла ошибка при обращении к AI. Пожалуйста, попробуйте еще раз.');
+            })
+            .finally(() => {
+                // Возвращаем кнопку в исходное состояние
+                this.disabled = false;
+                this.setAttribute('data', 'Помощь AI');
+            });
         });
     });
 

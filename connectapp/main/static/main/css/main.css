@@ -78,3 +78,9 @@ footer {
 a {
     text-decoration: none;
 }
+
+.feedback-form {
+    background-color: #212529;
+    padding: 30px;
+    border-radius: 20px;
+}

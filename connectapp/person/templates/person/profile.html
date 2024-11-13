@@ -82,7 +82,7 @@
                     </form>
                 </div>
                 <div class="modal-footer border-secondary">
-                    <button type="submit" class="gradient-btn ai-button" id="aiHelpButton" data="Помощь AI"></button>
+                    <button type="button" class="gradient-btn ai-button" id="aiHelpButton" data="Помощь AI"></button>
                     <button type="submit" class="gradient-btn" form="create-post-modal-form" data="Опубликовать"></button>
                 </div>
             </div>
@@ -126,6 +126,7 @@
                             </form>
                         </div>
                         <div class="modal-footer border-secondary">
+                            <button type="button" class="gradient-btn ai-button" id="aiHelpButton-{{ el.id }}" data="Помощь AI"></button>
                             <button type="submit" class="gradient-btn" form="edit-post-modal-form-{{ el.id }}" data="Сохранить изменения"></button>
                         </div>
                     </div>
@@ -141,8 +142,7 @@
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Вы уверены, что хотите удалить этот пост?</p>
-                            <p class="text-muted">{{ el.text|truncatechars:100 }}</p>
+                            <p style="font-size: 1.2rem">Вы уверены, что хотите удалить этот пост?</p>
                         </div>
                         <div class="modal-footer border-secondary">
                             <button type="button" class="gradient-btn" data-bs-dismiss="modal" data="Отмена"></button>

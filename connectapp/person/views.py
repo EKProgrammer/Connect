@@ -6,8 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 import json
-import os
 from mistralai import Mistral
+import os
 
 from .models import Post
 from .forms import PostForm
@@ -56,8 +56,7 @@ def edit_post(request, post_id):
         new_text = request.POST.get('text', '')
         post.text = new_text
         post.save()
-        return redirect('profile')
-    return render(request, 'person/edit_post.html', {'post': post})
+    return redirect('profile')
 
 
 @login_required
@@ -71,9 +70,19 @@ def delete_post(request, post_id):
 @csrf_exempt
 @require_http_methods(["POST"])
 def chatgpt_api(request):
+    file = open("./person/statistic.txt", "r")
+    number = int(file.read()) + 1
+    file.close()
+    file = open("./person/statistic.txt", "w")
+    file.write(str(number))
+    file.close()
+
     data = json.loads(request.body)
     user_input = data.get('prompt', '')
-    prompt = "Добавь продолжение к тексту: " + user_input
+    if not user_input:
+        prompt = "Сгенерируй рандомный текст к новому посту в социальной сети."
+    else:
+        prompt = "Добавь продолжение к тексту: " + user_input
     api_key = os.environ["MISTRAL_API_KEY"]
     model = "mistral-small-latest"
 
@@ -93,3 +102,13 @@ def chatgpt_api(request):
     except Exception as e:
         print(f"An error occurred: {e}")
         return JsonResponse({'error': 'Failed to get response from AI'}, status=500)
+
+
+def get_stat(request):
+    file = open("./person/statistic.txt", "r")
+    number = int(file.read())
+    file.close()
+    data = {
+        "number": number,
+    }
+    return render(request, "person/statistic.html", data)
