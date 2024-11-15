@@ -1,25 +1,24 @@
-from datetime import datetime, timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.exceptions import ValidationError
+from django.contrib import messages
 
+from datetime import datetime, timezone
 import json
 from mistralai import Mistral
 import os
 
 from .models import Post
-from .forms import PostForm
 
 
 def profile(request):
     posts = Post.objects.filter(user=request.user.id).order_by('-date')
-    form = PostForm()
 
     data = {
         "user": request.user,
-        "form": form,
         "posts": posts,
     }
 
@@ -29,13 +28,20 @@ def profile(request):
 @login_required
 def create_post(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
+        text = request.POST.get('createPost', '')
+        if len(text) > 5000:
+            messages.error(request, 'Текст поста не должен превышать 5000 символов.')
+        else:
+            post = Post()
+            post.text = text
             post.date = datetime.now(timezone.utc)
             post.user = request.user
-            post.save()
-            return redirect('profile')
+            try:
+                post.full_clean()
+                post.save()
+                messages.success(request, 'Пост успешно создан.')
+            except ValidationError as e:
+                messages.error(request, f'Ошибка при создании поста: {e}')
     return redirect('profile')
 
 
@@ -45,7 +51,6 @@ def edit_about(request):
         new_about = request.POST.get('about', '')
         request.user.about = new_about
         request.user.save()
-        return redirect('profile')
     return redirect('profile')
 
 

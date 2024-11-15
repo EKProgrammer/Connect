@@ -37,7 +37,7 @@
     margin-left: 0.5rem;
 }
 
-.post-actions-btn:hover {
+.edit-about-btn:hover {
     color: #666;
 }
 
@@ -51,11 +51,15 @@
     color: #666;
 }
 
+.post-actions-btn:hover {
+    color: #666;
+}
+
 .profile-image {
     width: 100%;
     height: auto;
     border-radius: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     object-fit: cover;
 }
 

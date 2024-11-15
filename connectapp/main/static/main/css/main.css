@@ -6,17 +6,73 @@ body {
     color: #fff;
 }
 
-header {
+.custom-header {
+    padding: 1em;
+    display: flex;
+    align-items: center;
     background-color: #212529;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    z-index: 1000;
+    transition: transform 0.5s ease;
+}
+
+.custom-header.hidden {
+    transform: translateY(-100%);
+}
+
+main {
+    padding-top: 100px;
 }
 
 .logo {
-     width: 45%;
-     max-width: 210px;
+    width: 100%;
+    max-width: 210px;
 }
 
-.gif-container {
-    /* Стили для контейнера с гифкой */
+.main-nav {
+    position: relative;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav-link {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.main-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 0;
+    display: inline-block;
+}
+
+.nav-indicator {
+    position: absolute;
+    bottom: 3px;
+    height: 3px;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.quit-btn {
+    color: #fff;
+    font-weight: bold;
+}
+
+.quit-btn:hover {
+    color: #ff0000;
 }
 
 .login-form {

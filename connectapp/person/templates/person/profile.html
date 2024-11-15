@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<section class="container container-profile mt-5">
+<section class="container container-profile">
 <div class="row">
     <div class="col-md-8">
         <h2 class="person_name mb-4">{{ user.first_name }} {{ user.last_name }}</h2>
@@ -35,26 +35,27 @@
 
 <!-- Модальное окно для редактирования "О себе" -->
 <div class="modal fade" id="editAboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAboutModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content bg-dark text-light">
-        <div class="modal-header border-secondary">
-            <h1 class="modal-title fs-5" id="editAboutModalLabel">Редактировать информацию о себе</h1>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-        </div>
-        <div class="modal-body">
-            <form action="{% url 'edit_about' %}" id="edit-about-modal-form" method="post">
-                {% csrf_token %}
-                <textarea name="about" class="form-control bg-secondary text-light modal-textarea" rows="5" placeholder="Напишите информацию о себе">{{ user.about }}</textarea>
-            </form>
-        </div>
-        <div class="modal-footer border-secondary">
-            <button type="submit" class="gradient-btn" form="edit-about-modal-form" data="Сохранить изменения"></button>
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h1 class="modal-title fs-5" id="editAboutModalLabel">Редактировать информацию о себе</h1>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'edit_about' %}" id="edit-about-modal-form" method="post">
+                    {% csrf_token %}
+                    <textarea name="about" class="form-control bg-secondary text-light modal-textarea" id="edit-about-textarea" rows="5" placeholder="Напишите информацию о себе" maxlength="100" required>{{ user.about }}</textarea>
+                    <span id="about-char-count">100</span> символов осталось
+                </form>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="submit" class="gradient-btn" id="edit-about-button" form="edit-about-modal-form" data="Сохранить изменения"></button>
+            </div>
         </div>
     </div>
 </div>
-</div>
 
-<section class="container container-profile mt-5">
+<section class="container container-profile mt-4">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Посты</h2>
     <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
@@ -71,19 +72,13 @@
                 <div class="modal-body">
                     <form action="{% url 'create_post' %}" id="create-post-modal-form" method="post">
                         {% csrf_token %}
-                        {{ form.text }}
-                        {% if form.text.errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {% for error in form.text.errors %}
-                                    {{ error }}<br>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+                        <textarea name="createPost" class="form-control bg-secondary text-light modal-textarea" id="create-post-textarea" rows="5" placeholder="Введите текст поста" maxlength="5000" required></textarea>
+                        <span id="char-count">5000</span> символов осталось
                     </form>
                 </div>
                 <div class="modal-footer border-secondary">
                     <button type="button" class="gradient-btn ai-button" id="aiHelpButton" data="Помощь AI"></button>
-                    <button type="submit" class="gradient-btn" form="create-post-modal-form" data="Опубликовать"></button>
+                    <button type="submit" class="gradient-btn" id="create-post-button" form="create-post-modal-form" data="Опубликовать"></button>
                 </div>
             </div>
         </div>
@@ -162,6 +157,15 @@
 {% endif %}
 </section>
 
-<script src="../../static/person/js/hide_text.js"></script>
-<script src="../../static/person/js/ai_request.js"></script>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<script src="{% static 'person/js/validation.js' %}"></script>
+<script src="{% static 'person/js/hide_text.js' %}"></script>
+<script src="{% static 'person/js/ai_request.js' %}"></script>
 {% endblock %}
