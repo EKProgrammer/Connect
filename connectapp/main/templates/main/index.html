@@ -8,7 +8,7 @@
 
 <div class="row align-items-center">
     <div class="col-md-6 text-center">
-        <h2>Воплощайте свои идеи</h2>
+        <h2>Ты говоришь - она понимает</h2>
         <div class="gif-container">
             <img src="{% static 'main/img/presentation.gif' %}" alt="Демонстрация работы ИИ">
         </div>
@@ -53,23 +53,6 @@
                 </div>
             </form>
         </div>
-    </div>
-</div>
-
-<div class="row justify-content-center border-top mt-5">
-    <!-- Форма для отзывов -->
-    <div class="feedback-form col-6 mt-5">
-        <h3>Оставьте свой отзыв о нашей платформе</h3>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group mt-3">
-                <label for="message" class="form-label">Ваш отзыв (критика, пожелания, предложения)</label>
-                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="gradient-btn" data="Отправить отзыв"></button>
-            </div>
-        </form>
     </div>
 </div>
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.conf import settings
 
 class User(AbstractUser):
     first_name = models.CharField("Имя", max_length=20)
@@ -14,3 +14,11 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    def get_avatar_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+        else:
+            return f"{settings.STATIC_URL}person/img/default.jpg"
+        
+        
