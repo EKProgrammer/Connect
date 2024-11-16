@@ -10,11 +10,23 @@ from datetime import datetime, timezone
 import json
 from mistralai import Mistral
 import os
-
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from .models import Post
 
 
+@login_required
 def profile(request):
+    if request.method == 'POST' and request.FILES.get('avatar'):
+        avatar = request.FILES['avatar']
+        # Сохраняем новый аватар
+        filename = f'users_images/{request.user.username}_avatar.jpg'
+        path = default_storage.save(filename, ContentFile(avatar.read()))
+        request.user.image = path
+        request.user.save()
+        messages.success(request, 'Аватар успешно обновлен')
+        return redirect('profile')
+
     posts = Post.objects.filter(user=request.user.id).order_by('-date')
 
     data = {

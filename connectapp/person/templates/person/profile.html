@@ -28,7 +28,14 @@
         </div>
     </div>
     <div class="col-md-4">
-        <img src="{% static 'person/img/default.jpg' %}" alt="person" class="profile-image">
+        <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image mb-3">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Загрузить новый аватар</button>
+        </form>
     </div>
 </div>
 </section>
