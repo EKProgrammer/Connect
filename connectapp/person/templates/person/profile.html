@@ -29,13 +29,18 @@
     </div>
     <div class="col-md-4">
         <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image mb-3">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="avatarForm">
             {% csrf_token %}
-            <div class="mb-3">
-                <input type="file" name="avatar" id="avatar" class="form-control" accept="image/*">
-            </div>
-            <button type="submit" class="btn btn-primary">Загрузить новый аватар</button>
+            <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
+            <button type="button" class="btn btn-primary mb-2" id="uploadAvatarBtn">Загрузить новый аватар</button>
         </form>
+        {% if user.image %}
+            <form method="post" action="{% url 'delete_avatar' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Удалить фото профиля</button>
+            </form>
+        {% endif %}
+    </div>
     </div>
 </div>
 </section>
@@ -175,4 +180,21 @@
 <script src="{% static 'person/js/validation.js' %}"></script>
 <script src="{% static 'person/js/hide_text.js' %}"></script>
 <script src="{% static 'person/js/ai_request.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatarInput = document.getElementById('avatar');
+        const uploadBtn = document.getElementById('uploadAvatarBtn');
+        const avatarForm = document.getElementById('avatarForm');
+    
+        uploadBtn.addEventListener('click', function() {
+            avatarInput.click();
+        });
+    
+        avatarInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                avatarForm.submit();
+            }
+        });
+    });
+    </script>
 {% endblock %}
