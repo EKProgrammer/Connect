@@ -129,3 +129,13 @@ def get_stat(request):
         "number": number,
     }
     return render(request, "person/statistic.html", data)
+
+@login_required
+def delete_avatar(request):
+    if request.method == 'POST':
+        if request.user.image:
+            request.user.delete_avatar()
+            messages.success(request, 'Фото профиля успешно удалено.')
+        else:
+            messages.error(request, 'У вас нет фото профиля для удаления.')
+    return redirect('profile')

@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/chatgpt/', views.chatgpt_api, name='chatgpt_api'),
     path('statistic/', views.get_stat, name='statistic'),
     path('profile/', views.profile, name='profile'),
+    path('delete-avatar/', views.delete_avatar, name='delete_avatar'),
 ]
