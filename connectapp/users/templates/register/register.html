@@ -19,9 +19,9 @@
                             <label for="{{ item.id_for_label }}" class="form-label">{{ item.label }}</label>
                             {{ item }}
                             {% if item.errors %}
-                                <div class="alert alert-danger" role="alert">
+                                <div class="form-error" role="alert">
                                     {% for error in item.errors %}
-                                        {{ error }}<br>
+                                        <p>{{ error }}</p>
                                     {% endfor %}
                                 </div>
                             {% endif %}

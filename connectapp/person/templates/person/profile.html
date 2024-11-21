@@ -1,6 +1,7 @@
 {% extends 'main/layout.html' %}
 
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Профиль - Connect{% endblock %}
 
@@ -21,7 +22,11 @@
                 </a>
             </h2>
             {% if user.about %}
-                <p class="about">{{ user.about }}</p>
+                <div class="about-container">
+                    <p class="about">{{ user.about }}</p>
+                    <div class="about-fade-out"></div>
+                    <a class="about-read-more-btn" style="display: none;">Читать далее</a>
+                </div>
             {% else %}
                 <p class="commentary">Информация отсутвует</p>
             {% endif %}
@@ -41,7 +46,6 @@
             </form>
         {% endif %}
     </div>
-    </div>
 </div>
 </section>
 
@@ -54,10 +58,10 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
-                <form action="{% url 'edit_about' %}" id="edit-about-modal-form" method="post">
+                <form action="{% url 'edit_about' %}" method="post" id="edit-about-modal-form">
                     {% csrf_token %}
-                    <textarea name="about" class="form-control bg-secondary text-light modal-textarea" id="edit-about-textarea" rows="5" placeholder="Напишите информацию о себе" maxlength="100" required>{{ user.about }}</textarea>
-                    <span id="about-char-count">100</span> символов осталось
+                    {{ about_form.about }}
+                    <span id="about-char-count">0/250</span>
                 </form>
             </div>
             <div class="modal-footer border-secondary">
@@ -82,15 +86,15 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{% url 'create_post' %}" id="create-post-modal-form" method="post">
+                    <form action="{% url 'create_post' %}" method="post" id="add-post-form">
                         {% csrf_token %}
-                        <textarea name="createPost" class="form-control bg-secondary text-light modal-textarea" id="create-post-textarea" rows="5" placeholder="Введите текст поста" maxlength="5000" required></textarea>
-                        <span id="char-count">5000</span> символов осталось
+                        {{ empty_post_form.text }}
+                        <span id="create-post-char-count">0/5000</span>
                     </form>
                 </div>
                 <div class="modal-footer border-secondary">
                     <button type="button" class="gradient-btn ai-button" id="aiHelpButton" data="Помощь AI"></button>
-                    <button type="submit" class="gradient-btn" id="create-post-button" form="create-post-modal-form" data="Опубликовать"></button>
+                    <button type="submit" class="gradient-btn" id="add-post-button" form="add-post-form" data="Опубликовать"></button>
                 </div>
             </div>
         </div>
@@ -99,53 +103,56 @@
 
 {% if posts %}
 <div class="posts-list">
-    {% for el in posts %}
+    {% for post in posts %}
         <div class="post-item">
             <div class="d-flex justify-content-between align-items-center">
-                <p class="post-date mb-0">{{ el.date }}</p>
+                <p class="post-date mb-0">{{ post.date }}</p>
                 <div>
-                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ el.id }}">
+                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post.id }}">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ el.id }}">
+                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post.id }}">
                         <i class="fa-solid fa-trash"></i>
                     </a>
                 </div>
             </div>
             <div class="post-text-container">
-                <p class="post-text" id="post-text-{{ el.id }}">{{ el.text }}</p>
+                <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
                 <div class="fade-out"></div>
-                <a class="read-more-btn" id="read-more-btn-{{ el.id }}" style="display: none;">Читать далее</a>
+                <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
             </div>
 
             <!-- Модальное окно для редактирования поста -->
-            <div class="modal fade" id="editPostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ el.id }}" aria-hidden="true">
+            <div class="modal fade" id="editPostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content bg-dark text-light">
                         <div class="modal-header border-secondary">
-                            <h1 class="modal-title fs-5" id="editPostModalLabel{{ el.id }}">Редактировать пост</h1>
+                            <h1 class="modal-title fs-5" id="editPostModalLabel{{ post.id }}">Редактировать пост</h1>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="{% url 'edit_post' el.id %}" id="edit-post-modal-form-{{ el.id }}" method="post">
+                            <form action="{% url 'edit_post' post.id %}" method="post" id="edit-post-form-{{ post.id }}">
                                 {% csrf_token %}
-                                <textarea name="text" class="form-control bg-secondary text-light modal-textarea" rows="5">{{ el.text }}</textarea>
+                                {% with current_post_form=post_forms|get_item:post.id %}
+                                {{ current_post_form.text }}
+                                {% endwith %}
+                                <span id="edit-post-char-count-{{ post.id }}">0/5000</span>
                             </form>
                         </div>
                         <div class="modal-footer border-secondary">
-                            <button type="button" class="gradient-btn ai-button" id="aiHelpButton-{{ el.id }}" data="Помощь AI"></button>
-                            <button type="submit" class="gradient-btn" form="edit-post-modal-form-{{ el.id }}" data="Сохранить изменения"></button>
+                            <button type="button" class="gradient-btn ai-button" id="aiHelpButton-{{ post.id }}" data="Помощь AI"></button>
+                            <button type="submit" class="gradient-btn" form="edit-post-form-{{ post.id }}" data="Сохранить изменения"></button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Модальное окно для удаления поста -->
-            <div class="modal fade" id="deletePostModal{{ el.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ el.id }}" aria-hidden="true">
+            <div class="modal fade" id="deletePostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ el.id }}" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content bg-dark text-light">
                         <div class="modal-header border-secondary">
-                            <h1 class="modal-title fs-5" id="deletePostModalLabel{{ el.id }}">Удалить пост</h1>
+                            <h1 class="modal-title fs-5" id="deletePostModalLabel{{ post.id }}">Удалить пост</h1>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                         </div>
                         <div class="modal-body">
@@ -153,7 +160,7 @@
                         </div>
                         <div class="modal-footer border-secondary">
                             <button type="button" class="gradient-btn" data-bs-dismiss="modal" data="Отмена"></button>
-                            <form action="{% url 'delete_post' el.id %}" method="post" style="display: inline;">
+                            <form action="{% url 'delete_post' post.id %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="gradient-btn" data="Удалить"></button>
                             </form>
@@ -169,16 +176,9 @@
 {% endif %}
 </section>
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-<script src="{% static 'person/js/validation.js' %}"></script>
-<script src="{% static 'person/js/hide_text.js' %}"></script>
+<script src="{% static 'person/js/show_counters.js' %}"></script>
+<script src="{% static 'person/js/hide_post_text.js' %}"></script>
+<script src="{% static 'person/js/hide_about_text.js' %}"></script>
 <script src="{% static 'person/js/ai_request.js' %}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

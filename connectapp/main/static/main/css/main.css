@@ -135,12 +135,6 @@ a {
     text-decoration: none;
 }
 
-.feedback-form {
-    background-color: #212529;
-    padding: 30px;
-    border-radius: 20px;
-}
-
 /* Стили для кнопки выбора аватара */
 .choose-avatar-btn {
     display: inline-block;
@@ -156,6 +150,11 @@ a {
 
 .choose-avatar-btn:hover {
     opacity: 0.8;
+}
+
+.form-error {
+    margin-top: 4px;
+    color: red;
 }
 
 /* Стили для модального окна кроппера */

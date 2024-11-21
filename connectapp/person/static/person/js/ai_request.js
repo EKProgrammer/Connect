@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.setAttribute('data', 'Загрузка...');
 
             // Отправляем запрос к API
-            fetch('/person/api/chatgpt/', {
+            fetch('/person/api/mistral/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

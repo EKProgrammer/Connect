@@ -3,16 +3,20 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from django.core.exceptions import ValidationError
 from django.contrib import messages
 
-from datetime import datetime, timezone
+from datetime import datetime
+from django.utils import timezone
+
 import json
 from mistralai import Mistral
 import os
+
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+
 from .models import Post
+from .forms import AboutForm, PostForm
 
 
 @login_required
@@ -25,13 +29,22 @@ def profile(request):
         request.user.image = path
         request.user.save()
         messages.success(request, 'Аватар успешно обновлен')
-        return redirect('profile')
 
+    about_form = AboutForm(instance=request.user)
     posts = Post.objects.filter(user=request.user.id).order_by('-date')
+
+    empty_post_form = PostForm()
+    post_forms = {}
+    for post in posts:
+        # Создаем форму редактирования для каждого поста
+        post_forms[post.id] = PostForm(instance=post)
 
     data = {
         "user": request.user,
         "posts": posts,
+        "about_form": about_form,
+        "post_forms": post_forms,
+        "empty_post_form": empty_post_form,
     }
 
     return render(request, "person/profile.html", data)
@@ -40,29 +53,21 @@ def profile(request):
 @login_required
 def create_post(request):
     if request.method == "POST":
-        text = request.POST.get('createPost', '')
-        if len(text) > 5000:
-            messages.error(request, 'Текст поста не должен превышать 5000 символов.')
-        else:
-            post = Post()
-            post.text = text
-            post.date = datetime.now(timezone.utc)
+        post_form = PostForm(request.POST)
+        if post_form.is_valid():
+            post = post_form.save(commit=False)
             post.user = request.user
-            try:
-                post.full_clean()
-                post.save()
-                messages.success(request, 'Пост успешно создан.')
-            except ValidationError as e:
-                messages.error(request, f'Ошибка при создании поста: {e}')
+            post.date = timezone.now()
+            post.save()
     return redirect('profile')
 
 
 @login_required
 def edit_about(request):
     if request.method == 'POST':
-        new_about = request.POST.get('about', '')
-        request.user.about = new_about
-        request.user.save()
+        about_form = AboutForm(request.POST, instance=request.user)
+        if about_form.is_valid():
+            about_form.save()
     return redirect('profile')
 
 
@@ -70,9 +75,9 @@ def edit_about(request):
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, user=request.user)
     if request.method == 'POST':
-        new_text = request.POST.get('text', '')
-        post.text = new_text
-        post.save()
+        post_form = PostForm(request.POST, instance=post)
+        if post_form.is_valid():
+            post_form.save()
     return redirect('profile')
 
 
@@ -85,15 +90,9 @@ def delete_post(request, post_id):
 
 
 @csrf_exempt
+@login_required
 @require_http_methods(["POST"])
-def chatgpt_api(request):
-    file = open("./person/statistic.txt", "r")
-    number = int(file.read()) + 1
-    file.close()
-    file = open("./person/statistic.txt", "w")
-    file.write(str(number))
-    file.close()
-
+def mistral_api(request):
     data = json.loads(request.body)
     user_input = data.get('prompt', '')
     if not user_input:
@@ -120,15 +119,6 @@ def chatgpt_api(request):
         print(f"An error occurred: {e}")
         return JsonResponse({'error': 'Failed to get response from AI'}, status=500)
 
-
-def get_stat(request):
-    file = open("./person/statistic.txt", "r")
-    number = int(file.read())
-    file.close()
-    data = {
-        "number": number,
-    }
-    return render(request, "person/statistic.html", data)
 
 @login_required
 def delete_avatar(request):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 import os
 
+
 class User(AbstractUser):
     first_name = models.CharField("Имя", max_length=20)
     last_name = models.CharField("Фамилия", max_length=20)
@@ -10,7 +11,7 @@ class User(AbstractUser):
     email = models.EmailField("Почта", unique=True)
     password = models.CharField("Пароль", max_length=20)
     image = models.ImageField("Аватар", upload_to='users_images', blank=True, null=True)
-    about = models.TextField("О себе", max_length=100, blank=True, null=True)
+    about = models.TextField("О себе", max_length=250, blank=True, null=True)
     image = models.ImageField(upload_to='users_images', null=True, blank=True)
 
     def get_avatar_url(self):

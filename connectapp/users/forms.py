@@ -53,10 +53,12 @@ class UserRegisterForm(UserCreationForm):
             ),
         ],
         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Введите имя пользователя"}),
+        error_messages={'unique': 'Имя пользователя занято'}
     )
     email = forms.CharField(
         label="Адрес электронной почты",
         widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Введите адрес электронной почты"}),
+        error_messages={'unique': 'Адрес электронной почты уже зарегистрирован'},
     )
     password1 = forms.CharField(
         label="Пароль",

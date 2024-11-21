@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from users.forms import UserLoginForm
 from users.forms import UserRegisterForm
@@ -17,6 +19,8 @@ def index(request):
             if user:
                 auth.login(request, user)
                 return redirect("/feed")
+            else:
+                messages.error(request, "Неправильный логин или пароль")
     else:
         form = UserLoginForm()
 
@@ -24,6 +28,8 @@ def index(request):
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect("/feed")
     if request.method == "POST":
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
@@ -37,6 +43,7 @@ def register(request):
     return render(request, "register/register.html", {"form": form})
 
 
+@login_required
 def logout(request):
     auth.logout(request)
     return redirect("/")

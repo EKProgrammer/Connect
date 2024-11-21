@@ -1,0 +1,14 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block title %}Ошибка 404 - Connect{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'main/css/404.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="number">404</h1>
+<h2 class="explanation">Страница не найдена</h2>
+{% endblock %}
