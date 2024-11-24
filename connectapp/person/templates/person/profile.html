@@ -205,7 +205,18 @@
             if (this.files && this.files[0]) {
                 avatarForm.submit();
             }
-        });        
+        });
+        const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
+        const selectedImageName = document.getElementById('selected-image-name');
+
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                selectedImageName.textContent = this.files[0].name;
+            } else {
+                selectedImageName.textContent = '';
+            }
+        });
+        
     });
     </script>
 {% endblock %}
