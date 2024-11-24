@@ -97,20 +97,7 @@
                             <span id="selected-image-name" class="ms-2"></span>
                         </div>
                     </form>
-                </div><script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
-                        const selectedImageName = document.getElementById('selected-image-name');
-                    
-                        imageInput.addEventListener('change', function() {
-                            if (this.files && this.files[0]) {
-                                selectedImageName.textContent = this.files[0].name;
-                            } else {
-                                selectedImageName.textContent = '';
-                            }
-                        });
-                    });
-                    </script>
+                </div>
                 <div class="modal-footer border-secondary">
                     <button type="button" class="gradient-btn ai-button" id="aiHelpButton" data="Помощь AI"></button>
                     <button type="submit" class="gradient-btn" id="add-post-button" form="add-post-form" data="Опубликовать"></button>
@@ -218,17 +205,7 @@
             if (this.files && this.files[0]) {
                 avatarForm.submit();
             }
-        });
-        const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
-        const selectedImageName = document.getElementById('selected-image-name');
-
-        imageInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                selectedImageName.textContent = this.files[0].name;
-            } else {
-                selectedImageName.textContent = '';
-            }
-        });
+        });        
     });
     </script>
 {% endblock %}

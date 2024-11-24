@@ -5,6 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
 
+from django.conf import settings
+from django.shortcuts import get_object_or_404, redirect
+
 from datetime import datetime
 from django.utils import timezone
 
@@ -78,7 +81,7 @@ def edit_about(request):
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, user=request.user)
     if request.method == 'POST':
-        post_form = PostForm(request.POST, instance=post)
+        post_form = PostForm(request.POST, request.FILES, instance=post)
         if post_form.is_valid():
             post_form.save()
     return redirect('profile')
@@ -88,6 +91,9 @@ def edit_post(request, post_id):
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, user=request.user)
     if request.method == 'POST':
+        if post.image:
+            if os.path.isfile(post.image.path):
+                os.remove(post.image.path)
         post.delete()
     return redirect('profile')
 

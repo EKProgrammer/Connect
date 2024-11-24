@@ -234,24 +234,3 @@ input[type="file"] {
     object-fit: cover;
     object-position: center;
 }
-/* Скрываем стандартный input file */
-input[type="file"] {
-    display: none;
-}
-
-/* Стилизуем кнопку загрузки */
-.btn-secondary {
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
-}
-
-/* Стилизуем текст с названием выбранного файла */
-#selected-image-name {
-    display: inline-block;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    vertical-align: middle;
-}
