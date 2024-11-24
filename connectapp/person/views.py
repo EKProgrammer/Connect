@@ -53,13 +53,16 @@ def profile(request):
 @login_required
 def create_post(request):
     if request.method == "POST":
-        post_form = PostForm(request.POST)
+        post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             post = post_form.save(commit=False)
             post.user = request.user
             post.date = timezone.now()
             post.save()
-    return redirect('profile')
+            return redirect('profile')
+    else:
+        form = PostForm()
+    return render(request, 'person/profile.html', {'form': form})
 
 
 @login_required
