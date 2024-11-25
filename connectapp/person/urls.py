@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path('', views.profile, name='profile'),
     path('create_post/', views.create_post, name='create_post'),
@@ -10,4 +11,5 @@ urlpatterns = [
     path('api/mistral/', views.mistral_api, name='mistral_api'),
     path('profile/', views.profile, name='profile'),
     path('delete-avatar/', views.delete_avatar, name='delete_avatar'),
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),
 ]

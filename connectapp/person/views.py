@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect
 
+from django.contrib.auth import get_user_model
+
 from datetime import datetime
 from django.utils import timezone
 
@@ -17,7 +19,7 @@ import os
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-
+from django.contrib.auth.models import User
 from .models import Post
 from .forms import AboutForm, PostForm
 
@@ -138,3 +140,16 @@ def delete_avatar(request):
         else:
             messages.error(request, 'У вас нет фото профиля для удаления.')
     return redirect('profile')
+
+User = get_user_model()
+
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=user).order_by('-date')
+    # Здесь вы можете добавить логику для получения постов пользователя
+    # posts = Post.objects.filter(author=user)
+    context = {
+        'profile_user': user,
+        'posts': posts,
+    }
+    return render(request, 'person/user_profile.html', context)

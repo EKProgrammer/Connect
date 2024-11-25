@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ profile_user.username }}'s Profile</title>
+</head>
+<body>
+    <h1>{{ profile_user.username }}'s Profile</h1>
+    
+    {% if profile_user.image %}
+        <img src="{{ profile_user.image.url }}" alt="{{ profile_user.username }}'s avatar" style="width:150px;height:150px;">
+    {% else %}
+        <p>No avatar available.</p>
+    {% endif %}
+    
+    <h2>Posts</h2>
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.content }}</p>
+                    <p><small>Posted on {{ post.date }}</small></p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts available.</p>
+    {% endif %}
+</body>
+</html>
