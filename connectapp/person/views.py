@@ -128,7 +128,9 @@ def mistral_api(request):
 
 @login_required
 def delete_avatar(request):
-    if request.method == 'POST':
+    print("test")
+    if request.method == 'GET':
+        print("test2")
         if request.user.image:
             request.user.delete_avatar()
             messages.success(request, 'Фото профиля успешно удалено.')
