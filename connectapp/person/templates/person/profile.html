@@ -77,6 +77,7 @@
     <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
     <!-- Кнопка-триггер модального окна -->
     <button type="button" class="gradient-btn" data-bs-toggle="modal" data-bs-target="#createPostModal" data="Создать пост"></button>
+    <!-- Модальное окно для добавления поста -->
     <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
@@ -206,6 +207,7 @@
                 avatarForm.submit();
             }
         });
+
         const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
         const selectedImageName = document.getElementById('selected-image-name');
 

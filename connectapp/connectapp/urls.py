@@ -22,15 +22,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('person.urls')),
     path('', include('main.urls')),
     path('feed/', include('feed.urls')),
     path('chats/', include('chats.urls')),
     path('person/', include('person.urls')),
     path('friends/', include('friends.urls')),
     path('communities/', include('communities.urls')),
-    path('community/', include('community.urls')),
-    path('', include('person.urls'))
+    path('community/', include('community.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

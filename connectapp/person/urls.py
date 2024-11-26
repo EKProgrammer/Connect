@@ -9,7 +9,6 @@ urlpatterns = [
     path('edit_post/<int:post_id>/', views.edit_post, name='edit_post'),
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('api/mistral/', views.mistral_api, name='mistral_api'),
-    path('profile/', views.profile, name='profile'),
     path('delete-avatar/', views.delete_avatar, name='delete_avatar'),
-    path('profile/<str:username>/', views.user_profile, name='user_profile'),
+    path('<str:username>/', views.user_profile, name='user_profile'),
 ]

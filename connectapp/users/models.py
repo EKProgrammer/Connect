@@ -18,7 +18,7 @@ class User(AbstractUser):
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
         else:
-            return os.path.join(settings.STATIC_URL, 'person/img/default_avatar.png')
+            return os.path.join(settings.STATIC_URL, 'person/img/default.jpg')
 
     def delete_avatar(self):
         if self.image:
@@ -30,11 +30,4 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
-
-    def get_avatar_url(self):
-        if self.image and hasattr(self.image, 'url'):
-            return self.image.url
-        else:
-            return f"{settings.STATIC_URL}person/img/default.jpg"
-        
         

@@ -5,11 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
 
-from django.conf import settings
-from django.shortcuts import get_object_or_404, redirect
-
-from django.contrib.auth import get_user_model
-
 from datetime import datetime
 from django.utils import timezone
 
@@ -19,7 +14,8 @@ import os
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.contrib.auth.models import User
+
+from users.models import User
 from .models import Post
 from .forms import AboutForm, PostForm
 
@@ -44,12 +40,14 @@ def profile(request):
         # Создаем форму редактирования для каждого поста
         post_forms[post.id] = PostForm(instance=post)
 
+    flag = False
     data = {
         "user": request.user,
         "posts": posts,
         "about_form": about_form,
         "post_forms": post_forms,
         "empty_post_form": empty_post_form,
+        "flag": flag,
     }
 
     return render(request, "person/profile.html", data)
@@ -64,10 +62,7 @@ def create_post(request):
             post.user = request.user
             post.date = timezone.now()
             post.save()
-            return redirect('profile')
-    else:
-        form = PostForm()
-    return render(request, 'person/profile.html', {'form': form})
+    return redirect('profile')
 
 
 @login_required
@@ -141,7 +136,6 @@ def delete_avatar(request):
             messages.error(request, 'У вас нет фото профиля для удаления.')
     return redirect('profile')
 
-User = get_user_model()
 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
