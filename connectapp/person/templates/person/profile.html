@@ -33,17 +33,20 @@
         </div>
     </div>
     <div class="col-md-4">
-        <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image mb-3">
+        <div class="profile-image-container">
+            <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image mb-3">
+        </div>
         <form method="post" enctype="multipart/form-data" id="avatarForm">
             {% csrf_token %}
             <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
-            <button type="button" class="btn btn-primary mb-2" id="uploadAvatarBtn">Загрузить новый аватар</button>
+            <a href="#" class="edit-about-btn" id="uploadAvatarBtn">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
         </form>
         {% if user.image %}
-            <form method="post" action="{% url 'delete_avatar' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Удалить фото профиля</button>
-            </form>
+            <a href="{% url 'delete_avatar' %}" class="post-actions-btn" >
+                <i class="fa-solid fa-trash"></i>
+            </a>
         {% endif %}
     </div>
 </div>
