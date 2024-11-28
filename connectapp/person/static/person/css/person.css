@@ -31,13 +31,21 @@
     white-space: pre-wrap;
 }
 
-.edit-about-btn {
+. {
     font-size: 1.7rem;
     color: #888;
     margin-left: 0.5rem;
 }
 
-.edit-about-btn:hover {
+.edit-about-btn, .edit-image-btn, .delete-img-btn {
+    font-size: 1.7rem;
+    color: #888;
+    margin-left: 0.5rem;
+}
+
+.edit-about-btn:hover,
+.edit-image-btn:hover,
+.delete-img-btn:hover {
     color: #666;
 }
 
@@ -62,6 +70,7 @@
 }
 
 .profile-image-container {
+    position: relative;
     width: 400px;
     height: 400px;
     overflow: hidden;
@@ -124,11 +133,6 @@ input[type="file"] {
     font-size: 1.4rem;
 }
 
-.modal-textarea {
-    height: 70vh;
-    resize: none;
-}
-
 /* Скрываем содержимое постов */
 
 .post-text-container {
@@ -175,7 +179,7 @@ input[type="file"] {
 
 .about-container {
     position: relative;
-    max-height: 330px; /* Максимальная высота для текста "О себе" */
+    max-height: 270px; /* Максимальная высота для текста "О себе" */
     overflow: hidden;
 }
 
@@ -208,7 +212,84 @@ input[type="file"] {
     pointer-events: none;
 }
 
+.about-section .edit-about-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
+.about-section:hover .edit-about-btn {
+    opacity: 1;
+}
 
+.post-item .post-actions-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-  
+.post-item:hover .post-actions-btn {
+    opacity: 1;
+}
+
+.image-actions .edit-image-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-actions .edit-image-btn {
+    opacity: 1;
+}
+
+.profile-image-container .image-actions {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-image-container:hover .image-actions {
+    opacity: 1;
+}
+
+.image-actions {
+    position: absolute;
+    padding-right: 5px;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0;
+    background: #000;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    transition: opacity 0.3s ease;
+}
+
+/* Стили для модального окна */
+
+.modal-textarea {
+    height: 60vh;
+    width: 100%;
+    padding: 10px 15px;
+    resize: none;
+    background-color: transparent;
+    border-radius: 10px;
+    border: 2px solid #888;
+    color: #fff;
+    position: relative;
+}
+
+.modal-textarea::-webkit-scrollbar {
+    width: 20px;
+}
+
+.modal-textarea::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border: 5px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+.modal-textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-textarea:focus,
+.modal-textarea:active {
+    outline: none;
+}

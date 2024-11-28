@@ -34,20 +34,22 @@
     </div>
     <div class="col-md-4">
         <div class="profile-image-container">
-            <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image mb-3">
+            <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image">
+            <div class="image-actions">
+                <form method="post" enctype="multipart/form-data" id="avatarForm">
+                    {% csrf_token %}
+                    <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
+                    <a href="#" class="edit-image-btn" id="uploadAvatarBtn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </form>
+                {% if user.image %}
+                    <a href="{% url 'delete_avatar' %}" class="delete-img-btn" >
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                {% endif %}
+            </div>
         </div>
-        <form method="post" enctype="multipart/form-data" id="avatarForm">
-            {% csrf_token %}
-            <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
-            <a href="#" class="edit-about-btn" id="uploadAvatarBtn">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
-        </form>
-        {% if user.image %}
-            <a href="{% url 'delete_avatar' %}" class="post-actions-btn" >
-                <i class="fa-solid fa-trash"></i>
-            </a>
-        {% endif %}
     </div>
 </div>
 </section>
@@ -64,8 +66,8 @@
                 <form action="{% url 'edit_about' %}" method="post" id="edit-about-modal-form">
                     {% csrf_token %}
                     {{ about_form.about }}
-                    <span id="about-char-count">0/250</span>
                 </form>
+                <span id="about-char-count">0/250</span>
             </div>
             <div class="modal-footer border-secondary">
                 <button type="submit" class="gradient-btn" id="edit-about-button" form="edit-about-modal-form" data="Сохранить изменения"></button>
