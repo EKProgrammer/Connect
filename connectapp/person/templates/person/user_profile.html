@@ -1,31 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ profile_user.username }}'s Profile</title>
-</head>
-<body>
-    <h1>{{ profile_user.username }}'s Profile</h1>
+{% extends 'main/layout.html' %}
+
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Профиль - Connect{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="container container-profile">
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="person_name mb-4">{{ profile_user.first_name }} {{ profile_user.last_name }}</h2>
+        <div class="about-section">
+            <h2>О себе
+            </h2>
+            {% if profile_user.about %}
+                <div class="about-container">
+                    <p class="about">{{ profile_user.about }}</p>
+                    <div class="about-fade-out"></div>
+                    <a class="about-read-more-btn" style="display: none;">Читать далее</a>
+                </div>
+            {% else %}
+                <p class="commentary">Информация отсутвует</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="profile-image-container">
+            <img src="{{ profile_user.get_avatar_url }}" alt="person" class="profile-image">
+        </div>
+    </div>
+</div>
+</section>
+
+
+<section class="container container-profile mt-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Посты</h2>
+    <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    </div>
+</div>
+
+{% if posts %}
+<div class="posts-list">
+    {% for post in posts %}
+        <div class="post-item">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="post-date mb-0">{{ post.date }}</p>
+            </div>
+            <div class="post-text-container">
+                <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+                <div class="fade-out"></div>
+                <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
+            </div>
+            {% if post.image %}
+            <div class="post-image-container mt-3">
+                <img src="{{ post.image.url }}" alt="Post image" class="img-fluid">
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p class="commentary">У вас нет записей</p>
+{% endif %}
+</section>
+
+<script src="{% static 'person/js/show_counters.js' %}"></script>
+<script src="{% static 'person/js/hide_post_text.js' %}"></script>
+<script src="{% static 'person/js/hide_about_text.js' %}"></script>
+<script src="{% static 'person/js/ai_request.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatarInput = document.getElementById('avatar');
+        const uploadBtn = document.getElementById('uploadAvatarBtn');
+        const avatarForm = document.getElementById('avatarForm');
     
-    {% if profile_user.image %}
-        <img src="{{ profile_user.image.url }}" alt="{{ profile_user.username }}'s avatar" style="width:150px;height:150px;">
-    {% else %}
-        <p>No avatar available.</p>
-    {% endif %}
+        uploadBtn.addEventListener('click', function() {
+            avatarInput.click();
+        });
     
-    <h2>Posts</h2>
-    {% if posts %}
-        <ul>
-            {% for post in posts %}
-                <li>
-                    <h3>{{ post.title }}</h3>
-                    <p>{{ post.content }}</p>
-                    <p><small>Posted on {{ post.date }}</small></p>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No posts available.</p>
-    {% endif %}
-</body>
-</html>
+        avatarInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                avatarForm.submit();
+            }
+        });
+
+        const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
+        const selectedImageName = document.getElementById('selected-image-name');
+
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                selectedImageName.textContent = this.files[0].name;
+            } else {
+                selectedImageName.textContent = '';
+            }
+        });
+        
+    });
+    </script>
+{% endblock %}
