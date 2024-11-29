@@ -128,9 +128,7 @@ def mistral_api(request):
 
 @login_required
 def delete_avatar(request):
-    print("test")
     if request.method == 'GET':
-        print("test2")
         if request.user.image:
             request.user.delete_avatar()
             messages.success(request, 'Фото профиля успешно удалено.')
@@ -142,6 +140,8 @@ def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(user=user).order_by('-date')
     about_form = AboutForm(instance=request.user)
+    if (request.user == user):
+        return redirect('profile')
     
     empty_post_form = PostForm()
     post_forms = {}
@@ -160,5 +160,6 @@ def user_profile(request, username):
         "empty_post_form": empty_post_form,
         "flag": flag,
     }
+
     
     return render(request, "person/user_profile.html", data)

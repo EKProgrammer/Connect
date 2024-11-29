@@ -10,3 +10,4 @@ class Command(BaseCommand):
         users = User.objects.all()
         for user in users:
             self.stdout.write(user.username)
+            self.stdout.write(user.password)
