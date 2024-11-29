@@ -138,17 +138,13 @@ def delete_avatar(request):
 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    posts = Post.objects.filter(user=user).order_by('-date')
-    about_form = AboutForm(instance=request.user)
+    
     if (request.user == user):
         return redirect('profile')
     
-    empty_post_form = PostForm()
-    post_forms = {}
-    for post in posts:
-        # Создаем форму редактирования для каждого поста
-        post_forms[post.id] = PostForm(instance=post)
-    
+    posts = Post.objects.filter(user=user).order_by('-date')
+    about_form = AboutForm(instance=request.user)
+        
     flag = False
     
     data = {
@@ -156,8 +152,6 @@ def user_profile(request, username):
         "posts": posts,
         "is_own_profile": request.user == user,
         "about_form": about_form,
-        "post_forms": post_forms,
-        "empty_post_form": empty_post_form,
         "flag": flag,
     }
 
