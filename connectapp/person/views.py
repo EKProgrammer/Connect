@@ -136,24 +136,18 @@ def delete_avatar(request):
             messages.error(request, 'У вас нет фото профиля для удаления.')
     return redirect('profile')
 
+
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
     
-    if (request.user == user):
+    if request.user == user:
         return redirect('profile')
     
     posts = Post.objects.filter(user=user).order_by('-date')
-    about_form = AboutForm(instance=request.user)
-        
-    flag = False
     
     data = {
         "profile_user": user,
         "posts": posts,
-        "is_own_profile": request.user == user,
-        "about_form": about_form,
-        "flag": flag,
     }
 
-    
     return render(request, "person/user_profile.html", data)
