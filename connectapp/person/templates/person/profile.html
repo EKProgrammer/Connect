@@ -197,33 +197,5 @@
 <script src="{% static 'person/js/hide_post_text.js' %}"></script>
 <script src="{% static 'person/js/hide_about_text.js' %}"></script>
 <script src="{% static 'person/js/ai_request.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const avatarInput = document.getElementById('avatar');
-        const uploadBtn = document.getElementById('uploadAvatarBtn');
-        const avatarForm = document.getElementById('avatarForm');
-    
-        uploadBtn.addEventListener('click', function() {
-            avatarInput.click();
-        });
-    
-        avatarInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                avatarForm.submit();
-            }
-        });
-
-        const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
-        const selectedImageName = document.getElementById('selected-image-name');
-
-        imageInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                selectedImageName.textContent = this.files[0].name;
-            } else {
-                selectedImageName.textContent = '';
-            }
-        });
-        
-    });
-    </script>
+<script src="{% static 'person/js/avatar.js' %}"></script>
 {% endblock %}
