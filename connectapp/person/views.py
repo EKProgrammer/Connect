@@ -4,6 +4,8 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
+from PIL import Image
+import imghdr
 
 from datetime import datetime
 from django.utils import timezone
@@ -24,20 +26,25 @@ from .forms import AboutForm, PostForm
 def profile(request):
     if request.method == 'POST' and request.FILES.get('avatar'):
         avatar = request.FILES['avatar']
-        # Сохраняем новый аватар
-        filename = f'users_images/{request.user.username}_avatar.jpg'
-        path = default_storage.save(filename, ContentFile(avatar.read()))
-        request.user.image = path
-        request.user.save()
-        messages.success(request, 'Аватар успешно обновлен')
+        if is_valid_image(avatar):
+            # Сохраняем новый аватар
+            filename = f'users_images/{request.user.username}_avatar.jpg'
+            print(filename)
+            path = default_storage.save(filename, ContentFile(avatar.read()))
+            request.user.image = path
+            request.user.save()
+            messages.success(request, 'Аватар успешно обновлен')
+        else:
+            print(6)
+            messages.error(request, 'Загруженный файл не является допустимым изображением')
 
+    # Остальной код функции остается без изменений
     about_form = AboutForm(instance=request.user)
     posts = Post.objects.filter(user=request.user.id).order_by('-date')
 
     empty_post_form = PostForm()
     post_forms = {}
     for post in posts:
-        # Создаем форму редактирования для каждого поста
         post_forms[post.id] = PostForm(instance=post)
 
     flag = False
@@ -52,7 +59,38 @@ def profile(request):
 
     return render(request, "person/profile.html", data)
 
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import io
 
+def is_valid_image(file):
+    if not isinstance(file, InMemoryUploadedFile):
+        return False
+
+    try:
+        file_type = file.content_type.split('/')[0]
+        if file_type != 'image':
+            return False
+        
+        valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+        ext = os.path.splitext(file.name)[1]
+        if ext.lower() not in valid_extensions:
+            return False
+        
+        file_copy = io.BytesIO(file.read())
+        file.seek(0)  # Возвращаем указатель в начало файла
+        
+        image_type = imghdr.what(file_copy)
+        if image_type not in ['jpeg', 'png', 'gif']:
+            return False
+        
+        with Image.open(file_copy) as img:
+            img.verify()
+        
+        return True
+    except Exception as e:
+        print(f"Error validating image: {e}")
+        return False
+    
 @login_required
 def create_post(request):
     if request.method == "POST":
@@ -151,3 +189,4 @@ def user_profile(request, username):
     }
 
     return render(request, "person/user_profile.html", data)
+
