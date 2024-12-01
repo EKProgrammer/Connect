@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Обработка формы для добавления изображения для аватара
     const avatarInput = document.getElementById('avatar');
     const uploadBtn = document.getElementById('uploadAvatarBtn');
     const avatarForm = document.getElementById('avatarForm');
@@ -17,7 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const imageInput = document.getElementById('{{ empty_post_form.image.id_for_label }}');
+    // Обработка формы для добавления изображения для поста
+    const imageInput = document.getElementById('id_image');
     const selectedImageName = document.getElementById('selected-image-name');
 
     if (imageInput && selectedImageName) {

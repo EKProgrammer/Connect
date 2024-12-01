@@ -17,7 +17,7 @@
         <h2 class="person_name mb-4">{{ user.first_name }} {{ user.last_name }}</h2>
         <div class="about-section">
             <h2>О себе
-                <a href="#" class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal">
+                <a href="#" class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
             </h2>
@@ -39,12 +39,12 @@
                 <form method="post" enctype="multipart/form-data" id="avatarForm">
                     {% csrf_token %}
                     <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
-                    <a href="#" class="edit-image-btn" id="uploadAvatarBtn">
+                    <a href="#" class="edit-image-btn" id="uploadAvatarBtn" title="Редактировать">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                 </form>
                 {% if user.image %}
-                    <a href="{% url 'delete_avatar' %}" class="delete-img-btn" >
+                    <a href="{% url 'delete_avatar' %}" class="delete-img-btn" title="Удалить">
                         <i class="fa-solid fa-trash"></i>
                     </a>
                 {% endif %}
@@ -120,10 +120,10 @@
             <div class="d-flex justify-content-between align-items-center">
                 <p class="post-date mb-0">{{ post.date }}</p>
                 <div>
-                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post.id }}">
+                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post.id }}" title="Редактировать">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post.id }}">
+                    <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post.id }}" title="Удалить">
                         <i class="fa-solid fa-trash"></i>
                     </a>
                 </div>
@@ -197,5 +197,5 @@
 <script src="{% static 'person/js/hide_post_text.js' %}"></script>
 <script src="{% static 'person/js/hide_about_text.js' %}"></script>
 <script src="{% static 'person/js/ai_request.js' %}"></script>
-<script src="{% static 'person/js/avatar.js' %}"></script>
+<script src="{% static 'person/js/images.js' %}"></script>
 {% endblock %}

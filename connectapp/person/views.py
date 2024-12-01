@@ -4,12 +4,11 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
-from PIL import Image
-import imghdr
 
 from datetime import datetime
 from django.utils import timezone
 
+from PIL import Image
 import json
 from mistralai import Mistral
 import os
@@ -24,21 +23,8 @@ from .forms import AboutForm, PostForm
 
 @login_required
 def profile(request):
-    if request.method == 'POST' and request.FILES.get('avatar'):
-        avatar = request.FILES['avatar']
-        if is_valid_image(avatar):
-            # Сохраняем новый аватар
-            filename = f'users_images/{request.user.username}_avatar.jpg'
-            print(filename)
-            path = default_storage.save(filename, ContentFile(avatar.read()))
-            request.user.image = path
-            request.user.save()
-            messages.success(request, 'Аватар успешно обновлен')
-        else:
-            print(6)
-            messages.error(request, 'Загруженный файл не является допустимым изображением')
+    avatar_edit(request)
 
-    # Остальной код функции остается без изменений
     about_form = AboutForm(instance=request.user)
     posts = Post.objects.filter(user=request.user.id).order_by('-date')
 
@@ -47,50 +33,46 @@ def profile(request):
     for post in posts:
         post_forms[post.id] = PostForm(instance=post)
 
-    flag = False
     data = {
         "user": request.user,
         "posts": posts,
         "about_form": about_form,
         "post_forms": post_forms,
         "empty_post_form": empty_post_form,
-        "flag": flag,
     }
 
     return render(request, "person/profile.html", data)
 
-from django.core.files.uploadedfile import InMemoryUploadedFile
-import io
 
-def is_valid_image(file):
-    if not isinstance(file, InMemoryUploadedFile):
-        return False
-
+def is_image(file_path):
     try:
-        file_type = file.content_type.split('/')[0]
-        if file_type != 'image':
-            return False
-        
-        valid_extensions = ['.jpg', '.jpeg', '.png', '.gif']
-        ext = os.path.splitext(file.name)[1]
-        if ext.lower() not in valid_extensions:
-            return False
-        
-        file_copy = io.BytesIO(file.read())
-        file.seek(0)  # Возвращаем указатель в начало файла
-        
-        image_type = imghdr.what(file_copy)
-        if image_type not in ['jpeg', 'png', 'gif']:
-            return False
-        
-        with Image.open(file_copy) as img:
+        with Image.open(file_path) as img:
+            # Проверка целостности изображения
             img.verify()
-        
         return True
-    except Exception as e:
-        print(f"Error validating image: {e}")
+    except (IOError, SyntaxError):
+        # Если не удалось открыть или файл не является изображением
         return False
-    
+
+
+def avatar_edit(request):
+    if request.method == 'POST' and request.FILES.get('avatar'):
+        avatar = request.FILES['avatar']
+        # Сохраняем новый аватар
+        filename = f'users_images/{request.user.username}_avatar.jpg'
+        path = default_storage.save(filename, ContentFile(avatar.read()))
+        if is_image(default_storage.path(path)):
+            # Удалить предыдущий файл.
+            request.user.delete_avatar()
+            # Путь к новому файлу
+            request.user.image = path
+            request.user.save()
+        else:
+            messages.error(request, 'Загруженный файл не является допустимым изображением')
+            # Удаляем некорректный файл
+            default_storage.delete(path)
+
+
 @login_required
 def create_post(request):
     if request.method == "POST":
@@ -160,7 +142,6 @@ def mistral_api(request):
     try:
         return JsonResponse({'response': chat_response.choices[0].message.content})
     except Exception as e:
-        print(f"An error occurred: {e}")
         return JsonResponse({'error': 'Failed to get response from AI'}, status=500)
 
 

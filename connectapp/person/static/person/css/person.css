@@ -31,12 +31,6 @@
     white-space: pre-wrap;
 }
 
-. {
-    font-size: 1.7rem;
-    color: #888;
-    margin-left: 0.5rem;
-}
-
 .edit-about-btn, .edit-image-btn, .delete-img-btn {
     font-size: 1.7rem;
     color: #888;
@@ -157,8 +151,8 @@ input[type="file"] {
     position: absolute;
     bottom: 0;
     right: 0;
+    box-shadow: -2px -2px 2px 2px rgba(33, 37, 41, 0.8);
     background-color: #212529;
-    padding: 5px 10px;
 }
 
 .read-more-btn:hover {
@@ -193,9 +187,8 @@ input[type="file"] {
     position: absolute;
     bottom: 0;
     right: 0;
+    box-shadow: -2px -2px 2px 2px rgba(33, 37, 41, 0.8);
     background-color: #212529;
-    padding: 5px 10px;
-    cursor: pointer;
 }
 
 .about-read-more-btn:hover {
@@ -249,14 +242,15 @@ input[type="file"] {
 }
 
 .image-actions {
+    display: flex;
     position: absolute;
     padding-right: 5px;
     bottom: 10px;
     right: 10px;
     opacity: 0;
-    background: #000;
+    background: rgba(169, 169, 169, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     transition: opacity 0.3s ease;
 }
 

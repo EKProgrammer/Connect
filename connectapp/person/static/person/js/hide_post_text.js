@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             readMoreBtn.style.display = 'none';
             fadeOut.style.display = 'none';
+            fadeOut.style.box_shadow = 'none';
         }
 
         readMoreBtn.addEventListener('click', function() {
