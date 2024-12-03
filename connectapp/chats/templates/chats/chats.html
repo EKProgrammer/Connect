@@ -4,8 +4,19 @@
 
 {% block title %}Чаты - Connect{% endblock %}
 
+
 {% block content %}
+<h2>Chat with {% for participant in chat.participants.all %}{% if participant != request.user %}{{ participant.username }}{% endif %}{% endfor %}</h2>
 
-<h2>Чаты</h2>
+<div id="chat-messages">
+    {% for message in messages %}
+        <p><strong>{{ message.sender.username }}:</strong> {{ message.content }}</p>
+    {% endfor %}
+</div>
 
-{% endblock %}
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="content" placeholder="Type your message...">
+    <button type="submit">Send</button>
+</form>
+{% endblock %}s
