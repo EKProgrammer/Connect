@@ -1,0 +1,168 @@
+.container-chats {
+    display: flex;
+    background-color: #212529;
+    padding: 20px;
+    border-radius: 20px;
+    height: 85vh;
+}
+
+.chat-list {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-name {
+    font-size: 24px;
+    margin-left: 5px;
+}
+
+.chats {
+    flex-grow: 1;
+    padding-right: 10px;
+    overflow-y: auto;
+}
+
+.chats::-webkit-scrollbar {
+    width: 15px;
+}
+
+.chats::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border: 5px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+.chats::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chat-item:hover {
+    background-color: #394047;
+}
+
+.chat-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.chat-item span {
+    font-size: 1rem;
+}
+
+.chat-window {
+    width: 70%;
+    padding-left: 5px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-name {
+    font-size: 24px;
+}
+
+.messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.messages::-webkit-scrollbar {
+    width: 15px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border: 5px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.message {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+
+.message.sent {
+    background-color: #4a90e2;
+    align-self: flex-end;
+}
+
+.message.received {
+    background-color: #444;
+    align-self: flex-start;
+}
+
+.message .text {
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+.input-area {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.text-message-field {
+    width: 100%;
+    height: 68px; /* Начальная высота */
+    resize: none;
+    overflow-y: hidden; /* Скрыть скроллбар по умолчанию */
+
+    padding: 10px 10px 10px 15px;
+    border-radius: 10px;
+    background-color: #333;
+    border: 1px solid #444;
+    color: white;
+    font-size: 16px;
+}
+
+.text-message-field:focus {
+    outline: none;
+}
+
+.text-message-field::-webkit-scrollbar {
+    width: 15px;
+}
+
+.text-message-field::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border: 5px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+}
+
+.text-message-field::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.input-area button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 0px;
+}

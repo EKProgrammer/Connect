@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 
+
 class Chat(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     is_group_chat = models.BooleanField(default=False)
@@ -26,6 +27,7 @@ class Chat(models.Model):
     class Meta:
         verbose_name = 'Чат'
         verbose_name_plural = 'Чаты'
+
 
 class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')

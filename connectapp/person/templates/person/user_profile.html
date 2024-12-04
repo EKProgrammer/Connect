@@ -14,10 +14,11 @@
 <div class="row">
     <div class="col-md-8">
         <h2 class="person_name mb-4">{{ profile_user.first_name }} {{ profile_user.last_name }}</h2>
-        <a href="{% url 'start_chat' user.id %}" class="btn btn-primary">Написать сообщение</a>
         <div class="about-section">
-            <h2>О себе
-            </h2>
+            <div class="about-bar">
+                <h2>О себе</h2>
+                <a href="{% url 'start_chat' user.id %}" class="btn btn-secondary">Написать сообщение</a>
+            </div>
             {% if profile_user.about %}
                 <div class="about-container">
                     <p class="about">{{ profile_user.about }}</p>

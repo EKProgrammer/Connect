@@ -13,9 +13,10 @@
     margin-top: 2rem;
 }
 
-.about-section h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+.about-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .ai-button {
@@ -259,7 +260,7 @@ input[type="file"] {
 .modal-textarea {
     height: 60vh;
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 10px 10px 15px;
     resize: none;
     background-color: transparent;
     border-radius: 10px;
@@ -269,7 +270,7 @@ input[type="file"] {
 }
 
 .modal-textarea::-webkit-scrollbar {
-    width: 20px;
+    width: 15px;
 }
 
 .modal-textarea::-webkit-scrollbar-thumb {
