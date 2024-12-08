@@ -15,46 +15,18 @@
     <aside class="chat-list">
         <h2 class="list-name">Чаты</h2>
         <div class="chats">
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Иван</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Алексей</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
-            <div class="chat-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar">
-                <span>Марина</span>
-            </div>
+            {% for partner in chat_partners %}
+                {% if partner.username != "admin" %}
+                    <form method="get" action="{% url 'start_chat' partner.id %}">
+                        <button type="submit" class="profile-avatar-container">
+                            <img src="{{ partner.get_avatar_url }}" alt="{{ partner.username }}'s avatar" class="profile-avatar">
+                            <span>{{ partner.username }}</span>
+                        </button>
+                    </form>
+                {% endif %}
+            {% empty %}
+                <p>У вас пока нет активных чатов.</p>
+            {% endfor %}
         </div>
         <!-- Добавьте еще чат-элементов -->
     </aside>
