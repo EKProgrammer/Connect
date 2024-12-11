@@ -17,12 +17,12 @@ class Chat(models.Model):
         
     @classmethod
     def get_or_create_personal_chat(cls, user1, user2):
-        chats = cls.objects.filter(is_group_chat=False, participants=user2).filter(participants=user1)
+        chats = cls.objects.filter(is_group_chat=False).filter(participants=user1).filter(participants=user2)
         if chats.exists():
             return chats.first()
-        chat = cls.objects.create()
-        chat.participants.add(user1)
-        chat.participants.add(user2)
+
+        chat = cls.objects.create(is_group_chat=False)
+        chat.participants.set([user1, user2])
         return chat
 
     class Meta:

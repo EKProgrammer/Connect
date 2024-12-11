@@ -15,52 +15,60 @@
     <aside class="chat-list">
         <h2 class="list-name">Чаты</h2>
         <div class="chats">
-            {% for partner in chat_partners %}
-                {% if partner.username != "admin" %}
-                    <form method="get" action="{% url 'start_chat' partner.id %}">
-                        <button type="submit" class="profile-avatar-container">
-                            <img src="{{ partner.get_avatar_url }}" alt="{{ partner.username }}'s avatar" class="profile-avatar">
-                            <span>{{ partner.username }}</span>
-                        </button>
-                    </form>
-                {% endif %}
-            {% empty %}
-                <p>У вас пока нет активных чатов.</p>
-            {% endfor %}
+            {% if chats_list %}
+                {% for chat_info in chats_list %}
+                    <a href="{% url 'chats' chat_info.chat_id %}">
+                        <div class="chat-item">
+                            <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="40" width="40" alt="Avatar">
+                            <span>{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p class="commentary">У вас нет чатов</p>
+            {% endif %}
         </div>
-        <!-- Добавьте еще чат-элементов -->
     </aside>
 
     <!-- Окно чата -->
     <div class="chat-window">
-        <h2 class="chat-name">
-            Имя чата
-            {% for participant in chat.participants.all %}
-                {% if participant != request.user %}
-                    {{ participant.username }}
-                {% endif %}
-            {% endfor %}
-        </h2>
+        {% if chat %}
+            <h2 class="chat-name">
+                {% for participant in chat.participants.all %}
+                    {% if participant != request.user %}
+                        {{ participant.first_name }} {{ participant.last_name }}
+                    {% endif %}
+                {% endfor %}
+            </h2>
 
-        <!-- Сообщения -->
-        <div class="messages">
-            {% for message in messages %}
-            <div class="message received">
-                <div class="text"><strong>{{ message.sender.username }}:</strong> {{ message.content }}</div>
+            <!-- Сообщения -->
+            <div class="messages">
+                {% for message in messages %}
+                    {% if message.sender.id == request.user.id %}
+                        <div class="message message-sent">
+                            <div class="message-text">{{ message.content }}</div>
+                        </div>
+                    {% else %}
+                        <div class="message message-received">
+                            <div class="message-text">{{ message.content }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
 
-        <!-- Поле ввода текста -->
-        <form method="post">
-            {% csrf_token %}
-            <div class="input-area">
-                <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
-                <button type="submit">
-                    <img src="{% static 'chats/img/send.svg' %}" height="35px" width="35px">
-                </button>
-            </div>
-        </form>
+            <!-- Поле ввода текста -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-area">
+                    <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
+                    <button type="submit">
+                        <img src="{% static 'chats/img/send.svg' %}" height="35px" width="35px">
+                    </button>
+                </div>
+            </form>
+        {% else %}
+            <p class="commentary-centered">Чат не выбран</p>
+        {% endif %}
     </div>
 </section>
 

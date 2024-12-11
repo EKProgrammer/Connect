@@ -17,7 +17,7 @@
         <div class="about-section">
             <div class="about-bar">
                 <h2>О себе</h2>
-                <a href="{% url 'start_chat' user.id %}" class="btn btn-secondary">Написать сообщение</a>
+                <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
             </div>
             {% if profile_user.about %}
                 <div class="about-container">
@@ -32,7 +32,7 @@
     </div>
     <div class="col-md-4">
         <div class="profile-image-container">
-            <img src="{{ profile_user.get_avatar_url }}" alt="person" class="profile-image">
+            <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
         </div>
     </div>
 </div>
