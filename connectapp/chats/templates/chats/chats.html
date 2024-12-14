@@ -42,7 +42,7 @@
             </h2>
 
             <!-- Сообщения -->
-            <div class="messages">
+            <div class="messages" id="chat-messages">
                 {% for message in messages %}
                     {% if message.sender.id == request.user.id %}
                         <div class="message message-sent">
@@ -61,9 +61,14 @@
                 {% csrf_token %}
                 <div class="input-area">
                     <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
-                    <button type="submit">
-                        <img src="{% static 'chats/img/send.svg' %}" height="35px" width="35px">
-                    </button>
+                    <div class="input-area-buttons">
+                        <button type="submit">
+                            <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px">
+                        </button>
+                        <button type="button" id="aiHelpButton" data-chat-id="{{ chat.id }}">
+                            <img src="{% static 'chats/img/ai.svg' %}" id="aiHelpIcon" height="30px" width="30px">
+                        </button>
+                    </div>
                 </div>
             </form>
         {% else %}
@@ -72,6 +77,8 @@
     </div>
 </section>
 
-<script src="{% static 'chats/js/message_field.js' %}"></script>
+<script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
+<script src="{% static 'chats/js/update_message_field.js' %}"></script>
+<script src="{% static 'chats/js/message_ai_request.js' %}"></script>
 
 {% endblock %}

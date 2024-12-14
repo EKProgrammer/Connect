@@ -8,7 +8,7 @@ urlpatterns = [
     path('edit_about/', views.edit_about, name='edit_about'),
     path('edit_post/<int:post_id>/', views.edit_post, name='edit_post'),
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
-    path('api/mistral/', views.mistral_api, name='mistral_api'),
+    path('post_generation', views.mistral_post_generation, name='post_generation'),
     path('delete_avatar/', views.delete_avatar, name='delete_avatar'),
     path('<str:username>/', views.user_profile, name='user_profile'),
 ]

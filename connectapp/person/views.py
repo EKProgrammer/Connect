@@ -118,7 +118,7 @@ def delete_post(request, post_id):
 @csrf_exempt
 @login_required
 @require_http_methods(["POST"])
-def mistral_api(request):
+def mistral_post_generation(request):
     data = json.loads(request.body)
     user_input = data.get('prompt', '')
     if not user_input:

@@ -134,6 +134,7 @@
 }
 
 .text-message-field {
+    flex-grow: 1;
     width: 100%;
     height: 68px; /* Начальная высота */
     resize: none;
@@ -170,8 +171,33 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
-    padding-left: 10px;
-    padding-right: 0px;
+}
+
+.input-area-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+/* Вращение иконки ИИ */
+#aiHelpIcon {
+    display: inline-block;
+    overflow: hidden;
+    transform-origin: center;
+}
+
+.rotate {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+       transform: rotate(360deg);
+    }
 }
 
 .commentary {

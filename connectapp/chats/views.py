@@ -3,6 +3,13 @@ from django.contrib.auth.decorators import login_required
 from .models import Chat, Message
 from users.models import User
 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
+import json
+import os
+from mistralai import Mistral
+
 
 @login_required
 def start_chat(request, user_id):
@@ -57,3 +64,50 @@ def chats(request, chat_id):
         'messages': messages
     }
     return render(request, 'chats/chats.html', data)
+
+
+@csrf_exempt
+@login_required
+@require_http_methods(["POST"])
+def mistral_message_generation(request):
+    data = json.loads(request.body)
+    user_input = data.get('prompt', '')
+    chat_id = data.get('chat_id')
+
+    if not chat_id:
+        return JsonResponse({'error': 'Chat ID is required'}, status=400)
+
+    try:
+        chat = Chat.objects.get(id=chat_id)
+    except Chat.DoesNotExist:
+        return JsonResponse({'error': 'Chat not found'}, status=404)
+
+    last10messages = chat.messages.all().order_by('-timestamp')[:10]
+
+    context = "\n".join([f'{msg.sender.username}: "{msg.content}".' for msg in reversed(last10messages)])
+
+    if user_input:
+        prompt = f'Продолжить текст сообщения пользователя {request.user.username}: "{user_input}".'
+    else:
+        prompt = f'Сгенерируй текст нового сообщения в чате от пользователя {request.user.username}.'
+    if len(last10messages) > 0:
+        prompt += f'Учитывать контекст переписки (сообщения расположены в порядке от самых новых до самых старых):\n{context}\n'
+
+    api_key = os.environ["MISTRAL_API_KEY"]
+    model = "mistral-small-latest"
+
+    client = Mistral(api_key=api_key)
+
+    chat_response = client.chat.complete(
+        model=model,
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            },
+        ]
+    )
+    try:
+        return JsonResponse({'response': chat_response.choices[0].message.content})
+    except Exception as e:
+        return JsonResponse({'error': 'Failed to get response from AI'}, status=500)

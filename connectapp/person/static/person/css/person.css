@@ -20,7 +20,30 @@
 }
 
 .ai-button {
-    margin-right: auto;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    text-align: left;
+}
+
+/* Вращение иконки ИИ */
+#aiHelpIcon {
+    display: inline-block;
+    overflow: hidden;
+    transform-origin: center;
+}
+
+.rotate {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+       transform: rotate(360deg);
+    }
 }
 
 .about {

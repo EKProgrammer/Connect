@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Показываем индикатор загрузки
             this.disabled = true;
-            this.setAttribute('data', 'Загрузка...');
+            this.querySelector('img').classList.add('rotate');
 
             // Отправляем запрос к API
-            fetch('/person/api/mistral/', {
+            fetch('/person/post_generation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .finally(() => {
                 // Возвращаем кнопку в исходное состояние
                 this.disabled = false;
-                this.setAttribute('data', 'Помощь AI');
+                this.querySelector('img').classList.remove('rotate');
             });
         });
     });
