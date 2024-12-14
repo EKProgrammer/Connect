@@ -84,14 +84,15 @@ def mistral_message_generation(request):
 
     last10messages = chat.messages.all().order_by('-timestamp')[:10]
 
-    context = "\n".join([f'{msg.sender.username}: "{msg.content}".' for msg in reversed(last10messages)])
+    context = "\n".join([f'{msg.content}' for msg in reversed(last10messages)])
 
     if user_input:
-        prompt = f'Продолжить текст сообщения пользователя {request.user.username}: "{user_input}".'
+        prompt = f'Продолжить текст сообщения: {user_input}.'
     else:
-        prompt = f'Сгенерируй текст нового сообщения в чате от пользователя {request.user.username}.'
+        prompt = 'Сгенерируй текст нового сообщения в чате.'
+
     if len(last10messages) > 0:
-        prompt += f'Учитывать контекст переписки (сообщения расположены в порядке от самых новых до самых старых):\n{context}\n'
+        prompt += f' Учитывать контекст переписки (сообщения расположены в порядке от самых новых до самых старых):\n{context}\n'
 
     api_key = os.environ["MISTRAL_API_KEY"]
     model = "mistral-small-latest"
