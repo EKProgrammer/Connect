@@ -18,6 +18,6 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['text', 'image']
         widgets = {
-            'text': forms.Textarea(attrs={'class': 'modal-textarea',
-                                          'rows': 5, 'maxlength': 5000, 'placeholder': 'Введите текст поста'}),
+            'text': forms.Textarea(attrs={'class': 'modal-textarea', 'rows': 5, 'maxlength': 5000,
+                                          'placeholder': 'Введите текст поста'}),
         }

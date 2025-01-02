@@ -1,3 +1,5 @@
+"use strict"
+
 document.addEventListener('DOMContentLoaded', function() {
     const aboutContainer = document.querySelector('.about-container');
     if (aboutContainer) {

@@ -4,6 +4,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage
 
 from datetime import datetime
 from django.utils import timezone
@@ -12,6 +13,7 @@ from PIL import Image
 import json
 from mistralai import Mistral
 import os
+import locale
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -26,22 +28,50 @@ def profile(request):
     avatar_edit(request)
 
     about_form = AboutForm(instance=request.user)
-    posts = Post.objects.filter(user=request.user.id).order_by('-date')
-
     empty_post_form = PostForm()
+
+    posts = Post.objects.filter(user=request.user.id).order_by('-date')
+    # Показывать по 10 постов на странице
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     post_forms = {}
-    for post in posts:
+    for post in page_obj:
         post_forms[post.id] = PostForm(instance=post)
 
     data = {
         "user": request.user,
-        "posts": posts,
+        "posts": page_obj,
+        "has_next": page_obj.has_next(),
         "about_form": about_form,
         "post_forms": post_forms,
         "empty_post_form": empty_post_form,
     }
 
     return render(request, "person/profile.html", data)
+
+
+@login_required
+@require_http_methods(["POST"])
+def load_more_posts(request):
+    page_number = request.GET.get('page')
+    posts = Post.objects.filter(user=request.user).order_by('-date')
+    paginator = Paginator(posts, 10)
+    page_obj = paginator.get_page(page_number)
+
+    posts_data = []
+    for post in page_obj:
+        posts_data.append({
+            'text': post.text,
+            'date': post.date.strftime('%H:%M %d-%m-%Y'),
+            'image': post.image.url if post.image else None
+        })
+
+    return JsonResponse({
+        'posts': posts_data,
+        'has_next': page_obj.has_next()
+    })
 
 
 def is_image(file_path):
@@ -163,11 +193,45 @@ def user_profile(request, username):
         return redirect('profile')
     
     posts = Post.objects.filter(user=user).order_by('-date')
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     data = {
         "profile_user": user,
-        "posts": posts,
+        "posts": page_obj,
+        "has_next": page_obj.has_next(),
     }
 
     return render(request, "person/user_profile.html", data)
 
+
+def load_more_posts_other_user(request, username):
+    user = get_object_or_404(User, username=username)
+
+    page_number = request.GET.get('page')
+    posts = Post.objects.filter(user=user).order_by('-date')
+    paginator = Paginator(posts, 10)
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        # Если страница не существует, возвращаем пустой список
+        return JsonResponse({
+            'posts': [],
+            'has_next': False
+        })
+
+    posts_data = []
+    locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')  # русскоязычная версия для даты
+    for post in page_obj:
+        posts_data.append({
+            'id': post.id,
+            'text': post.text,
+            'date': post.date.strftime('%-d %B %Y г. %H:%M'),
+            'image': post.image.url if post.image else None
+        })
+
+    return JsonResponse({
+        'posts': posts_data,
+        'has_next': page_obj.has_next()
+    })

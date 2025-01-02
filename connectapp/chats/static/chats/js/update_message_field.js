@@ -1,3 +1,5 @@
+"use strict"
+
 // Функция для изменения высоты текстового поля
 function adjustTextareaHeight(textarea) {
     textarea.style.height = 'auto';

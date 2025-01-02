@@ -47,7 +47,7 @@
 </div>
 
 {% if posts %}
-<div class="posts-list">
+<div class="posts-list load-more">
     {% for post in posts %}
         <div class="post-item">
             <div class="d-flex justify-content-between align-items-center">
@@ -59,13 +59,13 @@
                 <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
             </div>
             {% if post.image %}
-            <div class="post-image-container mt-3">
-                <img src="{{ post.image.url }}" alt="Post image" class="img-fluid">
-            </div>
+                <div class="post-image-container mt-3">
+                    <img src="{{ post.image.url }}" alt="Post image">
+                </div>
             {% endif %}
         </div>
     {% endfor %}
-    </div>
+</div>
 {% else %}
     <p class="commentary">У вас нет записей</p>
 {% endif %}
@@ -73,4 +73,5 @@
 
 <script src="{% static 'person/js/hide_post_text.js' %}"></script>
 <script src="{% static 'person/js/hide_about_text.js' %}"></script>
+<script src="{% static 'person/js/lazy_loading_other_user.js' %}"></script>
 {% endblock %}

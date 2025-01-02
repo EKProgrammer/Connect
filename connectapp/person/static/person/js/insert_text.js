@@ -1,3 +1,5 @@
+"use strict"
+
 document.addEventListener('DOMContentLoaded', function() {
   const editButtons = document.querySelectorAll('.post-actions-btn[data-bs-target^="#editPostModal"]');
   const editPostText = document.getElementById('editPostText');

@@ -14,7 +14,7 @@
     <!-- Список чатов -->
     <aside class="chat-list">
         <h2 class="list-name">Чаты</h2>
-        <div class="chats">
+        <div class="chats" data-simplebar>
             {% if chats_list %}
                 {% for chat_info in chats_list %}
                     <a href="{% url 'chats' chat_info.chat_id %}">
@@ -42,7 +42,7 @@
             </h2>
 
             <!-- Сообщения -->
-            <div class="messages" id="chat-messages">
+            <div class="messages" id="chat-messages" data-simplebar>
                 {% for message in messages %}
                     {% if message.sender.id == request.user.id %}
                         <div class="message message-sent">
@@ -60,7 +60,7 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="input-area">
-                    <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
+                    <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..." data-simplebar></textarea>
                     <div class="input-area-buttons">
                         <button type="submit">
                             <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px">

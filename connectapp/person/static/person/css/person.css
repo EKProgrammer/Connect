@@ -311,3 +311,23 @@ input[type="file"] {
 .modal-textarea:active {
     outline: none;
 }
+
+/* Loader */
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(farthest-side,#474bff 94%,#0000) top/8px 8px no-repeat,
+      conic-gradient(#0000 30%,#474bff);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+    animation: l13 1s infinite linear;
+}
+@keyframes l13{
+    100%{transform: rotate(1turn)}
+}
+
+.loader-wrapper {
+    display: flex;
+    justify-content: center;
+}

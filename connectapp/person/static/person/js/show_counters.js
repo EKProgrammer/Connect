@@ -1,3 +1,5 @@
+"use strict"
+
 document.addEventListener('DOMContentLoaded', function() {
     function updateCharCount(textarea, countSpan, maxLength) {
         countSpan.textContent = `${textarea.value.length}/${maxLength}`;

@@ -1,3 +1,5 @@
+"use strict"
+
 document.addEventListener('DOMContentLoaded', function() {
     // Обработка формы для добавления изображения для аватара
     const avatarInput = document.getElementById('avatar');
