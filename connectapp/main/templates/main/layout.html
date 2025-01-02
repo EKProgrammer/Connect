@@ -37,7 +37,7 @@
                             <li><a class="main-nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">Профиль</a></li>
                             <li><a class="main-nav-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}" href="{% url 'feed' %}">Новости</a></li>
                             <li><a class="main-nav-link {% if request.resolver_match.url_name == 'chat_empty' %}active{% endif %}" href="{% url 'chat_empty' %}">Чаты</a></li>
-                            <li><a class="main-nav-link {% if request.resolver_match.url_name == 'communities' %}active{% endif %}" href="{% url 'communities' %}">Сообщества</a></li>
+                            <li><a class="main-nav-link {% if request.resolver_match.url_name == 'communities' %}active{% endif %}" href="{% url 'communities' %}">Каналы</a></li>
                             <li><a class="main-nav-link {% if request.resolver_match.url_name == 'friends' %}active{% endif %}" href="{% url 'friends' %}">Друзья</a></li>
                         </ul>
                         <span class="nav-indicator"></span>

@@ -5,7 +5,101 @@
 {% block title %}Список друзей - Connect{% endblock %}
 
 {% block content %}
+<!DOCTYPE html>
+<html lang="ru">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск друзей</title>
+    <style>
+        .user-card {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #4d4949;
+            border-radius: 5px;
+            background-color: #3e3e3e;
+            justify-content: space-between; /* Равномерно распределяет элементы */
+        }
+        .user-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .user-card h5 {
+            margin: 0;
+        }
 
-<h2>Список друзей</h2>
+        .custom-search-button {
+            padding: 10px 20px;
+            border: none;
+            outline: none;
+            position: relative;
+            z-index: 1;
+            border-radius: 5px;
+            background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+            cursor: pointer;
+        }
+        .custom-search-button:hover {
+            background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);  /* Темнее зеленый при наведении */
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;  /* Чтобы имя было слева, а кнопка справа */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h1>Поиск друзей</h1>
+        <form method="get" action="{% url 'search_friends' %}" class="d-flex mb-4">
+            <input type="text" name="query" class="form-control" placeholder="Поиск..." value="{{ query }}">
+            <button class="btn custom-search-button" type="submit">Поиск</button>
+        </form>
+
+        {% if page_obj %}
+            <div class="user-list">
+                {% for user in page_obj %}
+                    <div class="user-card">
+                        <div class="user-info">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" alt="Фото пользователя">
+                            {% else %}
+                                <img src="https://via.placeholder.com/50" alt="Фото пользователя">
+                            {% endif %}
+                            <div>
+                                <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                            </div>
+                        </div>
+                        
+                        <form method="POST" action="{% url 'subscribe' user.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn custom-search-button">Подписаться</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?query={{ query }}&page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?query={{ query }}&page={{ page_obj.next_page_number }}">Следующая</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% elif query %}
+            <p>Ничего не найдено.</p>
+        {% endif %}
+    </div>
+    <link rel="stylesheet" href="{% static 'friends/friends.css' %}">
+</body>
+</html>
 
 {% endblock %}
