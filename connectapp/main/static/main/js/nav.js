@@ -1,7 +1,7 @@
 "use strict"
 
 document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelectorAll('.main-nav a');
+    const navLinks = document.querySelectorAll('.main-nav-link');
     const indicator = document.querySelector('.nav-indicator');
 
     function setIndicator(el) {
@@ -10,26 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     navLinks.forEach(link => {
-        link.addEventListener('mouseenter', (e) => {
-            setIndicator(e.target);
-        });
-
-        link.addEventListener('mouseleave', () => {
-            const activeLink = document.querySelector('.main-nav a.active');
-            if (activeLink) {
-                setIndicator(activeLink);
-            } else {
-                indicator.style.width = '0';
-            }
-        });
-
         if (link.classList.contains('active')) {
             setIndicator(link);
         }
     });
 
-    // If no active link, hide the indicator
-    if (!document.querySelector('.main-nav a.active')) {
+    // Если нет активной ссылки, прячем индикатор
+    if (!document.querySelector('.main-nav-link.active')) {
         indicator.style.width = '0';
     }
 });

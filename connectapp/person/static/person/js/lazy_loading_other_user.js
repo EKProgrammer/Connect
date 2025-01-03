@@ -3,6 +3,7 @@
 let page = 2; // Начинаем с второй страницы
 let isLoading = false;
 let pageEnded = false;
+const offset = 300;
 
 function loadMore() {
     if (pageEnded) return;
@@ -13,7 +14,7 @@ function loadMore() {
     const loadMoreBlockPos = loadMoreBlock.getBoundingClientRect().top + window.scrollY;
     const loadMoreBlockHeight = loadMoreBlock.offsetHeight;
 
-    if (window.scrollY > (loadMoreBlockPos + loadMoreBlockHeight) - window.innerHeight) {
+    if (window.scrollY > (loadMoreBlockPos + loadMoreBlockHeight) - window.innerHeight - offset) {
         getContent();
     }
 }
@@ -60,11 +61,12 @@ async function getContent() {
             });
 
             page++;
-            if (!data.has_next) {
-                pageEnded = true;
-            }
 
             hidePostText();
+        }
+
+        if (!data.has_next) {
+            pageEnded = true;
         }
     } catch (error) {
         console.error('Error loading more posts:', error);

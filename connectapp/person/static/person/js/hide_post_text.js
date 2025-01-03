@@ -6,7 +6,6 @@ function hidePostText() {
     const posts = document.querySelectorAll('.post-text-container');
 
     posts.forEach(post => {
-        console.log(post.textContent);
         const textElement = post.querySelector('.post-text');
         const readMoreBtn = post.querySelector('.read-more-btn');
         const fadeOut = post.querySelector('.fade-out');
