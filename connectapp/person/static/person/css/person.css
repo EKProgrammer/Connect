@@ -331,3 +331,30 @@ input[type="file"] {
     display: flex;
     justify-content: center;
 }
+
+
+/* style subscribes */
+.subscription-info {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 180px auto 0;
+    transform: translateX(-10px);
+}
+
+.subscription-info h4 {
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    -webkit-background-clip: text; 
+    color: transparent; 
+}
+
+.subscription-info p {
+    font-size: 16px;
+    font-weight: normal;
+    margin: 8px 0;
+    color: white;
+}
