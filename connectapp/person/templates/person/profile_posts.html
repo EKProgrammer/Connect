@@ -1,0 +1,77 @@
+{% load static %}
+{% load custom_filters %}
+
+{% for post in posts %}
+    <div class="post-item">
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="post-date mb-0">{{ post.date }}</p>
+            <div>
+                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post.id }}" title="Редактировать">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post.id }}" title="Удалить">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        <div class="post-text-container">
+            <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+            <div class="fade-out"></div>
+            <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
+        </div>
+        {% if post.image %}
+            <div class="post-image-container mt-3">
+                <img src="{{ post.image.url }}" alt="Post image">
+            </div>
+        {% endif %}
+
+        <!-- Модальное окно для редактирования поста -->
+        <div class="modal fade" id="editPostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h1 class="modal-title fs-5" id="editPostModalLabel{{ post.id }}">Редактировать пост</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'edit_post' post.id %}" method="post" id="edit-post-form-{{ post.id }}">
+                            {% csrf_token %}
+                            {% with current_post_form=post_forms|get_item:post.id %}
+                            {{ current_post_form.text }}
+                            {% endwith %}
+                            <span id="edit-post-char-count-{{ post.id }}">0 / 5000</span>
+                        </form>
+                    </div>
+                    <div class="modal-footer border-secondary d-flex justify-content-between">
+                        <button type="button" class="ai-button" id="aiHelpButton-{{ post.id }}">
+                            <img src="{% static 'person/img/ai.svg' %}" id="aiHelpIcon-{{ post.id }}" height="35px" width="35px">
+                        </button>
+                        <button type="submit" class="gradient-btn" form="edit-post-form-{{ post.id }}" data="Сохранить изменения"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для удаления поста -->
+        <div class="modal fade" id="deletePostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ post.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-secondary">
+                        <h1 class="modal-title fs-5" id="deletePostModalLabel{{ post.id }}">Удалить пост</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p style="font-size: 1.2rem">Вы уверены, что хотите удалить этот пост?</p>
+                    </div>
+                    <div class="modal-footer border-secondary d-flex justify-content-between">
+                        <button type="button" class="gradient-btn" data-bs-dismiss="modal" data="Отмена"></button>
+                        <form action="{% url 'delete_post' post.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="gradient-btn" data="Удалить"></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

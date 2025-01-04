@@ -13,7 +13,7 @@
 }
 
 .list-name {
-    font-size: 24px;
+    font-size: 1.5rem;
     margin-left: 5px;
 }
 
@@ -28,7 +28,7 @@
     align-items: center;
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: transparent;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -38,7 +38,11 @@
     background-color: #394047;
 }
 
-.chats a {
+.chat-link.active .chat-item {
+    background-color: #394047;
+}
+
+.chat-link {
     color: #fff;
 }
 
@@ -64,7 +68,7 @@
 }
 
 .chat-name {
-    font-size: 24px;
+    font-size: 1.5rem;
 }
 
 .messages {
@@ -75,26 +79,40 @@
 
 .message {
     width: 70%;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 10px 10px 5px 10px;
+    border-radius: 10px;
     margin-bottom: 10px;
     word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
 }
 
 .message-sent {
-    background-color: #4a90e2;
+    background-color: #4a90e288;
     align-self: flex-end;
     margin-left: auto;
 }
 
 .message-received {
-    background-color: #444;
+    background-color: #6668;
     align-self: flex-start;
 }
 
 .message-text {
     font-size: 1rem;
     white-space: pre-wrap;
+}
+
+.message-sent-time {
+    align-self: flex-end;
+    font-size: 0.8rem;
+    color: #65a1e6;
+}
+
+.message-received-time {
+    align-self: flex-end;
+    font-size: 0.8rem;
+    color: #888;
 }
 
 .input-area {

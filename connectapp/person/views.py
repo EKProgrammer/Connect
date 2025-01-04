@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.template import loader
 from django.http import JsonResponse
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage
@@ -13,7 +14,6 @@ from PIL import Image
 import json
 from mistralai import Mistral
 import os
-import locale
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -53,23 +53,30 @@ def profile(request):
 
 
 @login_required
-@require_http_methods(["POST"])
 def load_more_posts(request):
     page_number = request.GET.get('page')
     posts = Post.objects.filter(user=request.user).order_by('-date')
     paginator = Paginator(posts, 10)
-    page_obj = paginator.get_page(page_number)
-
-    posts_data = []
-    for post in page_obj:
-        posts_data.append({
-            'text': post.text,
-            'date': post.date.strftime('%H:%M %d-%m-%Y'),
-            'image': post.image.url if post.image else None
+    try:
+        page_obj = paginator.page(page_number)
+    except EmptyPage:
+        # Если страница не существует, возвращаем пустой список
+        return JsonResponse({
+            'posts': '',
+            'has_next': False
         })
 
+    post_forms = {}
+    for post in page_obj:
+        post_forms[post.id] = PostForm(instance=post)
+
+    data = {
+        "posts": page_obj,
+        "post_forms": post_forms,
+    }
+    posts_html = loader.render_to_string('person/profile_posts.html', data, request=request)
     return JsonResponse({
-        'posts': posts_data,
+        'posts_html': posts_html,
         'has_next': page_obj.has_next()
     })
 
@@ -217,21 +224,12 @@ def load_more_posts_other_user(request, username):
     except EmptyPage:
         # Если страница не существует, возвращаем пустой список
         return JsonResponse({
-            'posts': [],
+            'posts_html': '',
             'has_next': False
         })
 
-    posts_data = []
-    locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')  # русскоязычная версия для даты
-    for post in page_obj:
-        posts_data.append({
-            'id': post.id,
-            'text': post.text,
-            'date': post.date.strftime('%-d %B %Y г. %H:%M'),
-            'image': post.image.url if post.image else None
-        })
-
+    posts_html = loader.render_to_string('person/user_profile_posts.html', {"posts": page_obj})
     return JsonResponse({
-        'posts': posts_data,
+        'posts_html': posts_html,
         'has_next': page_obj.has_next()
     })

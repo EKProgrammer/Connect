@@ -10,8 +10,9 @@ urlpatterns = [
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('post_generation', views.mistral_post_generation, name='post_generation'),
     path('delete_avatar/', views.delete_avatar, name='delete_avatar'),
-    path('<str:username>/', views.user_profile, name='user_profile'),
     path('load_more_posts/', views.load_more_posts, name='load_more_posts'),
     path('<str:username>/load_more_posts_other_user/', views.load_more_posts_other_user,
          name='load_more_posts_other_user'),
+    # этот url всегда в самомо низу, чтобы не было конфликтов
+    path('<str:username>/', views.user_profile, name='user_profile'),
 ]

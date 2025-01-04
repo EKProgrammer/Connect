@@ -1,0 +1,17 @@
+{% for post in posts %}
+    <div class="post-item">
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="post-date mb-0">{{ post.date }}</p>
+        </div>
+        <div class="post-text-container">
+            <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+            <div class="fade-out"></div>
+            <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
+        </div>
+        {% if post.image %}
+            <div class="post-image-container mt-3">
+                <img src="{{ post.image.url }}" alt="Post image">
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}

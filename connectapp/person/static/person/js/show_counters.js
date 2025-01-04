@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     function updateCharCount(textarea, countSpan, maxLength) {
-        countSpan.textContent = `${textarea.value.length}/${maxLength}`;
+        countSpan.textContent = `${textarea.value.length} / ${maxLength}`;
         if (textarea.value.length == maxLength) {
             countSpan.classList.add('text-danger');
         } else {

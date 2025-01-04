@@ -50,38 +50,26 @@
 
 
 <section class="container container-profile mt-4">
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center">
     <h2>Посты</h2>
     <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
     </div>
 </div>
 
 {% if posts %}
-<div class="posts-list load-more">
-    {% for post in posts %}
-        <div class="post-item">
-            <div class="d-flex justify-content-between align-items-center">
-                <p class="post-date mb-0">{{ post.date }}</p>
-            </div>
-            <div class="post-text-container">
-                <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
-                <div class="fade-out"></div>
-                <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
-            </div>
-            {% if post.image %}
-                <div class="post-image-container mt-3">
-                    <img src="{{ post.image.url }}" alt="Post image">
-                </div>
-            {% endif %}
-        </div>
-    {% endfor %}
-</div>
+    <div class="posts-list load-more">
+        {% include 'person/user_profile_posts.html' %}
+    </div>
 {% else %}
     <p class="commentary">У вас нет записей</p>
 {% endif %}
+
 </section>
 
-<script src="{% static 'person/js/hide_post_text.js' %}"></script>
-<script src="{% static 'person/js/hide_about_text.js' %}"></script>
-<script src="{% static 'person/js/lazy_loading_other_user.js' %}"></script>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'person/js/hide_post_text.js' %}"></script>
+    <script src="{% static 'person/js/hide_about_text.js' %}"></script>
+    <script src="{% static 'person/js/lazy_loading.js' %}"></script>
 {% endblock %}
