@@ -33,13 +33,15 @@
     <!-- Окно чата -->
     <div class="chat-window">
         {% if chat %}
-            <h2 class="chat-name">
-                {% for participant in chat.participants.all %}
-                    {% if participant != request.user %}
-                        {{ participant.first_name }} {{ participant.last_name }}
-                    {% endif %}
-                {% endfor %}
-            </h2>
+            {% for participant in chat.participants.all %}
+                {% if participant != request.user %}
+                    <a style="color: white" href="{% url 'user_profile' participant.username %}">
+                        <h2 class="chat-name">
+                            {{ participant.first_name }} {{ participant.last_name }}
+                        </h2>
+                    </a>
+                {% endif %}
+            {% endfor %}
 
             <!-- Сообщения -->
             <div class="messages" id="chat-messages" data-simplebar>

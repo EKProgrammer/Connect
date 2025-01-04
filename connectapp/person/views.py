@@ -152,6 +152,22 @@ def delete_post(request, post_id):
     return redirect('profile')
 
 
+@login_required
+def like_post(request):
+    post_id = request.POST.get('id')
+    post = get_object_or_404(Post, id=post_id)
+    print(post)
+
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+
+    return JsonResponse({'likes_count': post.total_likes(), 'liked': liked})
+
+
 @csrf_exempt
 @login_required
 @require_http_methods(["POST"])

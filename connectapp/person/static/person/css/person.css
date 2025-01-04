@@ -273,8 +273,29 @@ input[type="file"] {
     transition: opacity 0.3s ease;
 }
 
-/* Стили для модального окна */
+/* Лайки */
+.like-wrapper {
+    display: flex;
+    align-items: center;
+}
 
+.like-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #777;
+}
+
+.like-btn.liked {
+    color: red;
+}
+
+.likes-count {
+    margin-left: 3px;
+    font-size: 1rem;
+}
+
+/* Стили для модального окна */
 .modal-textarea {
     height: 60vh;
     width: 100%;

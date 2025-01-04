@@ -13,5 +13,12 @@
                 <img src="{{ post.image.url }}" alt="Post image">
             </div>
         {% endif %}
+
+        <div class="like-wrapper">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
+                <i class="fas fa-heart"></i>
+            </button>
+            <span class="likes-count">{{ post.total_likes }}</span>
+        </div>
     </div>
 {% endfor %}

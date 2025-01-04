@@ -25,6 +25,13 @@
             </div>
         {% endif %}
 
+        <div class="like-wrapper">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
+                <i class="fas fa-heart"></i>
+            </button>
+            <span class="likes-count">{{ post.total_likes }}</span>
+        </div>
+
         <!-- Модальное окно для редактирования поста -->
         <div class="modal fade" id="editPostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
             <div class="modal-dialog">
