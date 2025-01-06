@@ -46,6 +46,100 @@
     }
 }
 
+.modal-list-images {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: #888888 solid 2px;
+    border-radius: 10px;
+    height: 12vh;
+    margin-top: 5px;
+}
+
+.add-image {
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+#postFormFooter {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+#create-post-char-count {
+    margin-left: 5px;
+}
+
+#aiChatContent {
+    height: 74vh;
+}
+
+#aiChatFooter {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.text-message-field {
+    flex-grow: 1;
+    width: 100%;
+    height: 68px; /* Начальная высота */
+    resize: none;
+    overflow-y: hidden; /* Скрыть скроллбар по умолчанию */
+
+    padding: 10px 10px 10px 15px;
+    border-radius: 10px;
+    background-color: #333;
+    border: 1px solid #444;
+    color: white;
+    font-size: 16px;
+
+    margin-inline: 10px;
+}
+
+.text-message-field:focus {
+    outline: none;
+}
+
+.messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.message {
+    width: 70%;
+    padding: 10px 10px 5px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-sent {
+    background-color: #4a90e288;
+    align-self: flex-end;
+    margin-left: auto;
+}
+
+.message-received {
+    background-color: #6668;
+    align-self: flex-start;
+}
+
+.message-text {
+    font-size: 1rem;
+    white-space: pre-wrap;
+}
+
+#aiChatFooter button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
 .about {
     font-style: italic;
     color: #888;
@@ -277,6 +371,7 @@ input[type="file"] {
 .like-wrapper {
     display: flex;
     align-items: center;
+    margin-left: -5px;
 }
 
 .like-btn {

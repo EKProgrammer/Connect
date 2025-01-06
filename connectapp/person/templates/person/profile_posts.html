@@ -26,7 +26,7 @@
         {% endif %}
 
         <div class="like-wrapper">
-            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Нравится">
                 <i class="fas fa-heart"></i>
             </button>
             <span class="likes-count">{{ post.total_likes }}</span>
@@ -34,7 +34,7 @@
 
         <!-- Модальное окно для редактирования поста -->
         <div class="modal fade" id="editPostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content bg-dark text-light">
                     <div class="modal-header border-secondary">
                         <h1 class="modal-title fs-5" id="editPostModalLabel{{ post.id }}">Редактировать пост</h1>

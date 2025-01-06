@@ -18,7 +18,7 @@
             {% if chats_list %}
                 {% for chat_info in chats_list %}
                     <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
-                        <div class="chat-item">
+                        <div class="chat-item" title="{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}">
                             <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="40" width="40" alt="Avatar">
                             <span>{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
                         </div>
@@ -87,5 +87,4 @@
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>
-    <script src="{% static 'chats/js/websocket.js' %}"></script>
 {% endblock %}

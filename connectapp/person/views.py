@@ -156,7 +156,6 @@ def delete_post(request, post_id):
 def like_post(request):
     post_id = request.POST.get('id')
     post = get_object_or_404(Post, id=post_id)
-    print(post)
 
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
@@ -173,11 +172,12 @@ def like_post(request):
 @require_http_methods(["POST"])
 def mistral_post_generation(request):
     data = json.loads(request.body)
-    user_input = data.get('prompt', '')
-    if not user_input:
-        prompt = "Сгенерируй рандомный текст к новому посту в социальной сети."
-    else:
-        prompt = "Добавь продолжение к тексту: " + user_input
+    user_response = data.get('prompt', '')
+    user_post = data.get('post_text', '')
+    prompt = user_response
+    if user_post:
+        prompt += '\n' + user_post
+    print(prompt)
     api_key = os.environ["MISTRAL_API_KEY"]
     model = "mistral-small-latest"
 

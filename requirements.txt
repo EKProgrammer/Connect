@@ -1,0 +1,4 @@
+Django~=5.1.4
+mistralai~=1.2.5
+pillow~=11.1.0
+channels~=4.2.0

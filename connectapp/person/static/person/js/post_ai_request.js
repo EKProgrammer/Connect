@@ -6,12 +6,25 @@ document.addEventListener('DOMContentLoaded', function() {
     aiHelpButtons.forEach(button => {
         button.addEventListener('click', function() {
             const modalId = this.closest('.modal').id;
-            const textarea = document.querySelector(`#${modalId} textarea`);
-            const currentText = textarea.value;
+            const prompt_textarea = document.getElementById(`textMessageField`);
+            const prompt = prompt_textarea.value;
+            const post_textarea = document.querySelector(`#${modalId} textarea`);
+            const post_text = post_textarea.value;
 
             // Показываем индикатор загрузки
             this.disabled = true;
-            this.querySelector('img').classList.add('rotate');
+            prompt_textarea.value = '';
+            const chat = document.getElementById('aiChatContent');
+            chat.insertAdjacentHTML('beforeend', `
+                <div class="message message-sent">
+                    <div class="message-text">${prompt}</div>
+                </div>
+                <div class="message message-received">
+                    <div class="loader-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            `)
 
             // Отправляем запрос к API
             fetch('/person/post_generation', {
@@ -20,12 +33,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken')
                 },
-                body: JSON.stringify({ prompt: currentText })
+                body: JSON.stringify({ prompt: prompt, post_text: post_text })
             })
             .then(response => response.json())
             .then(data => {
+                const loader = document.querySelector('.loader-wrapper');
+                if (loader) loader.remove();
                 // Обновляем текстовое поле с полученным результатом
                 textarea.value = data.response;
+                const chat = document.getElementById('aiChatContent');
+                chat.insertAdjacentHTML('beforeend', `<div class="message-text">${data.response}</div>`);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -34,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .finally(() => {
                 // Возвращаем кнопку в исходное состояние
                 this.disabled = false;
-                this.querySelector('img').classList.remove('rotate');
             });
         });
     });
