@@ -12,6 +12,7 @@ class User(AbstractUser):
     password = models.CharField("Пароль", max_length=20)
     image = models.ImageField("Аватар", upload_to='users_images', blank=True, null=True)
     about = models.TextField("О себе", max_length=250, blank=True, null=True)
+    
 
     def get_avatar_url(self):
         if self.image and hasattr(self.image, 'url'):

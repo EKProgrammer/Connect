@@ -29,16 +29,21 @@ def profile(request):
 
     about_form = AboutForm(instance=request.user)
     empty_post_form = PostForm()
-
+    
     posts = Post.objects.filter(user=request.user.id).order_by('-date')
     # Показывать по 10 постов на странице
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
 
     post_forms = {}
     for post in page_obj:
         post_forms[post.id] = PostForm(instance=post)
+
+    followers_count = request.user.followers.count()
+    following_count = request.user.subscriptions.count()
+    is_following = request.user.followers.filter(user=request.user).exists()
 
     data = {
         "user": request.user,
@@ -47,6 +52,9 @@ def profile(request):
         "about_form": about_form,
         "post_forms": post_forms,
         "empty_post_form": empty_post_form,
+        'followers_count': followers_count,
+        'following_count': following_count,
+        'is_following': is_following,
     }
 
     return render(request, "person/profile.html", data)
@@ -208,10 +216,13 @@ def delete_avatar(request):
             messages.error(request, 'У вас нет фото профиля для удаления.')
     return redirect('profile')
 
-
+@login_required
 def user_profile(request, username):
     user = get_object_or_404(User, username=username)
-    
+    followers_count = user.followers.count()
+    following_count = user.subscriptions.count()
+    is_following = user.followers.filter(user=request.user).exists()
+
     if request.user == user:
         return redirect('profile')
     
@@ -224,9 +235,13 @@ def user_profile(request, username):
         "profile_user": user,
         "posts": page_obj,
         "has_next": page_obj.has_next(),
+        'followers_count': followers_count,
+        'following_count': following_count,
+        'is_following': is_following,
     }
 
     return render(request, "person/user_profile.html", data)
+
 
 
 def load_more_posts_other_user(request, username):
