@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from .models import Subscription
 from django.http import HttpResponseForbidden
 from django.contrib.auth import get_user_model
+
 @login_required
 def friends(request):
     return render(request, "friends/friends.html")
@@ -44,3 +45,35 @@ def subscribe(request, user_id):
         Subscription.objects.create(user=request.user, subscribed_to=user_to_subscribe)
 
     return redirect('search_friends')
+
+User = get_user_model()
+
+@login_required
+def follow_user(request, username):
+    """Подписаться на пользователя"""
+    user_to_follow = get_object_or_404(User, username=username)
+    if user_to_follow != request.user:
+        Subscription.objects.get_or_create(user=request.user, subscribed_to=user_to_follow)
+    return redirect('user_profile', username=username)
+
+@login_required
+def unfollow_user(request, username):
+    """Отписаться от пользователя"""
+    user_to_unfollow = get_object_or_404(User, username=username)
+    Subscription.objects.filter(user=request.user, subscribed_to=user_to_unfollow).delete()
+    return redirect('user_profile', username=username)
+
+@login_required
+def user_profile(request, username):
+    """Отображение профиля пользователя"""
+    user = get_object_or_404(User, username=username)
+    followers_count = user.followers.count()
+    following_count = user.subscriptions.count()
+    is_following = user.followers.filter(user=request.user).exists()
+
+    return render(request, 'person/user_profile.html', {
+        'user': user,
+        'followers_count': followers_count,
+        'following_count': following_count,
+        'is_following': is_following,
+    })
