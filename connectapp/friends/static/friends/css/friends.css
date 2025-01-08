@@ -1,0 +1,39 @@
+.user-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #4d4949;
+    border-radius: 5px;
+    background-color: #3e3e3e;
+    justify-content: space-between; 
+}
+.user-card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+.user-card h5 {
+    margin: 0;
+}
+
+.custom-search-button {
+    padding: 10px 20px;
+    border: none;
+    outline: none;
+    position: relative;
+    z-index: 1;
+    border-radius: 5px;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    cursor: pointer;
+}
+.custom-search-button:hover {
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;  
+}
