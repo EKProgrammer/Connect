@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.friends, name='friends'),
-    path('friends/search/', views.search_friends, name='search_friends'),
-    path('subscribe/<int:user_id>/', views.subscribe, name='subscribe'),
+    path('search/', views.search_friends, name='search_friends'),
+    path('follow/<str:username>/', views.follow_user, name='follow_user'),
+    path('unfollow/<str:username>/', views.unfollow_user, name='unfollow_user'),
 ]

@@ -4,56 +4,11 @@
 
 {% block title %}Список друзей - Connect{% endblock %}
 
+{% block link %}
+    <link rel="stylesheet" href="{% static 'friends/css/friends.css' %}">
+{% endblock %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="ru">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск друзей</title>
-    <style>
-        .user-card {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #4d4949;
-            border-radius: 5px;
-            background-color: #3e3e3e;
-            justify-content: space-between; /* Равномерно распределяет элементы */
-        }
-        .user-card img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-        .user-card h5 {
-            margin: 0;
-        }
-
-        .custom-search-button {
-            padding: 10px 20px;
-            border: none;
-            outline: none;
-            position: relative;
-            z-index: 1;
-            border-radius: 5px;
-            background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-            cursor: pointer;
-        }
-        .custom-search-button:hover {
-            background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);  /* Темнее зеленый при наведении */
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;  /* Чтобы имя было слева, а кнопка справа */
-        }
-    </style>
-</head>
-<body>
-
     <div class="container mt-5">
         <h1>Поиск друзей</h1>
         <form method="get" action="{% url 'search_friends' %}" class="d-flex mb-4">
@@ -66,24 +21,27 @@
                 {% for user in page_obj %}
                     <div class="user-card">
                         <div class="user-info">
-                            {% if user.profile_picture %}
-                                <img src="{{ user.profile_picture.url }}" alt="Фото пользователя">
-                            {% else %}
-                                <img src="https://via.placeholder.com/50" alt="Фото пользователя">
-                            {% endif %}
+                                <img src="{{ user.get_avatar_url }}" alt="Фото пользователя">
                             <div>
                                 <h5>{{ user.first_name }} {{ user.last_name }}</h5>
                             </div>
                         </div>
-                        
-                        <form method="POST" action="{% url 'subscribe' user.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn custom-search-button">Подписаться</button>
-                        </form>
+                        <a href="{% url 'start_chat' user.id %}" class="btn btn-secondary">Написать сообщение</a>
+                        {% if is_following %}
+                            <form action="{% url 'unfollow_user' user.username %}" method="post">
+                                {% csrf_token %}
+                                <button class="gradient-btn" type="submit" data="Отписаться"></button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'follow_user' user.username %}" method="post">
+                                {% csrf_token %}
+                                <button class="gradient-btn" type="submit" data="Подписаться"></button>
+                            </form>
+                        {% endif %}
                     </div>
                 {% endfor %}
-            </div>
-
+            </div>            
+            
             <div class="pagination">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
@@ -98,8 +56,4 @@
             <p>Ничего не найдено.</p>
         {% endif %}
     </div>
-    <link rel="stylesheet" href="{% static 'friends/friends.css' %}">
-</body>
-</html>
-
 {% endblock %}

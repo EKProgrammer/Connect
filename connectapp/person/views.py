@@ -39,6 +39,8 @@ def profile(request):
     post_forms = {}
     for post in page_obj:
         post_forms[post.id] = PostForm(instance=post)
+    followers_count = request.user.followers.count()
+    following_count = request.user.subscriptions.count()
 
     data = {
         "user": request.user,
@@ -47,6 +49,8 @@ def profile(request):
         "about_form": about_form,
         "post_forms": post_forms,
         "empty_post_form": empty_post_form,
+        'followers_count': followers_count,
+        'following_count': following_count,
     }
 
     return render(request, "person/profile.html", data)
@@ -60,7 +64,6 @@ def load_more_posts(request):
     try:
         page_obj = paginator.page(page_number)
     except EmptyPage:
-        # Если страница не существует, возвращаем пустой список
         return JsonResponse({
             'posts': '',
             'has_next': False
@@ -84,29 +87,23 @@ def load_more_posts(request):
 def is_image(file_path):
     try:
         with Image.open(file_path) as img:
-            # Проверка целостности изображения
             img.verify()
         return True
     except (IOError, SyntaxError):
-        # Если не удалось открыть или файл не является изображением
         return False
 
 
 def avatar_edit(request):
     if request.method == 'POST' and request.FILES.get('avatar'):
         avatar = request.FILES['avatar']
-        # Сохраняем новый аватар
         filename = f'users_images/{request.user.username}_avatar.jpg'
         path = default_storage.save(filename, ContentFile(avatar.read()))
         if is_image(default_storage.path(path)):
-            # Удалить предыдущий файл.
             request.user.delete_avatar()
-            # Путь к новому файлу
             request.user.image = path
             request.user.save()
         else:
             messages.error(request, 'Загруженный файл не является допустимым изображением')
-            # Удаляем некорректный файл
             default_storage.delete(path)
 
 
@@ -219,11 +216,18 @@ def user_profile(request, username):
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
+    followers_count = user.followers.count()
+    following_count = user.subscriptions.count()
+    is_following = user.followers.filter(user=request.user).exists()
+
     data = {
         "profile_user": user,
         "posts": page_obj,
         "has_next": page_obj.has_next(),
+        'followers_count': followers_count,
+        'following_count': following_count,
+        'is_following': is_following,
     }
 
     return render(request, "person/user_profile.html", data)
@@ -238,7 +242,6 @@ def load_more_posts_other_user(request, username):
     try:
         page_obj = paginator.page(page_number)
     except EmptyPage:
-        # Если страница не существует, возвращаем пустой список
         return JsonResponse({
             'posts_html': '',
             'has_next': False
