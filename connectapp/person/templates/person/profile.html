@@ -13,7 +13,7 @@
 <section class="container container-profile">
 <div class="row">
     <div class="col-md-8">
-        <h1 class="person_name mb-4">{{ user.first_name }} {{ user.last_name }}</h1>
+        <h1 class="person-name mb-4">{{ user.first_name }} {{ user.last_name }}</h1>
         <div class="about-section">
             <h2>О себе
                 <a href="#" class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
@@ -84,9 +84,9 @@
     <!-- Кнопка-триггер модального окна -->
     <button type="button" class="gradient-btn" data-bs-toggle="modal" data-bs-target="#createPostModal" data="Создать пост"></button>
     <!-- Модальное окно для добавления поста -->
-    <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-dark text-light">
+            <div class="modal-content modal-fixed-height bg-dark text-light">
                 <div class="modal-header border-secondary">
                     <h1 class="modal-title fs-5" id="createPostModalLabel">Создать новый пост</h1>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
@@ -95,26 +95,26 @@
                 <div class="modal-body">
                     <!-- Содержимое страницы с текстовым полем и изображениями -->
                     <div id="postFormContent">
-                        <form action="{% url 'create_post' %}" method="post" id="add-post-form" enctype="multipart/form-data">
+                        <form action="{% url 'create_post' %}" method="post" id="createPostForm" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ empty_post_form.text }}
-                            <span id="create-post-char-count">0 / 5000</span>
+                            <span class="post-char-count">0 / 5000</span>
                             <!-- ДОДЕЛАТЬ: при загрузки первый span должен исчезать и добавить предпромостр загруженных изображений -->
                             <div class="modal-list-images">
                                 <div>Прикрепите изображения к посту</div>
-                                <span id="selected-image-name"></span>
+                                <span id="selectedImageName"></span>
                             </div>
                         </form>
                     </div>
 
                     <!-- Содержимое страницы с ИИ чатом -->
-                    <div id="aiChatContent" style="display: none;">
+                    <div class="ai-chat-content" id="aiChatContent" style="display: none;">
                     </div>
                 </div>
 
                 <div class="modal-footer border-secondary">
                     <!-- Нижняя часть страницы с текстовым полем и изображениями -->
-                    <div id="postFormFooter">
+                    <div class="post-form-footer" id="postFormFooter">
                         <span>
                             <button type="button" class="ai-button" id="activateAiChat" title="Открыть чат ИИ">
                                 <img src="{% static 'person/img/ai.svg' %}" height="35px" width="35px" alt="Открыть чат ИИ">
@@ -124,13 +124,13 @@
                             </label>
                             {{ empty_post_form.image }}
                         </span>
-                        <button type="submit" class="gradient-btn" id="add-post-button" form="add-post-form" data="Опубликовать"></button>
+                        <button type="submit" class="gradient-btn" form="createPostForm" data="Опубликовать"></button>
                     </div>
 
                     <!-- Нижняя часть страницы с ИИ чатом -->
-                    <div id="aiChatFooter" style="display: none;">
+                    <div class="ai-chat-footer" id="aiChatFooter" style="display: none;">
                         <button type="button" id="backButton">
-                            <img src="{% static 'person/img/back-arrow.svg' %}" alt="Назад" title="Назад">
+                            <img src="{% static 'person/img/back_arrow.svg' %}" height="32px" width="32px" alt="Назад" title="Назад">
                         </button>
                         <textarea class="text-message-field" id="textMessageField" placeholder="Введите запрос ИИ..." maxlength="5000"></textarea>
                         <button type="submit" id="aiHelpButton">
@@ -156,16 +156,13 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'person/js/show_counters.js' %}"></script>
-    <script src="{% static 'person/js/hide_post_text.js' %}"></script>
-    <script src="{% static 'person/js/hide_about_text.js' %}"></script>
-
-
-    <script src="{% static 'person/js/modal_pages.js' %}"></script>
-    <script src="{% static 'person/js/update_message_field.js' %}"></script>
-    <script src="{% static 'person/js/post_ai_request.js' %}"></script>
+    <script src="{% static 'person/js/hide_text.js' %}"></script>
+    <script src="{% static 'person/js/like_post.js' %}"></script>
 
     <script src="{% static 'person/js/lazy_loading.js' %}"></script>
     <script src="{% static 'person/js/images.js' %}"></script>
-    <script src="{% static 'person/js/like_post.js' %}"></script>
+
+    <script src="{% static 'person/js/ai_chat.js' %}"></script>
+    <script src="{% static 'person/js/modal_pages.js' %}"></script>
+    <script src="{% static 'person/js/show_counters.js' %}"></script>
 {% endblock %}

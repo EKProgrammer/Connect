@@ -2,69 +2,104 @@
 {% load custom_filters %}
 
 {% for post in posts %}
+    {% with post_id=post.id %}
     <div class="post-item">
         <div class="d-flex justify-content-between align-items-center">
             <p class="post-date mb-0">{{ post.date }}</p>
             <div>
-                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post.id }}" title="Редактировать">
+                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}" title="Редактировать">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </a>
-                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post.id }}" title="Удалить">
+                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}" title="Удалить">
                     <i class="fa-solid fa-trash"></i>
                 </a>
             </div>
         </div>
         <div class="post-text-container">
-            <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+            <p class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</p>
             <div class="fade-out"></div>
-            <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
+            <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
         </div>
         {% if post.image %}
             <div class="post-image-container mt-3">
-                <img src="{{ post.image.url }}" alt="Post image">
+                <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
             </div>
         {% endif %}
 
         <div class="like-wrapper">
-            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Нравится">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Нравится">
                 <i class="fas fa-heart"></i>
             </button>
             <span class="likes-count">{{ post.total_likes }}</span>
         </div>
 
         <!-- Модальное окно для редактирования поста -->
-        <div class="modal fade" id="editPostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post.id }}" aria-hidden="true">
+        <div class="modal fade" id="editPostModal{{ post_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post_id }}">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content bg-dark text-light">
+                <div class="modal-content modal-fixed-height bg-dark text-light">
+                {% with current_post_form=post_forms|get_item:post_id %}
                     <div class="modal-header border-secondary">
-                        <h1 class="modal-title fs-5" id="editPostModalLabel{{ post.id }}">Редактировать пост</h1>
+                        <h1 class="modal-title fs-5" id="editPostModalLabel{{ post_id }}">Редактировать пост</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
+
                     <div class="modal-body">
-                        <form action="{% url 'edit_post' post.id %}" method="post" id="edit-post-form-{{ post.id }}">
-                            {% csrf_token %}
-                            {% with current_post_form=post_forms|get_item:post.id %}
-                            {{ current_post_form.text }}
-                            {% endwith %}
-                            <span id="edit-post-char-count-{{ post.id }}">0 / 5000</span>
-                        </form>
+                        <!-- Содержимое страницы с текстовым полем и изображениями -->
+                        <div id="postFormContent{{ post_id }}">
+                            <form action="{% url 'edit_post' post_id %}" method="post" id="editPostForm{{ post_id }}">
+                                {% csrf_token %}
+                                {{ current_post_form.text }}
+                                <span class="post-char-count">0 / 5000</span>
+                                <!-- ДОДЕЛАТЬ: при загрузки первый span должен исчезать и добавить предпромостр загруженных изображений -->
+                                <div class="modal-list-images">
+                                    <div>Прикрепите изображения к посту</div>
+                                    <span id="selectedImageName{{ post_id }}"></span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Содержимое страницы с ИИ чатом -->
+                        <div class="ai-chat-content" id="aiChatContent{{ post_id }}" style="display: none;">
+                        </div>
                     </div>
-                    <div class="modal-footer border-secondary d-flex justify-content-between">
-                        <button type="button" class="ai-button" id="aiHelpButton-{{ post.id }}">
-                            <img src="{% static 'person/img/ai.svg' %}" id="aiHelpIcon-{{ post.id }}" height="35px" width="35px">
-                        </button>
-                        <button type="submit" class="gradient-btn" form="edit-post-form-{{ post.id }}" data="Сохранить изменения"></button>
+
+                    <div class="modal-footer border-secondary">
+                        <!-- Нижняя часть страницы с текстовым полем и изображениями -->
+                        <div class="post-form-footer" id="postFormFooter{{ post_id }}">
+                            <span>
+                                <button type="button" class="ai-button" id="activateAiChat{{ post_id }}" title="Открыть чат ИИ">
+                                    <img src="{% static 'person/img/ai.svg' %}" height="35px" width="35px" alt="Открыть чат ИИ">
+                                </button>
+                                <label for="{{ current_post_form.image.id_for_label }}" title="Добавить изображение">
+                                    <img src="{% static 'person/img/add_image.svg' %}" class="add-image" alt="Добавить изображение">
+                                </label>
+                                {{ current_post_form.image }}
+                            </span>
+                            <button type="submit" class="gradient-btn" form="editPostForm{{ post_id }}" data="Сохранить изменения"></button>
+                        </div>
+
+                        <!-- Нижняя часть страницы с ИИ чатом -->
+                        <div class="ai-chat-footer" id="aiChatFooter{{ post_id }}" style="display: none;">
+                            <button type="button" id="backButton{{ post_id }}">
+                                <img src="{% static 'person/img/back_arrow.svg' %}" height="32px" width="32px" alt="Назад" title="Назад">
+                            </button>
+                            <textarea class="text-message-field" id="textMessageField{{ post_id }}" placeholder="Введите запрос ИИ..." maxlength="5000"></textarea>
+                            <button type="submit" id="aiHelpButton{{ post_id }}">
+                                <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px" alt="Отправить запрос" title="Отправить запрос">
+                            </button>
+                        </div>
                     </div>
+                {% endwith %}
                 </div>
             </div>
         </div>
 
         <!-- Модальное окно для удаления поста -->
-        <div class="modal fade" id="deletePostModal{{ post.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ post.id }}" aria-hidden="true">
+        <div class="modal fade" id="deletePostModal{{ post_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ post_id }}">
             <div class="modal-dialog">
                 <div class="modal-content bg-dark text-light">
                     <div class="modal-header border-secondary">
-                        <h1 class="modal-title fs-5" id="deletePostModalLabel{{ post.id }}">Удалить пост</h1>
+                        <h1 class="modal-title fs-5" id="deletePostModalLabel{{ post_id }}">Удалить пост</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
                     <div class="modal-body">
@@ -72,7 +107,7 @@
                     </div>
                     <div class="modal-footer border-secondary d-flex justify-content-between">
                         <button type="button" class="gradient-btn" data-bs-dismiss="modal" data="Отмена"></button>
-                        <form action="{% url 'delete_post' post.id %}" method="post" style="display: inline;">
+                        <form action="{% url 'delete_post' post_id %}" method="post" style="display: inline;">
                             {% csrf_token %}
                             <button type="submit" class="gradient-btn" data="Удалить"></button>
                         </form>
@@ -80,5 +115,6 @@
                 </div>
             </div>
         </div>
+    {% endwith %}
     </div>
 {% endfor %}

@@ -7,9 +7,9 @@
 }
 
 .chat-list {
-    width: 30%;
     display: flex;
     flex-direction: column;
+    width: 300px;
 }
 
 .list-name {
@@ -54,21 +54,35 @@
     object-fit: cover;
 }
 
-.chat-item span {
+.chat-name-list {
     font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.resizer {
+    border-radius: 2px;
+    background-color: #66666622;
+    cursor: ew-resize;
+    height: 100%;
+    width: 5px;
 }
 
 .chat-window {
     position: relative;
-    width: 70%;
     padding-left: 5px;
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    width: 1px; /* без этого работает некорректно */
 }
 
-.chat-name {
+.chat-name-window {
     font-size: 1.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .messages {

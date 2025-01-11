@@ -21,3 +21,10 @@ class PostForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'class': 'modal-textarea', 'rows': 5, 'maxlength': 5000,
                                           'placeholder': 'Введите текст поста'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        post_id = kwargs.pop('post_id', None)
+        super(PostForm, self).__init__(*args, **kwargs)
+        if post_id:
+            self.fields['text'].widget.attrs.update({'id': f'id_text_{post_id}'})
+            self.fields['image'].widget.attrs.update({'id': f'id_image_{post_id}'})

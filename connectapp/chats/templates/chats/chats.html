@@ -10,17 +10,17 @@
 
 {% block content %}
 
-<section class="container container-chats">
+<section class="container-chats">
     <!-- Список чатов -->
     <aside class="chat-list">
         <h2 class="list-name">Чаты</h2>
-        <div class="chats" data-simplebar>
+        <div class="chats">
             {% if chats_list %}
                 {% for chat_info in chats_list %}
                     <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
                         <div class="chat-item" title="{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}">
                             <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="40" width="40" alt="Avatar">
-                            <span>{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
+                            <span class="chat-name-list">{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
                         </div>
                     </a>
                 {% endfor %}
@@ -30,13 +30,15 @@
         </div>
     </aside>
 
+    <div class="resizer" id="dragMe"></div>
+
     <!-- Окно чата -->
     <div class="chat-window">
         {% if chat %}
             {% for participant in chat.participants.all %}
                 {% if participant != request.user %}
                     <a style="color: white" href="{% url 'user_profile' participant.username %}">
-                        <h2 class="chat-name">
+                        <h2 class="chat-name-window">
                             {{ participant.first_name }} {{ participant.last_name }}
                         </h2>
                     </a>
@@ -44,7 +46,7 @@
             {% endfor %}
 
             <!-- Сообщения -->
-            <div class="messages" id="chat-messages" data-simplebar>
+            <div class="messages" id="chat-messages">
                 {% for message in messages %}
                     {% if message.sender.id == request.user.id %}
                         <div class="message message-sent">
@@ -64,7 +66,7 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="input-area">
-                    <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..." data-simplebar></textarea>
+                    <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
                     <div class="input-area-buttons">
                         <button type="submit">
                             <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px">
@@ -87,4 +89,5 @@
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>
+    <script src="{% static 'chats/js/resizer.js' %}"></script>
 {% endblock %}

@@ -4,19 +4,13 @@
     border-radius: 20px;
 }
 
-.person_name {
+.person-name {
     font-size: 2.5rem;
     font-weight: bold;
 }
 
 .about-section {
     margin-top: 2rem;
-}
-
-.about-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .ai-button {
@@ -26,24 +20,16 @@
     text-align: left;
 }
 
-/* Вращение иконки ИИ */
-#aiHelpIcon {
-    display: inline-block;
-    overflow: hidden;
-    transform-origin: center;
+/* Модальные окна */
+.modal-fixed-height {
+    height: 94vh;
 }
 
-.rotate {
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-       transform: rotate(360deg);
-    }
+.modal-body {
+    flex-grow: 1;
+    overflow: hidden; /* Скрыть скроллбар для всего модального тела */
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-list-images {
@@ -61,21 +47,23 @@
     cursor: pointer;
 }
 
-#postFormFooter {
+.post-form-footer {
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
 }
 
-#create-post-char-count {
+.post-char-count {
     margin-left: 5px;
 }
 
-#aiChatContent {
-    height: 74vh;
+/* Чат с ИИ */
+.ai-chat-content {
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
-#aiChatFooter {
+.ai-chat-footer {
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
@@ -102,31 +90,30 @@
     outline: none;
 }
 
-.messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-bottom: 10px;
+.message {
+    margin-bottom: 20px;
 }
 
-.message {
-    width: 70%;
-    padding: 10px 10px 5px 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+.message-part {
+    padding: 10px 10px 10px 10px;
     word-wrap: break-word;
     display: flex;
     flex-direction: column;
 }
 
-.message-sent {
-    background-color: #4a90e288;
-    align-self: flex-end;
-    margin-left: auto;
+.post-response {
+    position: relative;
+    background-color: #4a90e266;
 }
 
-.message-received {
-    background-color: #6668;
-    align-self: flex-start;
+.user-prompt {
+    background-color: #cf28b966;
+}
+
+.ai-answer {
+    position: relative;
+    border-radius: 0 0 10px 10px;
+    background-color: #66666666;
 }
 
 .message-text {
@@ -134,12 +121,30 @@
     white-space: pre-wrap;
 }
 
-#aiChatFooter button {
+.copy-post-button, .copy-answer-button {
+    position: absolute;
+    border: none;
+    top: 5px;
+    right: 5px;
+    background-color: transparent;
+}
+
+.message .copy-button {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.message:hover .copy-button {
+    opacity: 1;
+}
+
+.ai-chat-footer button {
     border: none;
     background-color: transparent;
     cursor: pointer;
 }
 
+/* Секция о себе */
 .about {
     font-style: italic;
     color: #888;
@@ -403,21 +408,6 @@ input[type="file"] {
     position: relative;
 }
 
-.modal-textarea::-webkit-scrollbar {
-    width: 15px;
-}
-
-.modal-textarea::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border: 5px solid transparent;
-    border-radius: 10px;
-    background-clip: padding-box;
-}
-
-.modal-textarea::-webkit-scrollbar-track {
-    background: transparent;
-}
-
 .modal-textarea:focus,
 .modal-textarea:active {
     outline: none;
@@ -442,7 +432,6 @@ input[type="file"] {
     display: flex;
     justify-content: center;
 }
-
 
 /* style subscribes */
 .subscription-info {
@@ -469,4 +458,3 @@ input[type="file"] {
     margin: 8px 0;
     color: white;
 }
-

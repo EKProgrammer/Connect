@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage
 
@@ -23,6 +22,12 @@ from .models import Post
 from .forms import AboutForm, PostForm
 
 
+api_key = os.environ["MISTRAL_API_KEY"]
+model = "mistral-small-latest"
+
+client = Mistral(api_key=api_key)
+
+
 @login_required
 def profile(request):
     avatar_edit(request)
@@ -38,7 +43,8 @@ def profile(request):
 
     post_forms = {}
     for post in page_obj:
-        post_forms[post.id] = PostForm(instance=post)
+        post_forms[post.id] = PostForm(instance=post, post_id=post.id)
+
     followers_count = request.user.followers.count()
     following_count = request.user.subscriptions.count()
 
@@ -58,6 +64,8 @@ def profile(request):
 
 @login_required
 def load_more_posts(request):
+    empty_post_form = PostForm()
+
     page_number = request.GET.get('page')
     posts = Post.objects.filter(user=request.user).order_by('-date')
     paginator = Paginator(posts, 10)
@@ -65,19 +73,21 @@ def load_more_posts(request):
         page_obj = paginator.page(page_number)
     except EmptyPage:
         return JsonResponse({
-            'posts': '',
+            'posts_html': '',
             'has_next': False
         })
 
     post_forms = {}
     for post in page_obj:
-        post_forms[post.id] = PostForm(instance=post)
+        post_forms[post.id] = PostForm(instance=post, post_id=post.id)
 
     data = {
         "posts": page_obj,
         "post_forms": post_forms,
+        "empty_post_form": empty_post_form,
     }
     posts_html = loader.render_to_string('person/profile_posts.html', data, request=request)
+
     return JsonResponse({
         'posts_html': posts_html,
         'has_next': page_obj.has_next()
@@ -166,33 +176,28 @@ def like_post(request):
 
 @csrf_exempt
 @login_required
-@require_http_methods(["POST"])
 def mistral_post_generation(request):
-    data = json.loads(request.body)
-    user_response = data.get('prompt', '')
-    user_post = data.get('post_text', '')
+    user_response = request.GET.get('prompt', '')
+    user_post = request.GET.get('post_text', '')
     prompt = user_response
     if user_post:
-        prompt += '\n' + user_post
-    print(prompt)
-    api_key = os.environ["MISTRAL_API_KEY"]
-    model = "mistral-small-latest"
+        prompt += '\n-------------------\n' + user_post
 
-    client = Mistral(api_key=api_key)
+    def generate_stream():
+        stream_response = client.chat.stream(
+            model=model,
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt,
+                },
+            ]
+        )
+        for chunk in stream_response:
+            if chunk.data.choices and chunk.data.choices[0].delta.content:
+                yield f"data: {json.dumps({'response': chunk.data.choices[0].delta.content})}\n\n"
 
-    chat_response = client.chat.complete(
-        model=model,
-        messages=[
-            {
-                "role": "user",
-                "content": prompt,
-            },
-        ]
-    )
-    try:
-        return JsonResponse({'response': chat_response.choices[0].message.content})
-    except Exception as e:
-        return JsonResponse({'error': 'Failed to get response from AI'}, status=500)
+    return StreamingHttpResponse(generate_stream(), content_type='text/event-stream')
 
 
 @login_required
