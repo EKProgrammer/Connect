@@ -17,7 +17,6 @@
         <div class="about-section">
             <div class="about-bar">
                 <h2>О себе</h2>
-                <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
             </div>
             {% if profile_user.about %}
                 <div class="about-container">
@@ -29,20 +28,26 @@
                 <p class="commentary">Информация отсутвует</p>
             {% endif %}
         </div>
-        <div class="subscription-info">
-            <div class="followers">
-                <h4>Подписчики:</h4>
-                <p>{{ followers_count }}</p>
-            </div>
-            <div class="subscriptions">
-                <h4>Подписки:</h4>
-                <p>{{ subscriptions_count }}</p>
-            </div>
-        </div>
+        <p>Подписчики {{ followers_count }}</p>
+        <p>Подписки {{ following_count }}</p>
     </div>
     <div class="col-md-4">
         <div class="profile-image-container">
             <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
+        </div>
+        <div class="d-flex">
+            <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
+            {% if is_following %}
+                <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
+                    {% csrf_token %}
+                    <button class="gradient-btn" type="submit" data="Отписаться"></button>
+                </form>
+            {% else %}
+                <form action="{% url 'follow_user' profile_user.username %}" method="post">
+                    {% csrf_token %}
+                    <button class="gradient-btn" type="submit" data="Подписаться"></button>
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>
