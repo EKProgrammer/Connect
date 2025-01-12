@@ -10,7 +10,13 @@
 }
 
 .about-section {
-    margin-top: 2rem;
+    flex-grow: 1;
+}
+
+.follow-numbers {
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 20px;
 }
 
 .ai-button {

@@ -94,6 +94,11 @@ document.addEventListener('click', function(event) {
             drop_scrollbar(postId);
         };
 
+        eventSource.addEventListener('end', function () {
+            eventSource.close();
+            console.log('Генерация текста завершена.');
+        });
+
         eventSource.onerror = function () {
             eventSource.close();
             alert('Произошла ошибка при обращении к ИИ. Пожалуйста, попробуйте еще раз.');

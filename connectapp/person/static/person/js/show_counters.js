@@ -19,7 +19,7 @@ aboutTextarea.addEventListener('input', function() {
 // Для формы добавления и редактирования поста
 document.addEventListener('input', function(event) {
     let editPostTextarea = event.target;
-    if (editPostTextarea.classList === "text-message-field") {
+    if (editPostTextarea.id && editPostTextarea.id.startsWith('id_text_')) {
         let editCountSpan = editPostTextarea.nextElementSibling;
         updateCharCount(editPostTextarea, editCountSpan, 5000);
     }

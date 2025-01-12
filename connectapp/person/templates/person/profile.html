@@ -12,7 +12,7 @@
 
 <section class="container container-profile">
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 d-flex flex-column">
         <h1 class="person-name mb-4">{{ user.first_name }} {{ user.last_name }}</h1>
         <div class="about-section">
             <h2>О себе
@@ -29,9 +29,11 @@
             {% else %}
                 <p class="commentary">Информация отсутвует</p>
             {% endif %}
+            <div>
+                <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+                <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+            </div>
         </div>
-        <p>Подписчики {{ followers_count }}</p>
-        <p>Подписки {{ following_count }}</p>
     </div>
     <div class="col-md-4">
         <div class="profile-image-container">

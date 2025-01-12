@@ -196,6 +196,7 @@ def mistral_post_generation(request):
         for chunk in stream_response:
             if chunk.data.choices and chunk.data.choices[0].delta.content:
                 yield f"data: {json.dumps({'response': chunk.data.choices[0].delta.content})}\n\n"
+        yield "event: end\ndata: {}\n\n"
 
     return StreamingHttpResponse(generate_stream(), content_type='text/event-stream')
 

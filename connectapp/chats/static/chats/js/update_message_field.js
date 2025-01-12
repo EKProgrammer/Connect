@@ -15,6 +15,8 @@ function adjustTextareaHeight(textarea) {
 
 // Привязка события input
 const textarea = document.querySelector('textarea');
-textarea.addEventListener('input', function() {
-    adjustTextareaHeight(this);
-});
+if (textarea) {
+    textarea.addEventListener('input', function() {
+        adjustTextareaHeight(this);
+    });
+}
