@@ -6,6 +6,7 @@
 
 {% block link %}
     <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
+    <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -73,10 +74,35 @@
 
 </section>
 
+<!-- Модальное окно для списка лайкнувших пост -->
+<div class="modal fade" id="likedUsersModal" tabindex="-1" aria-labelledby="likedUsersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="likedUsersModalLabel">Пользователи, лайкнувшие пост</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="liked-users-list">
+                    <!-- Здесь будет список пользователей -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Контекстное меню для кнопки лайка -->
+<div class="custom-context-menu" id="likeContextMenu">
+    <ul>
+        <li id="showLikedUsers">Посмотреть список лайкнувших</li>
+    </ul>
+</div>
+
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'person/js/hide_text.js' %}"></script>
     <script src="{% static 'person/js/lazy_loading.js' %}"></script>
     <script src="{% static 'person/js/like_post.js' %}"></script>
+    <script src="{% static 'person/js/like_context_menu.js' %}"></script>
 {% endblock %}
