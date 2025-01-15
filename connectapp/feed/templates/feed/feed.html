@@ -13,7 +13,7 @@
     <h2>Лента новостей</h2>
     {% if posts %}
         {% for post in posts %}
-            <div class="post-card">
+            <div class="post-item">
                 <div class="post-header">
                     <img src="{{ post.user.get_avatar_url }}" alt="{{ post.user.username }}" class="post-avatar">
                     <div class="post-info">
