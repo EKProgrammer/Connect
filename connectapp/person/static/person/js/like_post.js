@@ -1,35 +1,26 @@
-"use strict";
-
-
-document.addEventListener('click', function(event) {
-    const like_btn = event.target.closest('.like-btn');
-    if (like_btn) {
-        console.log(like_btn);
-        const postId = like_btn.dataset.postId;
-        const likesCount = like_btn.nextElementSibling;
-
-        fetch('/person/like-post/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: `id=${postId}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            likesCount.textContent = data.likes_count;
-            if (data.liked) {
-                like_btn.classList.add('liked');
-            } else {
-                like_btn.classList.remove('liked');
-            }
+document.addEventListener('DOMContentLoaded', function() {
+    const likeBtns = document.querySelectorAll('.like-btn');
+    
+    likeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            fetch('/person/like-post/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `id=${postId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.classList.toggle('liked', data.liked);
+                this.nextElementSibling.textContent = data.likes_count;
+            });
         });
-    }
+    });
 });
 
-
-// Функция для получения CSRF-токена из куки
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {

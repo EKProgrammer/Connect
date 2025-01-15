@@ -1,11 +1,73 @@
 {% extends 'main/layout.html' %}
-
 {% load static %}
 
-{% block title %}Новости - Connect{% endblock %}
+{% block title %}Лента новостей - Connect{% endblock %}
+
+{% block link %}
+  <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
+  <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
+{% endblock %}
 
 {% block content %}
+<section class="container container-profile mt-4">
+    <h2>Лента новостей</h2>
+    {% if posts %}
+        {% for post in posts %}
+            <div class="post-card">
+                <div class="post-header">
+                    <img src="{{ post.user.get_avatar_url }}" alt="{{ post.user.username }}" class="post-avatar">
+                    <div class="post-info">
+                        <h3>{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+                        <p class="post-date">{{ post.date|date:"d.m.Y H:i" }}</p>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <p class="post-text">{{ post.text }}</p>
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                    {% endif %}
+                </div>
 
-<h2>Новости</h2>
+                <div class="post-footer">
+                    <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Нравится">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <span class="likes-count">{{ post.total_likes }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="commentary">В вашей ленте пока нет постов. Подпишитесь на других пользователей, чтобы видеть их записи.</p>
+    {% endif %}
+</section>
 
+<!-- Модальное окно для списка лайкнувших пост -->
+<div class="modal fade" id="likedUsersModal" tabindex="-1" aria-labelledby="likedUsersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="likedUsersModalLabel">Пользователи, лайкнувшие пост</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="liked-users-list">
+                    <!-- Здесь будет список пользователей -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Контекстное меню для кнопки лайка -->
+<div class="custom-context-menu" id="likeContextMenu">
+    <ul>
+        <li id="showLikedUsers">Посмотреть список лайкнувших</li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'person/js/hide_text.js' %}"></script>
+    <script src="{% static 'person/js/like_post.js' %}"></script>
+    <script src="{% static 'person/js/like_context_menu.js' %}"></script>
 {% endblock %}

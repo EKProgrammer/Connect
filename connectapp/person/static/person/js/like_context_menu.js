@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 data.forEach(user => {
                     const userElement = document.createElement('div');
                     userElement.classList.add('user-item');
-                    // Доделать переход по нажатию - user.username выдаёт undefined
                     userElement.innerHTML = `
                         <a href="/person/${user.username}/" class="user-link">
                             <img src="${user.avatar_url}" alt="${user.first_name}" class="user-avatar">
