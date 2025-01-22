@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n!&d=0p3=#7!ht_tbc3bjg5w9s(w8!+$b)*b4z^+$jx^80areh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 # В случае False запускать команду python manage.py runserver --insecure
 # для применения стилей
 

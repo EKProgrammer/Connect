@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', hidePostText);
 
 function hidePostText() {
-    const posts = document.querySelectorAll('.post-text-container');
+    const posts = document.querySelectorAll('.post-content');
 
     posts.forEach(post => {
         const textElement = post.querySelector('.post-text');

@@ -14,7 +14,7 @@
     {% if posts %}
         {% for post in posts %}
             <div class="post-item">
-                <div class="post-header">
+                <div class="post-header-feed">
                     <img src="{{ post.user.get_avatar_url }}" alt="{{ post.user.username }}" class="post-avatar">
                     <div class="post-info">
                         <h3>{{ post.user.first_name }} {{ post.user.last_name }}</h3>
@@ -22,18 +22,22 @@
                     </div>
                 </div>
                 <div class="post-content">
-                    <p class="post-text">{{ post.text }}</p>
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" alt="Post image" class="post-image">
-                    {% endif %}
+                    <p class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</p>
+                    <div class="fade-out"></div>
+                    <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
                 </div>
+                {% if post.image %}
+                    <div class="post-image-container mt-3">
+                        <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
+                    </div>
+                {% endif %}
 
-                <div class="post-footer">
+                <span class="post-footer">
                     <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Нравится">
                         <i class="fas fa-heart"></i>
                     </button>
                     <span class="likes-count">{{ post.total_likes }}</span>
-                </div>
+                </span>
             </div>
         {% endfor %}
     {% else %}

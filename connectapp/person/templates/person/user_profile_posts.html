@@ -1,20 +1,21 @@
 {% for post in posts %}
     <div class="post-item">
-        <div class="d-flex justify-content-between align-items-center">
-            <p class="post-date mb-0">{{ post.date }}</p>
+        <div class="post-header-profile">
+            <p class="post-date">{{ post.date }}</p>
         </div>
-        <div class="post-text-container">
+
+        <div class="post-content">
             <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
             <div class="fade-out"></div>
             <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
         </div>
         {% if post.image %}
-            <div class="post-image-container mt-3">
-                <img src="{{ post.image.url }}" alt="Post image">
+            <div class="post-image-container">
+                <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
             </div>
         {% endif %}
 
-        <div class="like-wrapper">
+        <div class="post-footer">
             <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
                 <i class="fas fa-heart"></i>
             </button>

@@ -4,29 +4,30 @@
 {% for post in posts %}
     {% with post_id=post.id %}
     <div class="post-item">
-        <div class="d-flex justify-content-between align-items-center">
-            <p class="post-date mb-0">{{ post.date }}</p>
+        <div class="post-header-profile">
+            <p class="post-date">{{ post.date }}</p>
             <div>
-                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}" title="Редактировать">
+                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}" title="Редактировать">
                     <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-                <a href="#" class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}" title="Удалить">
+                </button>
+                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}" title="Удалить">
                     <i class="fa-solid fa-trash"></i>
-                </a>
+                </button>
             </div>
         </div>
-        <div class="post-text-container">
+
+        <div class="post-content">
             <p class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</p>
             <div class="fade-out"></div>
             <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
         </div>
         {% if post.image %}
-            <div class="post-image-container mt-3">
+            <div class="post-image-container">
                 <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
             </div>
         {% endif %}
 
-        <div class="like-wrapper">
+        <div class="post-footer">
             <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Нравится">
                 <i class="fas fa-heart"></i>
             </button>

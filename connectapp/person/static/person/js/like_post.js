@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     likeBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const postId = this.getAttribute('data-post-id');
-            fetch('/person/like-post/', {
+            fetch('/person/like_post/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

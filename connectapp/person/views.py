@@ -5,9 +5,7 @@ from django.template import loader
 from django.http import JsonResponse, StreamingHttpResponse
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from .models import Post
+
 from datetime import datetime
 from django.utils import timezone
 
@@ -261,13 +259,14 @@ def load_more_posts_other_user(request, username):
         'has_next': page_obj.has_next()
     })
 
+
 def liked_users(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    liked_users = post.likes.all()
+    liked_user_instances = post.likes.all()
     users_data = [{
-        'id': user.id,
         'first_name': user.first_name,
         'last_name': user.last_name,
+        'username': user.username,
         'avatar_url': user.get_avatar_url()
-    } for user in liked_users]
+    } for user in liked_user_instances]
     return JsonResponse(users_data, safe=False)

@@ -10,7 +10,7 @@ urlpatterns = [
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('post_generation', views.mistral_post_generation, name='post_generation'),
     path('delete_avatar/', views.delete_avatar, name='delete_avatar'),
-    path('like-post/', views.like_post, name='like_post'),
+    path('like_post/', views.like_post, name='like_post'),
     path('load_more_posts/', views.load_more_posts, name='load_more_posts'),
     path('liked-users/<int:post_id>/', views.liked_users, name='liked_users'),
     path('<str:username>/load_more_posts_other_user/', views.load_more_posts_other_user,
