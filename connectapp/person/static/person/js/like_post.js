@@ -1,24 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const likeBtns = document.querySelectorAll('.like-btn');
-    
-    likeBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const postId = this.getAttribute('data-post-id');
-            fetch('/person/like_post/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: `id=${postId}`
-            })
+document.addEventListener('click', function(event) {
+    const button = event.target.closest('.like-btn');
+    if (button) {
+        const postId = button.getAttribute('data-post-id');
+        fetch('/person/like_post/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `id=${postId}`
+        })
             .then(response => response.json())
             .then(data => {
-                this.classList.toggle('liked', data.liked);
-                this.nextElementSibling.textContent = data.likes_count;
+                button.classList.toggle('liked', data.liked);
+                button.nextElementSibling.textContent = data.likes_count;
             });
-        });
-    });
+    }
 });
 
 function getCookie(name) {

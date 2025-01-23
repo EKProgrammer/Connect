@@ -47,3 +47,8 @@ def register(request):
 def logout(request):
     auth.logout(request)
     return redirect("/")
+
+
+@login_required
+def subscription(request):
+    return render(request, "main/subscription.html")

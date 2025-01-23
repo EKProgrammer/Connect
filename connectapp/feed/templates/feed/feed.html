@@ -17,8 +17,8 @@
                 <div class="post-header-feed">
                     <img src="{{ post.user.get_avatar_url }}" alt="{{ post.user.username }}" class="post-avatar">
                     <div class="post-info">
-                        <h3>{{ post.user.first_name }} {{ post.user.last_name }}</h3>
-                        <p class="post-date">{{ post.date|date:"d.m.Y H:i" }}</p>
+                        <h3><a href="{% url 'user_profile' post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a></h3>
+                        <p class="post-date">{{ post.date }}</p>
                     </div>
                 </div>
                 <div class="post-content">
@@ -32,12 +32,12 @@
                     </div>
                 {% endif %}
 
-                <span class="post-footer">
+                <div class="post-footer">
                     <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Нравится">
                         <i class="fas fa-heart"></i>
                     </button>
                     <span class="likes-count">{{ post.total_likes }}</span>
-                </span>
+                </div>
             </div>
         {% endfor %}
     {% else %}

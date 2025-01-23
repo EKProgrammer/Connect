@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         readMoreBtn.addEventListener('click', function() {
             if (aboutText.classList.contains('expanded')) {
                 aboutText.classList.remove('expanded');
-                aboutContainer.style.maxHeight = '270px';
+                aboutContainer.style.maxHeight = '255px';
                 readMoreBtn.textContent = 'Читать далее';
                 fadeOut.style.display = 'block';
             } else {

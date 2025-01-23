@@ -3,7 +3,7 @@
     background-color: #212529;
     padding: 20px;
     border-radius: 20px;
-    height: 85vh;
+    height: 87vh;
 }
 
 .chat-list {
@@ -18,7 +18,7 @@
 
 .chats {
     flex-grow: 1;
-    padding-right: 15px;
+    padding-right: 10px;
     overflow-y: auto;
 }
 
@@ -62,15 +62,24 @@
 
 .resizer {
     border-radius: 2px;
-    background-color: #66666622;
-    cursor: ew-resize;
+    background-color: #333;
     height: 100%;
     width: 5px;
 }
 
+.resizer:active {
+    background-color: #444;
+}
+
+.resizer button {
+    background-color: transparent;
+    border: none;
+    cursor: ew-resize !important;
+}
+
 .chat-window {
     position: relative;
-    padding-left: 5px;
+    padding-left: 10px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -87,8 +96,7 @@
 .messages {
     flex-grow: 1;
     overflow-y: auto;
-    padding-bottom: 10px;
-    padding-right: 15px;
+    padding-right: 10px;
 }
 
 .message {
@@ -133,6 +141,7 @@
     display: flex;
     align-items: center;
     width: 100%;
+    margin-top: 10px;
 }
 
 .text-message-field {
@@ -142,7 +151,7 @@
     resize: none;
     overflow-y: hidden; /* Скрыть скроллбар по умолчанию */
 
-    padding: 10px 10px 10px 15px;
+    padding: 10px 15px 10px 15px;
     border-radius: 10px;
     background-color: #333;
     border: 1px solid #444;

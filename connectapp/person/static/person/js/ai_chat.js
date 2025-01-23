@@ -29,9 +29,12 @@ document.addEventListener('click', function(event) {
         }
 
         // Показываем индикатор загрузки
+        const img = button.querySelector('img');
+        img.src = '/static/person/img/send_disabled.svg';
         button.disabled = true;
         prompt_textarea.value = '';
         const chat = document.getElementById(`aiChatContent${postId}`);
+
         if (current_post_text) {
             chat.insertAdjacentHTML('beforeend', `
                 <div class="message">
@@ -95,17 +98,20 @@ document.addEventListener('click', function(event) {
         };
 
         eventSource.addEventListener('end', function () {
+            // Генерация текста завершена
             eventSource.close();
-            console.log('Генерация текста завершена.');
+            // Возвращаем кнопку в исходное состояние
+            button.disabled = false;
+            img.src = '/static/person/img/send.svg';
         });
 
         eventSource.onerror = function () {
             eventSource.close();
             alert('Произошла ошибка при обращении к ИИ. Пожалуйста, попробуйте еще раз.');
+            // Возвращаем кнопку в исходное состояние
+            button.disabled = false;
+            img.src = '/static/person/img/send.svg';
         };
-
-        // Возвращаем кнопку в исходное состояние
-        button.disabled = false;
     }
 });
 

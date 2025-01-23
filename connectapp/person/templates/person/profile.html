@@ -13,11 +13,11 @@
 
 <section class="container container-profile">
 <div class="row">
-    <div class="col-md-8 d-flex flex-column">
+    <div class="col-md-8 user-info">
         <h1 class="person-name">{{ user.first_name }} {{ user.last_name }}</h1>
         <div class="about-section">
             <h2>О себе
-                <button class="edit-about-btn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
+                <button class="edit-about-btn" id="editAboutBtn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
             </h2>
@@ -30,7 +30,7 @@
             {% else %}
                 <p class="commentary">Информация отсутвует</p>
             {% endif %}
-            <div>
+            <div class="subscribers-info">
                 <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
                 <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
             </div>
@@ -71,7 +71,7 @@
                     {% csrf_token %}
                     {{ about_form.about }}
                 </form>
-                <span id="about-char-count">0 / 250</span>
+                <span id="aboutCharCount">0 / 250</span>
             </div>
             <div class="modal-footer border-secondary">
                 <button type="submit" class="gradient-btn" id="edit-about-button" form="edit-about-modal-form" data="Сохранить изменения"></button>
@@ -137,7 +137,7 @@
                         </button>
                         <textarea class="text-message-field" id="textMessageField" placeholder="Введите запрос ИИ..." maxlength="5000"></textarea>
                         <button type="submit" id="aiHelpButton">
-                            <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px" alt="Отправить запрос" title="Отправить запрос">
+                            <img src="{% static 'person/img/send.svg' %}" height="30px" width="30px" alt="Отправить запрос" title="Отправить запрос">
                         </button>
                     </div>
                 </div>
@@ -192,5 +192,5 @@
 
     <script src="{% static 'person/js/ai_chat.js' %}"></script>
     <script src="{% static 'person/js/modal_pages.js' %}"></script>
-    <script src="{% static 'person/js/show_counters.js' %}"></script>
+    <script src="{% static 'person/js/text_counters.js' %}"></script>
 {% endblock %}
