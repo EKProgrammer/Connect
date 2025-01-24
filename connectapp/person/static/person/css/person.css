@@ -371,7 +371,7 @@ input[type="file"] {
 
 /* Чат с ИИ */
 .ai-chat-content {
-    flex-grow: 1;
+    padding-right: 10px;
     overflow-y: auto;
 }
 
@@ -379,6 +379,12 @@ input[type="file"] {
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
+}
+
+.ai-chat-footer button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .text-message-field {
@@ -428,6 +434,11 @@ input[type="file"] {
     background-color: #66666666;
 }
 
+.ai-help-error {
+    background-color: #59191f;
+    border-radius: 10px;
+}
+
 .message-text {
     font-size: 1rem;
     white-space: pre-wrap;
@@ -448,12 +459,6 @@ input[type="file"] {
 
 .message:hover .copy-button {
     opacity: 1;
-}
-
-.ai-chat-footer button {
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
 }
 
 /* Загрузка */

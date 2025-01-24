@@ -12,6 +12,12 @@ class User(AbstractUser):
     password = models.CharField("Пароль", max_length=20)
     image = models.ImageField("Аватар", upload_to='users_images', blank=True, null=True)
     about = models.TextField("О себе", max_length=250, blank=True, null=True)
+    # Поле для хранения количества оставшихся нажатий
+    ai_help_requests_left = models.PositiveIntegerField(default=5)
+    # Поле для хранения даты последнего сброса счетчика
+    last_ai_help_reset = models.DateTimeField(auto_now_add=True)
+    # Поле для хранения статуса подписки
+    has_subscription = models.BooleanField(default=False)
 
     def get_avatar_url(self):
         if self.image and hasattr(self.image, 'url'):

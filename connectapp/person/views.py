@@ -174,6 +174,23 @@ def like_post(request):
     return JsonResponse({'likes_count': post.total_likes(), 'liked': liked})
 
 
+@login_required
+def could_use_ai(request):
+    """ Проверяем, есть ли у пользователя подписка или остались ли попытки """
+    user = request.user
+    if not user.has_subscription:
+        if user.ai_help_requests_left == 0:
+            return JsonResponse({"could_use_ai": False})
+        else:
+            user.ai_help_requests_left -= 1
+            if user.last_ai_help_reset.date() < timezone.now().date():
+                user.ai_help_requests_left = 5
+                user.last_ai_help_reset = timezone.now()
+            user.save()
+            return JsonResponse({"could_use_ai": True})
+    return JsonResponse({"could_use_ai": True})
+
+
 @csrf_exempt
 @login_required
 def mistral_post_generation(request):
@@ -239,6 +256,7 @@ def user_profile(request, username):
     return render(request, "person/user_profile.html", data)
 
 
+@login_required
 def load_more_posts_other_user(request, username):
     user = get_object_or_404(User, username=username)
 
@@ -260,6 +278,7 @@ def load_more_posts_other_user(request, username):
     })
 
 
+@login_required
 def liked_users(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     liked_user_instances = post.likes.all()

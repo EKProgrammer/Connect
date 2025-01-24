@@ -2,7 +2,7 @@ document.addEventListener('click', function(event) {
     const button = event.target.closest('.like-btn');
     if (button) {
         const postId = button.getAttribute('data-post-id');
-        fetch('/person/like_post/', {
+        fetch('like_post/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -10,11 +10,11 @@ document.addEventListener('click', function(event) {
             },
             body: `id=${postId}`
         })
-            .then(response => response.json())
-            .then(data => {
-                button.classList.toggle('liked', data.liked);
-                button.nextElementSibling.textContent = data.likes_count;
-            });
+        .then(response => response.json())
+        .then(data => {
+            button.classList.toggle('liked', data.liked);
+            button.nextElementSibling.textContent = data.likes_count;
+        });
     }
 });
 

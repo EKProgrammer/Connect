@@ -1,18 +1,46 @@
 "use strict"
 
 
+function checkAiUsage() {
+    return fetch('could_use_ai/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+    })
+    .then(response => response.json())
+    .then(data => data.could_use_ai);
+}
+
+
 function drop_scrollbar(postId) {
     const chatMessages = document.getElementById(`aiChatContent${postId}`);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', async function(event) {
     const button = event.target.closest('[id^="aiHelpButton"]');
     if (button) {
         const postId = button.id.replace('aiHelpButton', '');
         const prompt_textarea = document.getElementById(`textMessageField${postId}`);
         const prompt = prompt_textarea.value;
+        const chat = document.getElementById(`aiChatContent${postId}`);
+
+        const canUseAi = await checkAiUsage();
+        if (!canUseAi) {
+            chat.insertAdjacentHTML('beforeend', `
+                <div class="message">        
+                    <div class="message-part ai-help-error">
+                        <div style="color: #ff4444;">Предупреждение</div>
+                        <div class="message-text">Лимит запросов за сутки исчерпан. Для неограниченного иcпользования ИИ перейдите на <a href="/subscription">страницу оформления подписки</a>.</div>
+                    </div>
+                </div>
+            `);
+            drop_scrollbar(postId);
+            return;
+        }
 
         if (!prompt) {
             alert("Введите запрос ИИ");
@@ -33,7 +61,6 @@ document.addEventListener('click', function(event) {
         img.src = '/static/person/img/send_disabled.svg';
         button.disabled = true;
         prompt_textarea.value = '';
-        const chat = document.getElementById(`aiChatContent${postId}`);
 
         if (current_post_text) {
             chat.insertAdjacentHTML('beforeend', `
@@ -141,15 +168,15 @@ function handleCopyButtonClick(button) {
 
 function update_last_message(post_textarea, postId) {
     let current_post_message = document.getElementById(`currentPostVersion${postId}`);
+    let chat = document.getElementById(`aiChatContent${postId}`);
     if (current_post_message) {
+        current_post_message.remove();
         if (post_textarea.value) {
             const message_text = current_post_message.querySelector('.message-text');
             message_text.textContent = post_textarea.value;
-        } else {
-            current_post_message.remove();
         }
-    } else if (post_textarea.value) {
-        let chat = document.getElementById(`aiChatContent${postId}`);
+    }
+    if (post_textarea.value) {
         chat.insertAdjacentHTML('beforeend', `
             <div class="message" id="currentPostVersion${postId}">
                 <div class="message-part post-response" style="border-radius: 10px 10px 10px 10px;">
