@@ -23,7 +23,7 @@
                 <li>🚀 Приоритетная поддержка 24/7</li>
                 <li>🔒 Без скрытых платежей и ограничений</li>
             </ul>
-            <button class="subscribe-button" id="yandex-pay-button">Оформить подписку</button>
+            <div id="button_container"></div>
         </div>
     </div>
 
@@ -39,9 +39,66 @@
 </div>
 
 <script>
-    document.getElementById('yandex-pay-button').addEventListener('click', function() {
-        // Здесь будет код для интеграции с Yandex.Pay
-        alert('Оплата через Yandex.Pay будет реализована здесь.');
-    });
+    function onYaPayLoad() {
+        const YaPay = window.YaPay;
+    
+        const paymentData = {
+            env: YaPay.PaymentEnv.Sandbox,
+            version: 4,
+            currencyCode: YaPay.CurrencyCode.Rub,
+            merchantId: '2', // Замените на ваш реальный ID
+            totalAmount: '299.00',
+            availablePaymentMethods: ['CARD', 'SPLIT'],
+        };
+    
+        async function onPayButtonClick() {
+            try {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const response = await fetch('/create_order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: JSON.stringify({}),
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.paymentUrl) {
+                    window.location.href = data.paymentUrl;
+                } else {
+                    throw new Error('Payment URL not found');
+                }
+            } catch (error) {
+                console.error('Error during payment process:', error);
+                alert('Произошла ошибка при обработке платежа. Пожалуйста, попробуйте позже.');
+            }
+        }
+    
+        function onFormOpenError(reason) {
+            console.error(`Ошибка оплаты: ${reason}`);
+            alert('К сожалению, в данный момент оплата недоступна. Пожалуйста, попробуйте позже или свяжитесь с поддержкой.');
+        }
+    
+        YaPay.createSession(paymentData, {
+            onPayButtonClick: onPayButtonClick,
+            onFormOpenError: onFormOpenError,
+        })
+            .then(function (paymentSession) {
+                paymentSession.mountButton(document.querySelector('#button_container'), {
+                    type: YaPay.ButtonType.Pay,
+                    theme: YaPay.ButtonTheme.Black,
+                    width: YaPay.ButtonWidth.Auto,
+                });
+            })
+            .catch(function (err) {
+                console.error('Не удалось создать платежную сессию:', err);
+                alert('Произошла ошибка при инициализации оплаты. Пожалуйста, обновите страницу или попробуйте позже.');
+            });
+    }
 </script>
+<script src="https://pay.yandex.ru/sdk/v1/pay.js" onload="onYaPayLoad()" async></script>
+
 {% endblock %}

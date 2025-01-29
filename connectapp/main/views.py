@@ -52,3 +52,10 @@ def logout(request):
 @login_required
 def subscription(request):
     return render(request, "main/subscription.html")
+
+from django.http import JsonResponse
+
+@login_required
+def create_order(request):
+    payment_url = "https://www.google.co.uk/"  # Replace with actual payment URL logic
+    return JsonResponse({'paymentUrl': payment_url})

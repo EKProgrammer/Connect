@@ -179,6 +179,9 @@ def could_use_ai(request):
     """ Проверяем, есть ли у пользователя подписка или остались ли попытки """
     user = request.user
     if not user.has_subscription:
+        if user.last_ai_help_reset.date() < timezone.now().date():
+            user.ai_help_requests_left = 5
+            user.last_ai_help_reset = timezone.now()
         if user.ai_help_requests_left == 0:
             return JsonResponse({"could_use_ai": False})
         else:
