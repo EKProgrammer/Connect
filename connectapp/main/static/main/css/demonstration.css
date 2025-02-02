@@ -1,0 +1,44 @@
+.index-container {
+    align-items: center;
+    min-height: 79vh;
+}
+
+.demonstration-container {
+    min-height: 79vh;
+}
+
+.slogan {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Демонстрация чата ИИ */
+.message-part {
+    padding: 10px 10px 10px 10px;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-response {
+    position: relative;
+    background-color: #4a90e266;
+    border-radius: 10px 10px 0 0;
+}
+
+.user-prompt {
+    background-color: #cf28b966;
+    border-radius: 0 0 10px 10px;
+}
+
+.ai-answer {
+    position: relative;
+    background-color: #66666666;
+    border-radius: 0 0 10px 10px;
+    margin-bottom: 20px;
+}
+
+.message-text {
+    font-size: 1rem;
+    white-space: pre-wrap;
+}

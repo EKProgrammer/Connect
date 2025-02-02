@@ -17,13 +17,23 @@
 <meta property="og:type" content="website">
 {% endblock %}
 
-{% block content %}
+{% block link %}<link rel="stylesheet" href="{% static 'main/css/demonstration.css' %}">{% endblock %}
 
-<div class="row align-items-center">
-    <div class="col-md-6 text-center">
-        <h2>Ты говоришь - она понимает</h2>
-        <div class="gif-container">
-            <img src="{% static 'main/img/presentation.gif' %}" alt="Демонстрация работы ИИ">
+{% block content %}
+<div class="row index-container">
+    <div class="col-md-6 demonstration-container">
+        <div class="slogan">
+            <h2>Ты говоришь - она понимает</h2>
+        </div>
+        <div>
+            <div class="message-part post-response">
+                <div style="color: #4a90e2;">Текст поста</div>
+                <div class="message-text"></div>
+            </div>
+            <div class="message-part user-prompt">
+                <div style="color: #cf28b9;">Запрос</div>
+                <div class="message-text"></div>
+            </div>
         </div>
     </div>
     <div class="col-md-6">
@@ -62,4 +72,8 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'main/js/demonstration.js' %}"></script>
 {% endblock %}
