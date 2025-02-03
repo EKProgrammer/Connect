@@ -2,14 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Chat, Message
 from users.models import User
-
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 import json
 import os
 from mistralai import Mistral
-
+from django.utils import timezone
 
 @login_required
 def start_chat(request, user_id):
@@ -58,7 +57,7 @@ def chats(request, chat_id):
     chats_list = get_user_chats(request)
 
     data = {
-        'user': request.user,
+        'user': request.user, 
         'chats_list': chats_list,
         'chat': chat,
         'messages': messages
@@ -112,3 +111,30 @@ def mistral_message_generation(request):
         return JsonResponse({'response': chat_response.choices[0].message.content})
     except Exception as e:
         return JsonResponse({'error': 'Failed to get response from AI'}, status=500)
+
+def edit_message(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        message_id = data.get("message_id")
+        new_content = data.get("new_content")
+        message = get_object_or_404(Message, id=message_id, sender=request.user)
+    
+        if new_content:
+            message.is_changed = True
+            message.content = new_content
+            message.save()
+            return JsonResponse({"new_content": message.content})
+        return JsonResponse({"error": "Content cannot be empty"}, status=400)
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+        
+@csrf_exempt
+@login_required
+@require_http_methods(["POST"])
+def delete_message(request, message_id):
+    try:
+        message = Message.objects.get(id=message_id)
+        message.delete()
+        return JsonResponse({'status': 'success'})
+    except Message.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Message not found'}, status=404)

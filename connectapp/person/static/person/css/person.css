@@ -327,7 +327,7 @@ input[type="file"] {
 }
 
 .modal-fixed-height {
-    height: 94vh;
+    min-height: 94vh;
 }
 
 .modal-body {

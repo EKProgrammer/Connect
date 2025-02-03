@@ -6,7 +6,7 @@ from django.http import JsonResponse, StreamingHttpResponse
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 
 from PIL import Image
@@ -179,7 +179,7 @@ def could_use_ai(request):
     """ Проверяем, есть ли у пользователя подписка или остались ли попытки """
     user = request.user
     if not user.has_subscription:
-        if user.last_ai_help_reset.date() < timezone.now().date():
+        if timezone.now().date() - user.last_ai_help_reset.date() >= timedelta(hours=24):
             user.ai_help_requests_left = 5
             user.last_ai_help_reset = timezone.now()
         if user.ai_help_requests_left == 0:
@@ -289,3 +289,4 @@ def liked_users(request, post_id):
         'avatar_url': user.get_avatar_url()
     } for user in liked_user_instances]
     return JsonResponse(users_data, safe=False)
+
