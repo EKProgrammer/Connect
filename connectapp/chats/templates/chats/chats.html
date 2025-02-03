@@ -41,28 +41,48 @@
                 {% if participant != request.user %}
                     <a style="color: white" href="{% url 'user_profile' participant.username %}">
                         <h2 class="chat-name-window">
+                            <img src="{{ participant.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
                             {{ participant.first_name }} {{ participant.last_name }}
                         </h2>
                     </a>
                 {% endif %}
             {% endfor %}
 
-            <!-- Сообщения -->
             <div class="messages" id="chat-messages">
                 {% for message in messages %}
                     {% if message.sender.id == request.user.id %}
-                        <div class="message message-sent">
+                        <div class="message message-sent" data-message-id="{{ message.id }}">
                             <div class="message-text">{{ message.content }}</div>
-                            <span class="message-sent-time">{{ message.timestamp }}</span>
+                            <span class="message-sent-time">
+                                {% if message.is_changed %}
+                                    <span style="margin-right: 5px;">Изменено</span>
+                                {% else %}
+                                    <span></span>
+                                {% endif %}
+                                {{ message.timestamp }}
+                            </span>
                         </div>
                     {% else %}
-                        <div class="message message-received">
+                        <div class="message message-received" data-message-id="{{ message.id }}">
                             <div class="message-text">{{ message.content }}</div>
-                            <span class="message-received-time">{{ message.timestamp }}</span>
+                            <span class="message-received-time">
+                                {% if message.is_changed %}
+                                    <span style="margin-right: 5px;">Изменено</span>
+                                {% else %}
+                                    <span></span>
+                                {% endif %}
+                                {{ message.timestamp }}
+                            </span>
                         </div>
                     {% endif %}
                 {% endfor %}
             </div>
+
+            <!-- Контекстное меню -->
+            <div id="context-menu" class="context-menu">
+                <button id="edit-message-btn">Редактировать</button>
+                <button id="delete-message-btn">Удалить</button>
+            </div>                                                                                 
 
             <!-- Поле ввода текста -->
             <form method="post">
@@ -92,5 +112,6 @@
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>
     <script src="{% static 'chats/js/resizer.js' %}"></script>
+    <script src="{% static 'chats/js/edit_message.js' %}"></script>
 {#    <script src="{% static 'chats/js/web_socket.js' %}"></script>#}
 {% endblock %}
