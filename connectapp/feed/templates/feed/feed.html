@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<section class="container container-profile mt-4">
+<section class="container container-profile">
     {% if posts %}
         {% for post in posts %}
             <div class="post-item">
@@ -21,9 +21,9 @@
                     </div>
                 </div>
                 <div class="post-content">
-                    <p class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</p>
+                    <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
                     <div class="fade-out"></div>
-                    <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
+                    <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
                 </div>
                 {% if post.image %}
                     <div class="post-image-container mt-3">

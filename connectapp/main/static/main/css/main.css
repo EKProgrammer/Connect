@@ -209,3 +209,23 @@ a {
 .cropper-face {
     border-radius: 50%;
 }
+
+/* ------------------------- */
+
+/* Кнопка "Наверх" */
+#scrollToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 99; /* Кнопка находится поверх других элементов */
+    border: none;
+    outline: none;
+    background-color: #212529;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+#scrollToTopBtn:hover {
+  background-color: #333;
+}

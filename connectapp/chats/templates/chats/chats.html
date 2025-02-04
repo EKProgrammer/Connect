@@ -78,12 +78,6 @@
                 {% endfor %}
             </div>
 
-            <!-- Контекстное меню -->
-            <div id="context-menu" class="context-menu">
-                <button id="edit-message-btn">Редактировать</button>
-                <button id="delete-message-btn">Удалить</button>
-            </div>                                                                                 
-
             <!-- Поле ввода текста -->
             <form method="post">
                 {% csrf_token %}
@@ -104,6 +98,12 @@
         {% endif %}
     </div>
 </section>
+
+<!-- Контекстное меню -->
+<div id="context-menu" class="context-menu">
+    <button id="edit-message-btn">Редактировать</button>
+    <button id="delete-message-btn">Удалить</button>
+</div>
 
 {% endblock %}
 

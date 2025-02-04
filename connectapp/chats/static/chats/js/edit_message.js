@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!target) return;
 
         currentMessage = target;
-        contextMenu.style.top = `${event.pageY - 122}px`;
-        contextMenu.style.left = `${event.pageX - 522}px`;
+        contextMenu.style.top = `${event.pageY}px`;
+        contextMenu.style.left = `${event.pageX}px`;
         contextMenu.style.display = "block";
     });
 
@@ -112,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const newSubmitButton = submitButton.cloneNode(true);
         submitButton.parentNode.replaceChild(newSubmitButton, submitButton);
         newSubmitButton.addEventListener("click", submitHandler);
-        console.log(textarea);
         adjustTextareaHeight(textarea);
         newSubmitButton.addEventListener("click", submitHandler);
     });

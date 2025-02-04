@@ -28,7 +28,7 @@ DEBUG = True
 # В случае False запускать команду python manage.py runserver --insecure
 # для применения стилей
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition

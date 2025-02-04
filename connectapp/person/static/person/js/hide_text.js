@@ -53,7 +53,7 @@ function hidePostText() {
         readMoreBtn.addEventListener('click', function() {
             if (textElement.classList.contains('expanded')) {
                 textElement.classList.remove('expanded');
-                post.style.maxHeight = '500px';
+                post.style.maxHeight = '300px';
                 readMoreBtn.textContent = 'Читать далее';
                 fadeOut.style.display = 'block';
             } else {

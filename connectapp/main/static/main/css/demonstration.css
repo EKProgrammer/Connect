@@ -1,10 +1,10 @@
 .index-container {
     align-items: center;
-    min-height: 79vh;
+    min-height: 100%;
 }
 
 .demonstration-container {
-    min-height: 79vh;
+    min-height: 73vh;
 }
 
 .slogan {
@@ -35,7 +35,6 @@
     position: relative;
     background-color: #66666666;
     border-radius: 0 0 10px 10px;
-    margin-bottom: 20px;
 }
 
 .message-text {

@@ -277,7 +277,7 @@ input[type="file"] {
 
 .post-content {
     position: relative;
-    max-height: 500px; /* Максимальная высота для текста, остальное прячем */
+    max-height: 300px; /* Максимальная высота для текста, остальное прячем */
     overflow: hidden;
 }
 
