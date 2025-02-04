@@ -1,0 +1,4 @@
+PassengerEnabled On
+PassengerPython /home/m/mazuraty/connect-ai.ru/venv/bin/python
+SetEnv MISTRAL_API_KEY "dEQeNlyEyj5ijNis4ojPmiqOy1c4PoaY"
+PassengerFriendlyErrorPages on

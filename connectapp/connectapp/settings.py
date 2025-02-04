@@ -24,11 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n!&d=0p3=#7!ht_tbc3bjg5w9s(w8!+$b)*b4z^+$jx^80areh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 # В случае False запускать команду python manage.py runserver --insecure
 # для применения стилей
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -143,9 +143,11 @@ AUTHENTICATION_BACKENDS = [
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+#STATIC_URL = "static/"
+#STATIC_ROOT = '/home/m/mazuraty/connect-ai.ru/connectapp/static'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static1')]
 
 
 ASGI_APPLICATION = 'connectapp.asgi.application'
