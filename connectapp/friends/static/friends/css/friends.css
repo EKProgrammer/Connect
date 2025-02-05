@@ -8,12 +8,14 @@
     background-color: #3e3e3e;
     justify-content: space-between; 
 }
+
 .user-card img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 15px;
 }
+
 .user-card h5 {
     margin: 0;
 }
@@ -27,7 +29,10 @@
     border-radius: 5px;
     background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
     cursor: pointer;
+    margin-left: 10px;
 }
+
+
 .custom-search-button:hover {
     background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
 }
@@ -36,4 +41,29 @@
     display: flex;
     align-items: center;
     flex-grow: 1;  
+}
+
+.user-card .btn,
+.user-card .gradient-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #6a6a6a;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+}
+
+.user-card .gradient-btn {
+    color: white;
+}
+
+.user-card form,
+.user-card a {
+    margin-left: 15px;
+}
+
+.user-card .gradient-btn:hover {
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    color: white;
 }

@@ -11,16 +11,26 @@
     flex-direction: column;
 }
 
+.user-info .about-section {
+    max-width: 85%
+}
+
+
 .person-name {
     font-size: 2.5rem;
     font-weight: bold;
-    margin-bottom: 24px;
 }
 
 .about-section {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+}
+/* О себе */
+.about-section h2 {
+    color: #888;
+    font-size: 30px;
+    margin-top: 20px;
 }
 
 .about-section .edit-about-btn {
@@ -36,13 +46,12 @@
 
 .about-container {
     position: relative;
-    max-height: 255px; /* Максимальная высота для текста "О себе" */
+    max-height: 255px;
     overflow: hidden;
 }
 
 .about {
     font-style: italic;
-    color: #888;
     font-size: 1.4rem;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -62,6 +71,7 @@
     box-shadow: -2px -2px 2px 2px rgba(33, 37, 41, 0.8);
     background-color: #212529;
     cursor: pointer;
+
 }
 
 .about-read-more-btn:hover {
@@ -104,32 +114,42 @@
     margin-right: 20px;
 }
 
-/* Изображение профиля пользователя */
 .profile-image-container {
     position: relative;
     width: 400px;
     height: 400px;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 50%; 
+    border: 2px solid #4d4949;
 }
 
 .profile-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
 }
+
 
 .image-actions {
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    padding-right: 5px;
-    bottom: 10px;
-    right: 10px;
-    opacity: 0;
-    background: rgba(169, 169, 169, 0.3);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(169, 169, 169, 0.5);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
+    border-radius: 10px;
+    padding: 10px;
+    opacity: 0;
     transition: opacity 0.3s ease;
+}
+.image-actions a {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px;
 }
 
 .image-actions .edit-image-btn {
@@ -139,11 +159,99 @@
 
 .image-actions .edit-image-btn {
     opacity: 1;
+    transition: opacity 0.3s ease;
 }
+
 
 .profile-image-container .image-actions {
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+.profile-image-container:hover .image-actions {
+    opacity: 1;
+}
+
+.person-username {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: -4px;
+    color: #939393;
+}
+
+
+/* Стили для кнопок в секции профиля */
+.user-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.user-actions .btn,
+.user-actions .gradient-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #6a6a6a; 
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 190px; 
+    height: 70px; 
+}
+
+.user-actions .gradient-btn {
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+}
+
+.user-actions .gradient-btn:hover {
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+}
+
+.user-actions .btn:hover {
+    background-color: #555;
+}
+
+
+/* Изображение профиля пользователя */
+.profile-image-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; 
+}
+
+.image-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    background: rgba(169, 169, 169, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-actions a {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px;
 }
 
 .profile-image-container:hover .image-actions {
@@ -155,12 +263,12 @@
     margin-top: 10px;
 }
 
-/* Скрываем стандартный input file */
+
+
 input[type="file"] {
     display: none;
 }
 
-/* Стилизуем текст с названием выбранного файла */
 #selected-image-name {
     display: inline-block;
     max-width: 200px;
@@ -277,7 +385,7 @@ input[type="file"] {
 
 .post-content {
     position: relative;
-    max-height: 300px; /* Максимальная высота для текста, остальное прячем */
+    max-height: 300px;
     overflow: hidden;
 }
 
@@ -332,7 +440,7 @@ input[type="file"] {
 
 .modal-body {
     flex-grow: 1;
-    overflow: hidden; /* Скрыть скроллбар для всего модального тела */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
