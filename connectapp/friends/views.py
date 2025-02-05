@@ -34,6 +34,7 @@ def search_friends(request):
     }
     return render(request, 'friends/friends.html', context)
 
+
 @login_required
 def follow_user(request, username):
     """Подписаться на пользователя"""
