@@ -1,12 +1,15 @@
 /* Универсальный контейнер страницы /person/ */
 .container-profile {
-    background-color: #212529;
+    background-color: #111111;
     padding: 30px;
     border-radius: 20px;
+    border: 0.3px solid rgb(114, 114, 114); 
 }
 
 /* Секция с общей информацией о профиле */
 .user-info {
+    margin-left: 20%;
+    margin-top: -16%;
     display: flex;
     flex-direction: column;
 }
@@ -116,11 +119,11 @@
 
 .profile-image-container {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     overflow: hidden;
     border-radius: 50%; 
-    border: 2px solid #4d4949;
+    border: 2px solid #ffffff;
 }
 
 .profile-image {
@@ -141,7 +144,7 @@
     transform: translate(-50%, -50%);
     background: rgba(169, 169, 169, 0.5);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+    border-radius: 16px;
     padding: 10px;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -185,14 +188,14 @@
 .user-actions {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 848px;
     margin-top: 10px;
 }
 
 .user-actions .btn,
 .user-actions .gradient-btn {
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 7px;
     background-color: #6a6a6a; 
     color: white;
     text-align: center;
@@ -200,7 +203,7 @@
     border: none;
     transition: background-color 0.3s ease;
     width: 190px; 
-    height: 70px; 
+    height: 60px; 
 }
 
 .user-actions .gradient-btn {
@@ -219,8 +222,8 @@
 /* Изображение профиля пользователя */
 .profile-image-container {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: 200px;
+    height: 200px;
     overflow: hidden;
     border-radius: 50%;
 }
@@ -280,7 +283,7 @@ input[type="file"] {
 
 /* Посты */
 .post-item {
-    background-color: #212529;
+    background-color: #111111;
     padding: 1.5rem;
     margin-top: 1.5rem;
     border-radius: 20px;
@@ -498,9 +501,9 @@ input[type="file"] {
 .text-message-field {
     flex-grow: 1;
     width: 100%;
-    height: 68px; /* Начальная высота */
+    height: 68px;
     resize: none;
-    overflow-y: hidden; /* Скрыть скроллбар по умолчанию */
+    overflow-y: hidden;
 
     padding: 10px 10px 10px 15px;
     border-radius: 10px;
