@@ -13,30 +13,6 @@
 
 <section class="container container-profile">
 <div class="row">
-    <div class="col-md-8 user-info">
-        <h1 class="person-name">{{ user.first_name }} {{ user.last_name }}</h1>
-        <h1 class="person-username">@{{ user.username }}</h1>
-        <div class="about-section">
-            <h2>О себе
-                <button class="edit-about-btn" id="editAboutBtn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </buttonы>
-            </h2>
-            {% if user.about %}
-                <div class="about-container">
-                    <p class="about">{{ user.about }}</p>
-                    <div class="about-fade-out"></div>
-                    <a class="about-read-more-btn" style="display: none;">Читать далее</a>
-                </div>
-            {% else %}
-                <p class="commentary"></p>
-            {% endif %}
-            <div class="subscribers-info">
-                <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-                <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
-            </div>
-        </div>
-    </div>
     <div class="col-md-4">
         <div class="profile-image-container">
             <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image">
@@ -53,6 +29,28 @@
                         <i class="fa-solid fa-trash"></i>
                     </a>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 user-info">
+        <h1 class="person-name">{{ user.first_name }} {{ user.last_name }}</h1>
+        <h1 class="person-username">@{{ user.username }}</h1>
+        <div class="about-section">
+            <h2>О себе
+                <button class="edit-about-btn" id="editAboutBtn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+            </h2>
+            {% if user.about %}
+                <div class="about-container">
+                    <p class="about">{{ user.about }}</p>
+                    <div class="about-fade-out"></div>
+                    <a class="about-read-more-btn" style="display: none;">Читать далее</a>
+                </div>
+            {% endif %}
+            <div class="subscribers-info">
+                <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+                <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
             </div>
         </div>
     </div>

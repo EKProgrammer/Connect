@@ -13,6 +13,11 @@
 
 <section class="container container-profile">
 <div class="row">
+    <div class="col-md-4">
+        <div class="profile-image-container">
+            <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
+        </div>
+    </div>
     <div class="col-md-8 user-info">
         <h1 class="person-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</h1>
         <h1 class="person-username">@{{ profile_user }}</h1>
@@ -32,26 +37,21 @@
                 <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="profile-image-container">
-            <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
-        </div>
-        <div class="user-actions">
-            <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
-            {% if is_following %}
-                <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
-                    {% csrf_token %}
-                    <button class="gradient-btn" type="submit">Отписаться</button>
-                </form>
-            {% else %}
-                <form action="{% url 'follow_user' profile_user.username %}" method="post">
-                    {% csrf_token %}
-                    <button class="gradient-btn" type="submit">Подписаться</button>
-                </form>
-            {% endif %}
-        </div>        
-    </div>
+    </div>      
+    <div class="user-actions">
+        {% if is_following %}
+            <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
+                {% csrf_token %}
+                <button class="gradient-btn" type="submit" data="Отписаться""></button>
+            </form>
+        {% else %}
+            <form action="{% url 'follow_user' profile_user.username %}" method="post">
+                {% csrf_token %}
+                <button class="gradient-btn" type="submit" data="Подписаться"></button>
+            </form>
+        {% endif %}
+        <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
+    </div>  
 </div>
 </section>
 

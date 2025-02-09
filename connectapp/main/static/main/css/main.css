@@ -1,21 +1,22 @@
+/* Задний фон */
 body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #121212;
+    background-color: #191919;
     color: #fff;
 }
 
-.custom-header {
+.custom-header { 
     padding: 1em;
     display: flex;
     align-items: center;
-    background-color: #212529;
+    background-color: #111111;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
     z-index: 1000;
     transition: transform 0.5s ease;
 }
@@ -81,9 +82,10 @@ main {
 }
 
 .login-form {
-    background-color: #212529;
+    background-color: #111111;
     padding: 30px;
     border-radius: 20px;
+    border: 0.3px solid rgb(114, 114, 114); 
 }
 
 .gradient-btn {
@@ -133,7 +135,7 @@ main {
 }
 
 footer {
-    background-color: #212529;
+    background-color: #111111;
 }
 
 a {
@@ -221,7 +223,7 @@ a {
     z-index: 99; /* Кнопка находится поверх других элементов */
     border: none;
     outline: none;
-    background-color: #212529;
+    background-color: #111111;
     cursor: pointer;
     border-radius: 50%;
 }
