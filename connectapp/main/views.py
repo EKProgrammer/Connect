@@ -50,5 +50,25 @@ def logout(request):
 
 
 @login_required
+def about(request):
+    return render(request, "main/about.html")
+
+
+@login_required
+def user_agreement(request):
+    return render(request, "main/user_agreement.html")
+
+
+@login_required
+def subscription_agreement(request):
+    return render(request, "main/subscription_agreement.html")
+
+
+@login_required
+def faq(request):
+    return render(request, "main/faq.html")
+
+
+@login_required
 def subscription(request):
     return render(request, "main/subscription.html")

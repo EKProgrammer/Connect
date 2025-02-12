@@ -37,7 +37,7 @@
         <!-- Модальное окно для редактирования поста -->
         <div class="modal fade" id="editPostModal{{ post_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPostModalLabel{{ post_id }}">
             <div class="modal-dialog modal-lg">
-                <div class="modal-content modal-fixed-height bg-dark text-light">
+                <div class="modal-content modal-adaptive-size text-light">
                 {% with current_post_form=post_forms|get_item:post_id %}
                     <div class="modal-header border-secondary">
                         <h1 class="modal-title fs-5" id="editPostModalLabel{{ post_id }}">Редактировать пост</h1>
@@ -46,8 +46,8 @@
 
                     <div class="modal-body">
                         <!-- Содержимое страницы с текстовым полем и изображениями -->
-                        <div id="postFormContent{{ post_id }}">
-                            <form action="{% url 'edit_post' post_id %}" method="post" id="editPostForm{{ post_id }}">
+                        <div class="post-form-content" id="postFormContent{{ post_id }}">
+                            <form action="{% url 'edit_post' post_id %}" method="post" id="editPostForm{{ post_id }}" class="d-flex flex-column flex-grow-1" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ current_post_form.text }}
                                 <span class="post-char-count">0 / 5000</span>
@@ -98,13 +98,13 @@
         <!-- Модальное окно для удаления поста -->
         <div class="modal fade" id="deletePostModal{{ post_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePostModalLabel{{ post_id }}">
             <div class="modal-dialog">
-                <div class="modal-content bg-dark text-light">
+                <div class="modal-content text-light">
                     <div class="modal-header border-secondary">
                         <h1 class="modal-title fs-5" id="deletePostModalLabel{{ post_id }}">Удалить пост</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
                     <div class="modal-body">
-                        <p style="font-size: 1.2rem">Вы уверены, что хотите удалить этот пост?</p>
+                        <p style="font-size: 1rem">Вы уверены, что хотите удалить этот пост?</p>
                     </div>
                     <div class="modal-footer border-secondary d-flex justify-content-between">
                         <button type="button" class="gradient-btn" data-bs-dismiss="modal" data="Отмена"></button>

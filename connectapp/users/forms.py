@@ -73,8 +73,6 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ["first_name", "last_name", "username", "email", "password1", "password2"]
 
-from django import forms
-from users.models import User
 
 class AvatarUploadForm(forms.ModelForm):
     class Meta:

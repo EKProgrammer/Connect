@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchLikedUsers(postId) {
-        fetch(`/person/liked-users/${postId}/`)
+        fetch(`/person/service/liked-users/${postId}/`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -46,19 +46,26 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 likedUsersList.innerHTML = '';
-                data.forEach(user => {
+
+                if (data && data.length > 0) {
+                    data.forEach(user => {
+                        const userElement = document.createElement('div');
+                        userElement.classList.add('user-item');
+                        userElement.innerHTML = `
+                            <a href="/person/${user.username}/" class="user-link">
+                                <img src="${user.avatar_url}" alt="${user.first_name}" class="user-avatar">
+                                <div class="user-info">
+                                    <span class="user-name">${user.first_name} ${user.last_name}</span>
+                                </div>
+                            </a>
+                        `;
+                        likedUsersList.appendChild(userElement);
+                    });
+                } else {
                     const userElement = document.createElement('div');
-                    userElement.classList.add('user-item');
-                    userElement.innerHTML = `
-                        <a href="/person/${user.username}/" class="user-link">
-                            <img src="${user.avatar_url}" alt="${user.first_name}" class="user-avatar">
-                            <div class="user-info">
-                                <span class="user-name">${user.first_name} ${user.last_name}</span>
-                            </div>
-                        </a>
-                    `;
+                    userElement.innerHTML = `<span style="font-size: 1.25rem;">Список пуст</span>`;
                     likedUsersList.appendChild(userElement);
-                });
+                }
                 likedUsersModal.show();
             })
             .catch(error => {

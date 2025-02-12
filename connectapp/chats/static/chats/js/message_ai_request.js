@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.querySelector('img').classList.add('rotate');
 
             // Отправляем запрос к API
-            fetch('/chats/message_generation', {
+            fetch('/chats/service/message_generation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

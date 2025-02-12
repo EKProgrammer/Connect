@@ -11,33 +11,24 @@
 
 {% block content %}
 
-<section class="container container-profile">
-<div class="row">
-    <div class="col-md-4">
-        <div class="profile-image-container">
-            <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
-        </div>
-    </div>
-    <div class="col-md-8 user-info">
-        <h1 class="person-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</h1>
-        <h1 class="person-username">@{{ profile_user }}</h1>
-        <div class="about-section">
-            <h2>О себе</h2>
+<section class="profile-header container-profile">
+    <span class="profile-image-container">
+        <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
+    </span>
+    <span class="user-info">
+        <span class="person-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</span>
+        <span class="person-username">@{{ profile_user }}</span>
+        <span class="about-section">
+            <span class="about-label">О себе</span>
             {% if profile_user.about %}
-                <div class="about-container">
-                    <p class="about">{{ profile_user.about }}</p>
-                    <div class="about-fade-out"></div>
-                    <a class="about-read-more-btn" style="display: none;">Читать далее</a>
-                </div>
-            {% else %}
-                <p class="commentary">Информация отсутвует</p>
+                <span class="about-container">{{ profile_user.about }}</span>
             {% endif %}
-            <div class="subscribers-info">
-                <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-                <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
-            </div>
-        </div>
-    </div>      
+        </span>
+        <span class="subscribers-info">
+            <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+            <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+        </span>
+    </span>
     <div class="user-actions">
         {% if is_following %}
             <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
@@ -51,11 +42,10 @@
             </form>
         {% endif %}
         <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
-    </div>  
-</div>
+    </div>
 </section>
 
-<section class="container container-profile mt-4">
+<section class="container-profile mt-4">
 <div class="d-flex justify-content-between align-items-center">
     <h2>Посты</h2>
     <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true"></div>
@@ -74,7 +64,7 @@
 <!-- Модальное окно для списка лайкнувших пост -->
 <div class="modal fade" id="likedUsersModal" tabindex="-1" aria-labelledby="likedUsersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content text-light">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title" id="likedUsersModalLabel">Пользователи, лайкнувшие пост</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>

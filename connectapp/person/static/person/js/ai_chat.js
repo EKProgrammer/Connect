@@ -2,7 +2,7 @@
 
 
 function checkAiUsage() {
-    return fetch('could_use_ai/', {
+    return fetch('service/could_use_ai/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -28,6 +28,11 @@ document.addEventListener('click', async function(event) {
         const prompt = prompt_textarea.value;
         const chat = document.getElementById(`aiChatContent${postId}`);
 
+        if (!prompt) {
+            alert("Введите запрос ИИ");
+            return;
+        }
+
         const canUseAi = await checkAiUsage();
         if (!canUseAi) {
             chat.insertAdjacentHTML('beforeend', `
@@ -39,11 +44,6 @@ document.addEventListener('click', async function(event) {
                 </div>
             `);
             drop_scrollbar(postId);
-            return;
-        }
-
-        if (!prompt) {
-            alert("Введите запрос ИИ");
             return;
         }
 
@@ -101,7 +101,7 @@ document.addEventListener('click', async function(event) {
         drop_scrollbar(postId);
 
         // Отправляем запрос к API
-        const eventSource = new EventSource(`/person/post_generation?prompt=${encodeURIComponent(prompt)}&post_text=${encodeURIComponent(current_post_text)}`);
+        const eventSource = new EventSource(`/person/service/post_generation?prompt=${encodeURIComponent(prompt)}&post_text=${encodeURIComponent(current_post_text)}`);
 
         const loader = document.querySelector('.loader-wrapper');
         if (loader) loader.remove();

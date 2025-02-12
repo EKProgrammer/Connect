@@ -3,37 +3,121 @@
     background-color: #111111;
     padding: 30px;
     border-radius: 20px;
-    border: 0.3px solid rgb(114, 114, 114); 
+    border: 2px solid rgb(114, 114, 114);
+    margin: 0 0 1.5rem 0;
+}
+
+/* Изображение профиля пользователя */
+.profile-image-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.image-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(169, 169, 169, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-actions a {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px;
+}
+
+.profile-image-container:hover .image-actions {
+    opacity: 1;
+}
+
+.image-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: rgba(169, 169, 169, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-actions a {
+    color: white;
+    font-size: 24px;
+    margin: 0 10px;
+}
+
+.image-actions .edit-image-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-actions .edit-image-btn {
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
 /* Секция с общей информацией о профиле */
+.profile-header {
+    display: flex;
+    flex-direction: row;
+}
+
 .user-info {
-    margin-left: 20%;
-    margin-top: -16%;
+    width: 60%;
     display: flex;
     flex-direction: column;
+    margin-left: 1.2rem;
 }
 
-.user-info .about-section {
-    max-width: 85%
-}
+@media (max-width: 800px) {
+    .profile-header {
+        flex-direction: column;
+    }
 
+    .user-info {
+        width: 100%;
+    }
+}
 
 .person-name {
     font-size: 2.5rem;
     font-weight: bold;
 }
 
+/* О себе */
 .about-section {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
 }
-/* О себе */
-.about-section h2 {
+
+.about-label {
     color: #888;
-    font-size: 30px;
-    margin-top: 20px;
+    font-size: 1.85rem;
 }
 
 .about-section .edit-about-btn {
@@ -49,52 +133,18 @@
 
 .about-container {
     position: relative;
-    max-height: 255px;
     overflow: hidden;
-}
-
-.about {
     font-style: italic;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     overflow-wrap: break-word;
     hyphens: auto;
     white-space: pre-wrap;
-}
-
-.about.expanded {
-    max-height: none;
-}
-
-.about-read-more-btn {
-    font-size: 1rem;
-    color: #888;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    box-shadow: -2px -2px 2px 2px rgba(33, 37, 41, 0.8);
-    background-color: #212529;
-    cursor: pointer;
-
-}
-
-.about-read-more-btn:hover {
-    color: #666;
-}
-
-.about-fade-out {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background: linear-gradient(transparent, #212529);
-    pointer-events: none;
+    margin-top: 0.4rem;
+    margin-bottom: 0.8rem;
 }
 
 .subscribers-info {
-    flex-grow: 1;
     display: flex;
-    align-items: flex-end;
 }
 
 .edit-about-btn,
@@ -117,64 +167,6 @@
     margin-right: 20px;
 }
 
-.profile-image-container {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 50%; 
-    border: 2px solid #ffffff;
-}
-
-.profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-
-.image-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(169, 169, 169, 0.5);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-.image-actions a {
-    color: white;
-    font-size: 24px;
-    margin: 0 10px;
-}
-
-.image-actions .edit-image-btn {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.image-actions .edit-image-btn {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
-
-.profile-image-container .image-actions {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.profile-image-container:hover .image-actions {
-    opacity: 1;
-}
-
 .person-username {
     font-size: 2rem;
     font-weight: bold;
@@ -185,13 +177,6 @@
 
 
 /* Стили для кнопок в секции профиля */
-.user-actions {
-    display: flex;
-    justify-content: center;
-    gap: 848px;
-    margin-top: 10px;
-}
-
 .user-actions .btn,
 .user-actions .gradient-btn {
     padding: 10px 20px;
@@ -205,67 +190,6 @@
     width: 190px; 
     height: 60px; 
 }
-
-.user-actions .gradient-btn {
-    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-}
-
-.user-actions .gradient-btn:hover {
-    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-}
-
-.user-actions .btn:hover {
-    background-color: #555;
-}
-
-
-/* Изображение профиля пользователя */
-.profile-image-container {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    border-radius: 50%;
-}
-
-.profile-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%; 
-}
-
-.image-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    background: rgba(169, 169, 169, 0.5);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.image-actions a {
-    color: white;
-    font-size: 24px;
-    margin: 0 10px;
-}
-
-.profile-image-container:hover .image-actions {
-    opacity: 1;
-}
-
-.user-actions {
-    display: flex;
-    margin-top: 10px;
-}
-
 
 
 input[type="file"] {
@@ -334,8 +258,8 @@ input[type="file"] {
     position: absolute;
     bottom: 0;
     right: 0;
-    box-shadow: -2px -2px 2px 2px rgba(33, 37, 41, 0.8);
-    background-color: #212529;
+    box-shadow: -2px -2px 2px 2px rgba(17, 17, 17, 0.8);
+    background-color: #111111;
     cursor: pointer;
 }
 
@@ -349,7 +273,7 @@ input[type="file"] {
     left: 0;
     width: 100%;
     height: 50px;
-    background: linear-gradient(transparent, #212529);
+    background: linear-gradient(transparent, #111111);
     pointer-events: none;
 }
 
@@ -362,6 +286,7 @@ input[type="file"] {
 .post-header-profile {
     display: flex;
     justify-content: space-between;
+    height: 2.5rem;
 }
 
 .post-header-feed {
@@ -371,6 +296,7 @@ input[type="file"] {
 }
 
 .post-avatar {
+    object-fit: cover;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -421,7 +347,7 @@ input[type="file"] {
 
 /* Модальные окна */
 .modal-textarea {
-    height: 60vh;
+    flex-grow: 1;
     width: 100%;
     padding: 10px 10px 10px 15px;
     resize: none;
@@ -437,12 +363,17 @@ input[type="file"] {
     outline: none;
 }
 
-.modal-fixed-height {
-    min-height: 94vh;
+.modal-content {
+    background-color: #111111;
+}
+
+.modal-adaptive-size {
+    height: 90vh;
+    min-height: 500px;
+    min-width: 500px;
 }
 
 .modal-body {
-    flex-grow: 1;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -461,7 +392,8 @@ input[type="file"] {
     justify-content: center;
     border: #888888 solid 2px;
     border-radius: 10px;
-    height: 12vh;
+    height: 20vh;
+    min-height: 100px;
     margin-top: 5px;
 }
 
@@ -481,6 +413,12 @@ input[type="file"] {
 }
 
 /* Чат с ИИ */
+.post-form-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .ai-chat-content {
     padding-right: 10px;
     overflow-y: auto;
@@ -583,7 +521,8 @@ input[type="file"] {
     -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
     animation: l13 1s infinite linear;
 }
-@keyframes l13{
+
+@keyframes l13 {
     100%{transform: rotate(1turn)}
 }
 

@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!confirm("Вы уверены, что хотите удалить это сообщение?")) return;
 
         try {
-            const response = await fetch(`/chats/delete_message/${messageId}/`, {
+            const response = await fetch(`/chats/service/delete_message/${messageId}/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
     
             try {
-                const response = await fetch("/chats/edit_message/", {
+                const response = await fetch("/chats/service/edit_message/", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

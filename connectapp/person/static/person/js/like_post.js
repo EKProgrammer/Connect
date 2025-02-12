@@ -2,7 +2,8 @@ document.addEventListener('click', function(event) {
     const button = event.target.closest('.like-btn');
     if (button) {
         const postId = button.getAttribute('data-post-id');
-        fetch('like_post/', {
+        console.log(postId);
+        fetch('/person/service/like_post/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

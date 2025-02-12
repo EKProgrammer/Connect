@@ -1,0 +1,58 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block title %}Информация о платформе - Connect{% endblock %}
+
+{% block SEO_area %}
+    <meta name="description" content="Добро пожаловать в социальную сеть нового поколения, где искусственный интеллект становится вашим надежным союзником в создании контента и общении! Здесь вы можете легко и быстро создавать уникальные посты, делиться своими мыслями и идеями, а также общаться с друзьями и подписчиками, используя возможности ИИ.">
+    <meta name="keywords" content="Ai, Социальная сеть, Connect, ИИ, social app">
+    <meta name="language" content="ru">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Connect">
+    <meta property="og:description" content="Добро пожаловать в социальную сеть нового поколения, где искусственный интеллект становится вашим надежным союзником в создании контента и общении! Здесь вы можете легко и быстро создавать уникальные посты, делиться своими мыслями и идеями, а также общаться с друзьями и подписчиками, используя возможности ИИ.">
+    <meta property="og:image" content="{% static 'main/img/logo_open_graph.jpg' %}">
+    <meta property="og:url" content="https://connect-ai.ru/">
+    <meta property="og:type" content="website">
+{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'main/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="introduction">
+        <h1>Connect</h1>
+        <p class="marketing-slogan">Социальная сеть, где <span class="highlight">генеративный ИИ</span> становится вашим личным помощником!</p>
+    </div>
+    <div class="container-about-page">
+        <section class="about">
+            <h2>О платформе</h2>
+            <p>Connect - инновационная платформа нового поколения, где <span class="highlight">генеративный искусственный интеллект</span> становится вашим персональным помощником. Объединене технологий, общения и творчества с искусственным интеллектом, сделает вашу жизнь проще, ярче и увлекательнее.</p>
+            <p>С Connect вы можете создавать уникальные посты, общаться с друзьями и находить новые темы для разговоров — всё это с помощью мощного ИИ, который всегда готов помочь.</p>
+        </section>
+        <section class="features">
+            <h2>Почему Connect?</h2>
+            <ul>
+                <li><span class="highlight">Генерация текста для постов:</span> ИИ создаёт уникальный контент на основе ваших идей.</li>
+                <li><span class="highlight">Редактирование текста:</span> Измените стиль, тон или структуру текста с помощью ИИ.</li>
+                <li><span class="highlight">Умные ответы в чате:</span> ИИ анализирует переписку и предлагает релевантные ответы.</li>
+                <li><span class="highlight">Темы для разговоров:</span> ИИ предлагает интересные темы на основе ваших интересов.</li>
+            </ul>
+        </section>
+
+        <section class="demo">
+            <h2>Как это работает?</h2>
+            <p>Посмотрите, как Connect делает вашу жизнь проще:</p>
+            <img src="{% static 'images/demo1.gif' %}" alt="Демонстрация генерации поста">
+            <img src="{% static 'images/demo2.gif' %}" alt="Демонстрация чата с ИИ">
+        </section>
+
+        <section class="contact">
+            <h2>Свяжитесь с нами</h2>
+            <p>У вас есть вопросы или предложения? Мы всегда рады помочь!</p>
+            <p>Напишите нам в Telegram: <a href="https://t.me/alemazur">Connect Support</a></p>
+        </section>
+    </div>
+{% endblock %}

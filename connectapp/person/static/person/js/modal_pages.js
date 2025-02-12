@@ -7,10 +7,10 @@ document.addEventListener('click', function(event) {
     if (activateAiChatButton) {
         const modalId = activateAiChatButton.closest('.modal').id;
         const postId = modalId.replace('createPostModal', '').replace('editPostModal', '');
-        const postFormContent = document.querySelector(`#postFormContent${postId}`);
-        const aiChatContent = document.querySelector(`#aiChatContent${postId}`);
-        const postFormFooter = document.querySelector(`#postFormFooter${postId}`);
-        const aiChatFooter = document.querySelector(`#aiChatFooter${postId}`);
+        const postFormContent = document.getElementById(`postFormContent${postId}`);
+        const aiChatContent = document.getElementById(`aiChatContent${postId}`);
+        const postFormFooter = document.getElementById(`postFormFooter${postId}`);
+        const aiChatFooter = document.getElementById(`aiChatFooter${postId}`);
 
         const post_textarea = document.querySelector(`#${modalId} .modal-textarea`);
         update_last_message(post_textarea, postId);

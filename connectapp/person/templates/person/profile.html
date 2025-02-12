@@ -11,56 +11,48 @@
 
 {% block content %}
 
-<section class="container container-profile">
-<div class="row">
-    <div class="col-md-4">
-        <div class="profile-image-container">
-            <img src="{{ user.get_avatar_url }}" alt="person" class="profile-image">
-            <div class="image-actions">
-                <form method="post" enctype="multipart/form-data" id="avatarForm">
-                    {% csrf_token %}
-                    <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
-                    <a href="#" class="edit-image-btn" id="uploadAvatarBtn" title="Редактировать">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
-                </form>
-                {% if user.image %}
-                    <a href="{% url 'delete_avatar' %}" class="delete-img-btn" title="Удалить">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8 user-info">
-        <h1 class="person-name">{{ user.first_name }} {{ user.last_name }}</h1>
-        <h1 class="person-username">@{{ user.username }}</h1>
-        <div class="about-section">
-            <h2>О себе
+<section class="profile-header container-profile">
+    <span class="profile-image-container">
+        <img src="{{ user.get_avatar_url }}" class="profile-image" alt="person">
+        <span class="image-actions">
+            <form method="post" enctype="multipart/form-data" id="avatarForm">
+                {% csrf_token %}
+                <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
+                <a href="#" class="edit-image-btn" id="uploadAvatarBtn" title="Редактировать">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </form>
+            {% if user.image %}
+                <a href="{% url 'delete_avatar' %}" class="delete-img-btn" title="Удалить">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            {% endif %}
+        </span>
+    </span>
+    <span class="user-info">
+        <span class="person-name">{{ user.first_name }} {{ user.last_name }}</span>
+        <span class="person-username">@{{ user.username }}</span>
+        <span class="about-section">
+            <span class="about-label">О себе
                 <button class="edit-about-btn" id="editAboutBtn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
-            </h2>
+            </span>
             {% if user.about %}
-                <div class="about-container">
-                    <p class="about">{{ user.about }}</p>
-                    <div class="about-fade-out"></div>
-                    <a class="about-read-more-btn" style="display: none;">Читать далее</a>
-                </div>
+                <span class="about-container">{{ user.about }}</span>
             {% endif %}
-            <div class="subscribers-info">
-                <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-                <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
-            </div>
-        </div>
-    </div>
-</div>
+        </span>
+        <span class="subscribers-info">
+            <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+            <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+        </span>
+    </span>
 </section>
 
 <!-- Модальное окно для редактирования "О себе" -->
 <div class="modal fade" id="editAboutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAboutModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content text-light">
             <div class="modal-header border-secondary">
                 <h1 class="modal-title fs-5" id="editAboutModalLabel">Редактировать информацию о себе</h1>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
@@ -79,7 +71,7 @@
     </div>
 </div>
 
-<section class="container container-profile mt-4">
+<section class="container-profile">
 <div class="d-flex justify-content-between align-items-center">
     <h2>Посты</h2>
     <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
@@ -88,7 +80,7 @@
     <!-- Модальное окно для добавления поста -->
     <div class="modal fade" id="createPostModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="createPostModalLabel">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content modal-fixed-height bg-dark text-light">
+            <div class="modal-content modal-adaptive-size text-light">
                 <div class="modal-header border-secondary">
                     <h1 class="modal-title fs-5" id="createPostModalLabel">Создать новый пост</h1>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
@@ -96,8 +88,8 @@
 
                 <div class="modal-body">
                     <!-- Содержимое страницы с текстовым полем и изображениями -->
-                    <div id="postFormContent">
-                        <form action="{% url 'create_post' %}" method="post" id="createPostForm" enctype="multipart/form-data">
+                    <div class="post-form-content" id="postFormContent">
+                        <form action="{% url 'create_post' %}" method="post" id="createPostForm" class="d-flex flex-column flex-grow-1" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ empty_post_form.text }}
                             <span class="post-char-count">0 / 5000</span>
@@ -158,7 +150,7 @@
 <!-- Модальное окно для списка лайкнувших пост -->
 <div class="modal fade" id="likedUsersModal" tabindex="-1" aria-labelledby="likedUsersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content text-light">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title" id="likedUsersModalLabel">Пользователи, лайкнувшие пост</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -175,7 +167,7 @@
 <!-- Контекстное меню для кнопки лайка -->
 <div class="custom-context-menu" id="likeContextMenu">
     <ul>
-        <li id="showLikedUsers">Посмотреть список лайкнувших</li>
+        <li id="showLikedUsers">Посмотреть список</li>
     </ul>
 </div>
 

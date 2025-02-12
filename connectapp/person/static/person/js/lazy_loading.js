@@ -36,9 +36,10 @@ async function getContent() {
     try {
         let href_response;
         if (window.location.pathname === '/person/') {
-            href_response = `load_more_posts/?page=${page}`;
+            href_response = `service/load_more_posts/?page=${page}`;
         } else {
-            href_response = `load_more_posts_other_user/?page=${page}`;
+            const username = window.location.pathname.split('/')[2];
+            href_response = `/person/service/load_more_posts_other_user/${username}/?page=${page}`;
         }
         const response = await fetch(href_response);
         if (!response.ok) {

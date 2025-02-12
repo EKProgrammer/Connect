@@ -9,12 +9,12 @@
 {% endblock %}
 
 {% block content %}
-<section class="container container-profile">
+<section class="container-profile">
     {% if posts %}
         {% for post in posts %}
             <div class="post-item">
                 <div class="post-header-feed">
-                    <img src="{{ post.user.get_avatar_url }}" alt="{{ post.user.username }}" class="post-avatar">
+                    <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
                     <div class="post-info">
                         <h3><a href="{% url 'user_profile' post.user.username %}">{{ post.user.first_name }} {{ post.user.last_name }}</a></h3>
                         <p class="post-date">{{ post.date }}</p>
@@ -47,7 +47,7 @@
 <!-- Модальное окно для списка лайкнувших пост -->
 <div class="modal fade" id="likedUsersModal" tabindex="-1" aria-labelledby="likedUsersModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content bg-dark text-light">
+        <div class="modal-content text-light">
             <div class="modal-header border-secondary">
                 <h5 class="modal-title" id="likedUsersModalLabel">Пользователи, лайкнувшие пост</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -64,7 +64,7 @@
 <!-- Контекстное меню для кнопки лайка -->
 <div class="custom-context-menu" id="likeContextMenu">
     <ul>
-        <li id="showLikedUsers">Посмотреть список лайкнувших</li>
+        <li id="showLikedUsers">Посмотреть список</li>
     </ul>
 </div>
 {% endblock %}
