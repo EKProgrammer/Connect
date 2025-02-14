@@ -304,3 +304,44 @@ def get_followers(request):
     } for follower in followers]
     return JsonResponse(followers_data, safe=False)
 
+@login_required
+def get_user_followers(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = user.followers.all()
+    followers_data = [{
+        'username': follower.user.username,
+        'first_name': follower.user.first_name,
+        'last_name': follower.user.last_name,
+        'avatar_url': follower.user.get_avatar_url()
+    } for follower in followers]
+    return JsonResponse(followers_data, safe=False)
+
+
+@login_required
+def user_following_list(request, username):
+    user = get_object_or_404(User, username=username)
+    following = user.subscriptions.all()
+    following_data = [
+        {
+            'username': follow.subscribed_to.username,
+            'first_name': follow.subscribed_to.first_name,
+            'last_name': follow.subscribed_to.last_name,
+            'avatar_url': follow.subscribed_to.get_avatar_url(),
+        }
+        for follow in following
+    ]
+    return JsonResponse(following_data, safe=False)
+
+@login_required
+def following_list(request):
+    following = request.user.subscriptions.all()
+    following_data = [
+        {
+            'username': follow.subscribed_to.username,
+            'first_name': follow.subscribed_to.first_name,
+            'last_name': follow.subscribed_to.last_name,
+            'avatar_url': follow.subscribed_to.get_avatar_url(),
+        }
+        for follow in following
+    ]
+    return JsonResponse(following_data, safe=False)

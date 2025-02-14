@@ -188,6 +188,23 @@
     </div>
 </div>
 
+<!-- Модальное окно для списка подписок -->
+<div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="followingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="followingModalLabel">Подписки</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="following-list">
+                    <!-- Здесь будет список подписок -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block script %}
@@ -203,4 +220,5 @@
     <script src="{% static 'person/js/text_counters.js' %}"></script>
 
     <script src="{% static 'person/js/followers_list.js' %}"></script>
+    <script src="{% static 'person/js/following_list.js' %}"></script>
 {% endblock %}

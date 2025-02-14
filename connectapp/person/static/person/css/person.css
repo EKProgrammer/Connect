@@ -151,7 +151,7 @@
 .subscribers-info #followersCount:hover,
 .subscribers-info #SubscribeCount:hover,
 .subscribers-info #userFollowersCount:hover,
-.subscribers-info #userSubscribeCount:hover {
+.subscribers-info #userFollowingCount:hover {
     text-decoration: solid underline;
     text-underline-offset: auto;
     text-decoration-skip-ink: auto;

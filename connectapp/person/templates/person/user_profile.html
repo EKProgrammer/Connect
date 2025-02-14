@@ -25,8 +25,8 @@
             {% endif %}
         </span>
         <span class="subscribers-info">
-            <span id="userFollowersCount">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-            <span id="userSubscribeCount">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+            <span id="userFollowersCount" data-username="{{ profile_user.username }}">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+            <span id="userFollowingCount" data-username="{{ profile_user.username }}">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
         </span>
     </span>
     <div class="user-actions">
@@ -85,6 +85,39 @@
     </ul>
 </div>
 
+<div class="modal fade" id="UserfollowersModal" tabindex="-1" aria-labelledby="UserfollowersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="UserfollowersModalLabel">Подписчики</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="user-followers-list">
+                    <!-- Здесь будет список подписчиков -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для списка подписок -->
+<div class="modal fade" id="UserFollowingModal" tabindex="-1" aria-labelledby="UserFollowingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="UserFollowingModalLabel">Подписки</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="user-following-list">
+                    <!-- Здесь будет список подписок -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block script %}
@@ -93,4 +126,7 @@
 
     <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="{% static 'person/js/like_context_menu.js' %}"></script>
+
+    <script src="{% static 'person/js/user_followers_list.js' %}"></script>
+    <script src="{% static 'person/js/user_following_list.js' %}"></script>
 {% endblock %}
