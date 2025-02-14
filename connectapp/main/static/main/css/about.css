@@ -1,10 +1,41 @@
+.container-about {
+    background-color: #111111;
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid rgb(114, 114, 114);
+    margin: 0 0 1.5rem 0;
+}
+
 .introduction {
     color: #fff;
     text-align: center;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
 .introduction h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 6em;
+    color: #dcdcdc;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 900; 
+    letter-spacing: 4px; 
+    opacity: 0; 
+    animation: fadeIn 2s ease-out forwards; 
     margin: 0;
-    font-size: 2.5em;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .introduction h1 {
+        font-size: 4em;
+    }
 }
 
 .container-about-page {
@@ -15,22 +46,26 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 h2 {
-    color: rgba(97,142,228,1);
+    color: rgb(255, 255, 255);
     margin-top: 0;
 }
 .features, .demo, .contact {
     margin-bottom: 40px;
 }
+
 .features ul {
     list-style-type: none;
     padding: 0;
 }
+
 .features li {
-    background: #333333;
+    background: linear-gradient(135deg, #333333, #444444);
     margin: 10px 0;
     padding: 10px;
-    border-left: 5px solid rgba(97,142,228,1);
+    border-left: 5px solid rgb(255, 255, 255);
 }
+
+
 .demo img {
     max-width: 100%;
     height: auto;
@@ -39,23 +74,136 @@ h2 {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .contact a {
-    color: rgba(97,142,228,1);
+    color: rgb(249, 249, 249);
     text-decoration: none;
 }
+
 .contact a:hover {
     text-decoration: underline;
 }
+
 .marketing-slogan {
-    font-size: 1.2em;
-    font-style: italic;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #333;
     text-align: center;
     margin: 20px 0;
 }
-.highlight {
-    font-weight: bold;
-    background-image: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+
+body {
+font-family: 'Roboto', sans-serif;
+background-color: #000000;
+color: #333;
+margin: 0;
+padding: 0;
 }
+
+.container-about-page {
+width: 80%;
+margin: 0 auto;
+padding: 40px 0;
+}
+
+section {
+margin-bottom: 40px;
+}
+
+h2 {
+font-size: 32px;
+color: #efefef;
+text-align: center;
+margin-bottom: 20px;
+}
+
+.about p, .features ul, .contact p {
+font-size: 18px;
+line-height: 1.6;
+max-width: 800px;
+margin: 0 auto;
+color: #afafaf;
+text-align: center;
+}
+
+.highlight {
+    color: white; /* Белый цвет для текста */
+    font-weight: bold; /* Жирный шрифт */
+    text-decoration-color: transparent; /* Скрываем стандартное подчеркивание */
+    text-decoration-style: solid;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    background-clip: text; /* Применяем градиент к тексту */
+    -webkit-background-clip: text; /* Для WebKit-браузеров (Chrome, Safari) */
+    position: relative;
+}
+
+.highlight::after {
+    content: ''; /* Псевдо-элемент для подчеркивания */
+    position: absolute;
+    bottom: -4px; /* Располагаем подчеркивание немного ниже текста */
+    left: 0;
+    width: 100%;
+    height: 3px; /* Толщина подчеркивания */
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%); /* Градиентное подчеркивание */
+}
+
+
+
+
+.features ul {
+list-style-type: none;
+padding: 0;
+margin: 0;
+}
+
+.features li {
+font-size: 18px;
+margin-bottom: 10px;
+display: flex;
+align-items: center;
+}
+
+.features li::before {
+    content: "•";
+    margin-right: 10px;
+    font-size: 24px;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
+    -webkit-background-clip: text;
+    color: transparent; /* Текст (маркеры) прозрачный, чтобы был виден только градиент */
+}
+
+
+.demo img {
+display: block;
+margin: 0 auto;
+max-width: 100%;
+border-radius: 8px;
+}
+
+.contact a {
+color: #007bff;
+text-decoration: none;
+}
+
+.contact a:hover {
+text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+.container-about-page {
+    width: 90%;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+.about p, .features ul, .contact p {
+    font-size: 16px;
+}
+
+.features li {
+    font-size: 16px;
+}
+}
+

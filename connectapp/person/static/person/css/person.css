@@ -1,4 +1,3 @@
-/* Универсальный контейнер страницы /person/ */
 .container-profile {
     background-color: #111111;
     padding: 30px;
@@ -7,7 +6,6 @@
     margin: 0 0 1.5rem 0;
 }
 
-/* Изображение профиля пользователя */
 .profile-image-container {
     position: relative;
     width: 200px;
@@ -102,6 +100,10 @@
     .user-info {
         width: 100%;
     }
+}
+
+.user-username {
+    color: #939393;
 }
 
 .person-name {
