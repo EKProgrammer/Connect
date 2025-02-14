@@ -15,6 +15,7 @@ urlpatterns = [
     path('service/load_more_posts/', views.load_more_posts, name='load_more_posts'),
     path('service/liked-users/<int:post_id>/', views.liked_users, name='liked_users'),
     path('service/could_use_ai/', views.could_use_ai, name='could_use_ai'),
+    path('service/followers/', views.get_followers, name='get_followers'),
     path('service/load_more_posts_other_user/<str:username>/', views.load_more_posts_other_user,
          name='load_more_posts_other_user'),
 ]

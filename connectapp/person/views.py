@@ -290,3 +290,17 @@ def liked_users(request, post_id):
     } for user in liked_user_instances]
     return JsonResponse(users_data, safe=False)
 
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def get_followers(request):
+    followers = request.user.followers.all()
+    followers_data = [{
+        'username': follower.user.username,
+        'first_name': follower.user.first_name,
+        'last_name': follower.user.last_name,
+        'avatar_url': follower.user.get_avatar_url()
+    } for follower in followers]
+    return JsonResponse(followers_data, safe=False)
+

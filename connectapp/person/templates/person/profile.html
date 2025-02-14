@@ -43,8 +43,8 @@
             {% endif %}
         </span>
         <span class="subscribers-info">
-            <span>Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-            <span>Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+            <span id="followersCount">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+            <span id="SubscribeCount">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
         </span>
     </span>
 </section>
@@ -171,6 +171,23 @@
     </ul>
 </div>
 
+<!-- Модальное окно для списка подписчиков -->
+<div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="followersModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-light">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title" id="followersModalLabel">Подписчики</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="followers-list">
+                    <!-- Здесь будет список подписчиков -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block script %}
@@ -184,4 +201,6 @@
     <script src="{% static 'person/js/ai_chat.js' %}"></script>
     <script src="{% static 'person/js/modal_pages.js' %}"></script>
     <script src="{% static 'person/js/text_counters.js' %}"></script>
+
+    <script src="{% static 'person/js/followers_list.js' %}"></script>
 {% endblock %}

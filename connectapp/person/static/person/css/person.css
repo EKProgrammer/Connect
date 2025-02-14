@@ -144,7 +144,17 @@
 }
 
 .subscribers-info {
+    word-spacing: 5px;
     display: flex;
+}
+
+.subscribers-info #followersCount:hover,
+.subscribers-info #SubscribeCount:hover,
+.subscribers-info #userFollowersCount:hover,
+.subscribers-info #userSubscribeCount:hover {
+    text-decoration: solid underline;
+    text-underline-offset: auto;
+    text-decoration-skip-ink: auto;
 }
 
 .edit-about-btn,
@@ -163,7 +173,7 @@
 
 .follow-numbers {
     font-weight: bold;
-    margin-left: 5px;
+    margin-left: 0px;
     margin-right: 20px;
 }
 
