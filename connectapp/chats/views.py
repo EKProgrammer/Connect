@@ -18,21 +18,20 @@ def start_chat(request, user_id):
 
 
 def get_user_chats(request):
-    """Возвращает отфильтрованный список чатов для текущего пользователя с количеством непрочитанных сообщений."""
+    """Возвращает отфильтрованный список чатов для текущего пользователя, отсортированный по времени последнего сообщения."""
     chats_list = Chat.objects.filter(participants=request.user)
     chats_list_filtered = []
+    
     for chat in chats_list:
         other_participants = chat.participants.exclude(id=request.user.id)
-        unread_messages_count = chat.messages.filter(is_read__isnull=True).exclude(sender=request.user).count()
         for user in other_participants:
-            chats_list_filtered.append({
-                'user': user,
-                'chat_id': chat.id,
-                'chat': chat,
-            })
-
+            chats_list_filtered.append({'user': user, 'chat_id': chat.id, 'chat': chat})
+    
+    # Сортируем чаты по последнему сообщению (если оно есть) или по времени создания
     chats_list_filtered.sort(key=lambda x: x['chat'].messages.latest('timestamp').timestamp if x['chat'].messages.exists() else x['chat'].created_at, reverse=True)
+    
     return chats_list_filtered
+
 
 @login_required
 def chats_empty_page(request):
