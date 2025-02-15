@@ -18,15 +18,21 @@ def start_chat(request, user_id):
 
 
 def get_user_chats(request):
-    """Возвращает отфильтрованный список чатов для текущего пользователя."""
+    """Возвращает отфильтрованный список чатов для текущего пользователя с количеством непрочитанных сообщений."""
     chats_list = Chat.objects.filter(participants=request.user)
     chats_list_filtered = []
     for chat in chats_list:
         other_participants = chat.participants.exclude(id=request.user.id)
+        unread_messages_count = chat.messages.filter(is_read__isnull=True).exclude(sender=request.user).count()
         for user in other_participants:
-            chats_list_filtered.append({'user': user, 'chat_id': chat.id})
-    return chats_list_filtered
+            chats_list_filtered.append({
+                'user': user,
+                'chat_id': chat.id,
+                'chat': chat,
+            })
 
+    chats_list_filtered.sort(key=lambda x: x['chat'].messages.latest('timestamp').timestamp if x['chat'].messages.exists() else x['chat'].created_at, reverse=True)
+    return chats_list_filtered
 
 @login_required
 def chats_empty_page(request):
@@ -39,12 +45,10 @@ def chats_empty_page(request):
     }
     return render(request, 'chats/chats.html', data)
 
-
 @login_required
 def chats(request, chat_id):
     chat = get_object_or_404(Chat, id=chat_id)
     messages = chat.messages.all()
-
     if request.method == 'POST':
         content = request.POST.get('message-content')
         if content:
@@ -63,7 +67,6 @@ def chats(request, chat_id):
         'messages': messages
     }
     return render(request, 'chats/chats.html', data)
-
 
 @csrf_exempt
 @login_required

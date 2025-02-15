@@ -244,3 +244,9 @@
 .context-menu button:hover {
     background-color: #495057;
 }
+
+.chat-name-line {
+    width: 100%;
+    height: 0.3px;
+    background-color: rgb(114, 114, 114);
+}
