@@ -7,7 +7,6 @@ class Chat(models.Model):
     is_group_chat = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     participants = models.ManyToManyField(User, related_name='chats')
-
     def __str__(self):
         if self.is_group_chat:
             return f"Group: {self.name}"

@@ -127,12 +127,12 @@ text-align: center;
 }
 
 .highlight {
-    color: white; /* Белый цвет для текста */
-    font-weight: bold; /* Жирный шрифт */
-    text-decoration-color: transparent; /* Скрываем стандартное подчеркивание */
+    color: white;
+    font-weight: bold;
+    text-decoration-color: transparent; 
     text-decoration-style: solid;
     background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%);
-    background-clip: text; /* Применяем градиент к тексту */
+    background-clip: text;
     -webkit-background-clip: text; /* Для WebKit-браузеров (Chrome, Safari) */
     position: relative;
 }
@@ -140,11 +140,11 @@ text-align: center;
 .highlight::after {
     content: ''; /* Псевдо-элемент для подчеркивания */
     position: absolute;
-    bottom: -4px; /* Располагаем подчеркивание немного ниже текста */
+    bottom: -4px; 
     left: 0;
     width: 100%;
-    height: 3px; /* Толщина подчеркивания */
-    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%); /* Градиентное подчеркивание */
+    height: 3px;
+    background: linear-gradient(315deg, rgba(207,40,185,1) 0%, rgba(97,142,228,1) 100%); 
 }
 
 
