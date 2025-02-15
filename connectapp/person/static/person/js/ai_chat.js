@@ -120,6 +120,7 @@ document.addEventListener('click', async function(event) {
         eventSource.onmessage = function (event) {
             const data = JSON.parse(event.data);
             const messageText = aiAnswerBlock.querySelector('.message-text');
+            // Добавляем текст без преобразования в HTML
             messageText.textContent += data.response;
             drop_scrollbar(postId);
         };
@@ -127,6 +128,10 @@ document.addEventListener('click', async function(event) {
         eventSource.addEventListener('end', function () {
             // Генерация текста завершена
             eventSource.close();
+            // Применяем marked ко всему накопленному тексту
+            const messageText = aiAnswerBlock.querySelector('.message-text');
+            const htmlContent = marked.parse(messageText.textContent);
+            messageText.innerHTML = htmlContent;
             // Возвращаем кнопку в исходное состояние
             button.disabled = false;
             img.src = '/static/person/img/send.svg';
@@ -150,6 +155,7 @@ function handleCopyButtonClick(button) {
         content = postTextElement ? postTextElement.textContent : '';
     } else if (button.classList.contains('copy-answer-button')) {
         const answerTextElement = button.closest('.message').querySelector('.message-part.ai-answer .message-text');
+        // Получаем текстовое содержимое, а не HTML
         content = answerTextElement ? answerTextElement.textContent : '';
     }
 
