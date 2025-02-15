@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <img src="${user.avatar_url}" alt="${user.first_name}" class="user-avatar">
                                 <div class="user-info">
                                     <span class="user-name">${user.first_name} ${user.last_name}</span>
+                                    <span class="user-username">@${user.username}</span>
                                 </div>
                             </a>
                         `;
