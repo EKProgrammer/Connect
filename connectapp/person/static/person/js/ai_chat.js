@@ -128,10 +128,6 @@ document.addEventListener('click', async function(event) {
         eventSource.addEventListener('end', function () {
             // Генерация текста завершена
             eventSource.close();
-            // Применяем marked ко всему накопленному тексту
-            const messageText = aiAnswerBlock.querySelector('.message-text');
-            const htmlContent = marked.parse(messageText.textContent);
-            messageText.innerHTML = htmlContent;
             // Возвращаем кнопку в исходное состояние
             button.disabled = false;
             img.src = '/static/person/img/send.svg';

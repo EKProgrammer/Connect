@@ -20,6 +20,28 @@ function loadMore() {
     }
 }
 
+function parseMarkdown() {
+    console.log("Parsing markdown...");
+    const postTexts = document.querySelectorAll('.post-text');
+    console.log("Found post-text elements:", postTexts.length);
+    postTexts.forEach(postText => {
+        const markdownContent = postText.innerText;
+        console.log("Markdown content:", markdownContent);
+        if (markdownContent) {
+            try {
+                const parsedContent = marked.parse(markdownContent);
+                console.log("Parsed content:", parsedContent);
+                postText.innerHTML = parsedContent;
+                postText.dataset.parsed = 'true';
+            } catch (error) {
+                console.error("Error parsing markdown:", error);
+            }
+        } else {
+            console.warn("No markdown content found for element:", postText);
+        }
+    });
+}
+
 async function getContent() {
     isLoading = true;
     const loadMoreBlock = document.querySelector(".load-more");
@@ -50,6 +72,7 @@ async function getContent() {
         if (data.posts_html.length > 0) {
             const postsList = document.querySelector('.posts-list');
             postsList.insertAdjacentHTML('beforeend', data.posts_html);
+            parseMarkdown();
             page++;
             hidePostText();
         }
@@ -69,3 +92,5 @@ async function getContent() {
 
 window.addEventListener('scroll', loadMore);
 window.addEventListener('resize', loadMore);
+
+document.addEventListener('DOMContentLoaded', parseMarkdown);
