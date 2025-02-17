@@ -21,24 +21,13 @@ function loadMore() {
 }
 
 function parseMarkdown() {
-    console.log("Parsing markdown...");
     const postTexts = document.querySelectorAll('.post-text');
-    console.log("Found post-text elements:", postTexts.length);
     postTexts.forEach(postText => {
         const markdownContent = postText.innerText;
-        console.log("Markdown content:", markdownContent);
-        if (markdownContent) {
-            try {
-                const parsedContent = marked.parse(markdownContent);
-                console.log("Parsed content:", parsedContent);
-                postText.innerHTML = parsedContent;
-                postText.dataset.parsed = 'true';
-            } catch (error) {
-                console.error("Error parsing markdown:", error);
-            }
-        } else {
-            console.warn("No markdown content found for element:", postText);
-        }
+        const parsedContent = marked.parse(markdownContent);
+        console.log("Parsed content:", parsedContent);
+        postText.innerHTML = parsedContent;
+        postText.dataset.parsed = 'true';
     });
 }
 
