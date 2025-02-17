@@ -10,14 +10,16 @@ function hidePostText() {
         const readMoreBtn = post.querySelector('.read-more-btn');
         const fadeOut = post.querySelector('.fade-out');
 
-        if (post.scrollHeight > post.clientHeight) {
-            readMoreBtn.style.display = 'block';
-            fadeOut.style.display = 'block';
-        } else {
-            readMoreBtn.style.display = 'none';
-            fadeOut.style.display = 'none';
-            fadeOut.style.box_shadow = 'none';
-        }
+        setTimeout(() => {
+            if (post.scrollHeight > post.clientHeight) {
+                readMoreBtn.style.display = 'block';
+                fadeOut.style.display = 'block';
+            } else {
+                readMoreBtn.style.display = 'none';
+                fadeOut.style.display = 'none';
+                fadeOut.style.boxShadow = 'none';
+            }
+        }, 0);
 
         readMoreBtn.addEventListener('click', function() {
             if (textElement.classList.contains('expanded')) {

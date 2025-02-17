@@ -27,7 +27,6 @@ function parseMarkdown() {
         const parsedContent = marked.parse(markdownContent);
         console.log("Parsed content:", parsedContent);
         postText.innerHTML = parsedContent;
-        postText.dataset.parsed = 'true';
     });
 }
 
