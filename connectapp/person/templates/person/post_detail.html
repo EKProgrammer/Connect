@@ -1,0 +1,108 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block title %}Название поста - Connect{% endblock %}
+
+{% block link %}
+    <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
+    <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="container-profile">
+    <div class="back-arrow-container">
+        <button class="back-arrow-btn" onclick="window.history.back()">
+            <i class="fa-solid fa-arrow-left"></i> Пост 
+        </button>
+    </div>
+    <div class="post-item">
+        <div class="post-header-profile">
+            <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
+
+            <!-- Информация о пользователе -->
+            <div class="post-info">
+                <h3>
+                    <a href="{% url 'user_profile' post.user.username %}">
+                        {{ post.user.first_name }} {{ post.user.last_name }}
+                    </a>
+                </h3>
+                <p class="post-username">@{{ post.user.username }}</p>
+            </div>
+            
+            <p class="post-date">{{ post.date }}</p>
+            <div>
+                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}" title="Редактировать">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}" title="Удалить">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="post-content">
+            <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+            <div class="fade-out"></div>
+            <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
+        </div>
+        {% if post.image %}
+            <div class="post-image-container">
+                <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
+            </div>
+        {% endif %}
+
+        <div class="post-footer">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
+                <i class="fas fa-heart"></i>
+            </button>
+            <span class="likes-count">{{ post.total_likes }}</span>
+        </div>
+    <hr class="comment-divider">
+    
+    <div class="comments-section">
+        <!-- Форма для нового комментария -->
+        <img src="{{ request.user.get_avatar_url }}" class="post-avatar" alt="{{ request.user.username }}">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="custom-form-group">
+                <textarea name="content" class="custom-form-control" rows="4" placeholder="Напишите комментарий..." required></textarea>
+            </div>
+            <button type="submit" class="custom-btn">Отправить</button>
+        </form>
+        {% if comments %}
+            <hr class="comment-line">
+        {% endif %}
+    
+        <div class="comments-list">
+            {% for comment in comments %}
+                <div class="comment-item">
+                    <div class="post-header">
+                        <!-- Аватар пользователя, который оставил комментарий -->
+                        <img src="{{ comment.user.get_avatar_url }}" class="post-avatar" alt="{{ comment.user.username }}">
+                        <div class="post-details">
+                            <h3>
+                                <a href="{% url 'user_profile' comment.user.username %}">
+                                    {{ comment.user.first_name }} {{ comment.user.last_name }}
+                                </a>
+                            </h3>
+                            <p class="post-username">@{{ comment.user.username }}</p>
+                        </div>
+                    </div>
+                    <p>{{ comment.content }}</p>
+                    <button class="delete-btn" style="display: none;">Удалить</button>
+                </div>
+                {% if not forloop.last %}
+                    <hr class="comment-line">
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}
+
+
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'person/js/delete_comments.js' %}"></script>
+{% endblock %}

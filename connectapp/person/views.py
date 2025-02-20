@@ -13,14 +13,12 @@ from PIL import Image
 import json
 from mistralai import Mistral
 import os
-
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-
 from users.models import User
-from .models import Post
+from .models import Post, Comment
 from .forms import AboutForm, PostForm
-
+from .forms import CommentForm
 
 api_key = os.environ["MISTRAL_API_KEY"]
 model = "mistral-small-latest"
@@ -345,3 +343,25 @@ def following_list(request):
         for follow in following
     ]
     return JsonResponse(following_data, safe=False)
+
+@login_required 
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    comments = Comment.objects.filter(post=post).order_by('-created_at')
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+            return redirect('post_detail', post_id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'person/post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form
+    })
