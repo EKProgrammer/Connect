@@ -33,7 +33,7 @@
         {% if is_following %}
             <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
                 {% csrf_token %}
-                <button class="gradient-btn" type="submit" data="Отписаться""></button>
+                <button class="gradient-btn" type="submit" data="Отписаться"></button>
             </form>
         {% else %}
             <form action="{% url 'follow_user' profile_user.username %}" method="post">

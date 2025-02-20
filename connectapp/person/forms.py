@@ -1,7 +1,6 @@
 from django import forms
 from users.models import User
-from .models import Post
-
+from .models import Post, Comment
 
 class AboutForm(forms.ModelForm):
     class Meta:
@@ -28,3 +27,8 @@ class PostForm(forms.ModelForm):
         if post_id:
             self.fields['text'].widget.attrs.update({'id': f'id_text_{post_id}'})
             self.fields['image'].widget.attrs.update({'id': f'id_image_{post_id}'})
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']

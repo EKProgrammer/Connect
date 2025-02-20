@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import User
-
+from django.utils import timezone
 
 class Post(models.Model):
     text = models.TextField('Текст', max_length=5000)
@@ -18,3 +18,12 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+
+class Comment(models.Model):
+    post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.content[:50]
