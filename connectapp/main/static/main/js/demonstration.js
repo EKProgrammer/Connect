@@ -91,7 +91,7 @@ function insertRandomPost() {
                     <div class="message-text"></div>
                 </div>
             `;
-            document.querySelector('.col-md-6').insertAdjacentHTML('beforeend', aiAnswerHtml);
+            document.querySelector('.chat').insertAdjacentHTML('beforeend', aiAnswerHtml);
 
             const aiAnswerElement = document.querySelector('.ai-answer .message-text');
             typeWriter(aiAnswerElement, randomPost['ai_answer'], 10);
@@ -99,4 +99,25 @@ function insertRandomPost() {
     });
 }
 
-insertRandomPost();
+let isInsertRandomPostCalled = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth > 1250) {
+        isInsertRandomPostCalled = true;
+        insertRandomPost();
+    }
+});
+
+window.addEventListener('scroll', function() {
+    if (!isInsertRandomPostCalled && window.innerWidth <= 1250 && window.scrollY > 0) {
+        isInsertRandomPostCalled = true;
+        insertRandomPost();
+    }
+});
+
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 1250 && !isInsertRandomPostCalled) {
+        isInsertRandomPostCalled = true;
+        insertRandomPost();
+    }
+});

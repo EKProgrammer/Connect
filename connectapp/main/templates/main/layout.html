@@ -46,13 +46,15 @@
 </head>
 <body>
     <header class="custom-header">
-        <a href="{% url 'home' %}" title="Connect">
-            <picture>
-                <source media="(max-width: 899px)" srcset="{% static 'main/img/mini_logo.svg' %}">
-                <source media="(min-width: 900px)" srcset="{% static 'main/img/logo.svg' %}">
-                <img class="logo" src="{% static 'main/img/logo.svg' %}" alt="Логотип">
-            </picture>
-        </a>
+        <div>
+            <a href="{% url 'home' %}" title="Connect">
+                <picture>
+                    <source media="(max-width: 899px)" srcset="{% static 'main/img/mini_logo.svg' %}">
+                    <source media="(min-width: 900px)" srcset="{% static 'main/img/logo.svg' %}">
+                    <img class="logo" src="{% static 'main/img/logo.svg' %}" height="38px" width="auto" alt="Логотип">
+                </picture>
+            </a>
+        </div>
         {% if user.is_authenticated %}
             <div class="d-flex justify-content-center">
                 <button class="menu-toggle">
@@ -69,7 +71,9 @@
                     <span class="nav-indicator"></span>
                 </nav>
             </div>
-            <a class="quit-btn" href="{% url 'logout' %}">Выйти</a>
+            <div class="text-end">
+                <a class="quit-btn" href="{% url 'logout' %}">Выйти</a>
+            </div>
         {% endif %}
     </header>
 
@@ -78,12 +82,12 @@
         {% endblock %}
     </main>
 
-    <footer>
+    <footer class="vertical-footer">
         <ul>
-            <li><a href="/about">О Connect</a></li>
-            <li><a href="/regulations/user_agreement">Пользовательское соглашение</a></li>
-            <li><a href="/regulations/subscription_agreement">Соглашение о подписке</a></li>
-            <li><a href="/faq">Вопросы и ответы</a></li>
+            <li><a class="custom-link small-link" href="/about">О Connect</a></li>
+            <li><a class="custom-link small-link" href="/regulations/user_agreement">Пользовательское соглашение</a></li>
+            <li><a class="custom-link small-link" href="/regulations/subscription_agreement">Соглашение о подписке</a></li>
+            <li><a class="custom-link small-link" href="/faq">Вопросы и ответы</a></li>
         </ul>
     </footer>
 

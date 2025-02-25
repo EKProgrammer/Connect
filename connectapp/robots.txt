@@ -1,0 +1,19 @@
+User-agent: *
+Disallow: /person/$
+Disallow: /chats/
+Disallow: /communities/
+Disallow: /feed/
+Disallow: /friends/
+Disallow: /logout
+
+Allow: /
+Allow: /register
+Allow: /about
+Allow: /person/
+Allow: /community/
+Allow: /regulations/user_agreement
+Allow: /regulations/subscription_agreement
+Allow: /faq
+Allow: /subscription
+
+Sitemap: https://connect-ai.ru/sitemap.xml

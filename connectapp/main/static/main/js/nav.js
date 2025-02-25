@@ -3,6 +3,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     let lastScrollTop = 0;
     const header = document.querySelector('.custom-header');
+    if (!header) {
+        return;
+    }
     const scrollThreshold = 100; // Минимальное расстояние прокрутки для срабатывания
 
     window.addEventListener('scroll', function() {
@@ -22,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.main-nav-link');
     const indicator = document.querySelector('.nav-indicator');
+    if (!indicator) {
+        return;
+    }
     const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
 

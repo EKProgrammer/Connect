@@ -28,7 +28,8 @@ urlpatterns = [
     path('person/', include('person.urls')),
     path('friends/', include('friends.urls')),
     path('communities/', include('communities.urls')),
-    path('community/', include('community.urls'))
+    path('community/', include('community.urls')),
+    path('accounts/', include('allauth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

@@ -49,6 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.yandex',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'connectapp.urls'
@@ -74,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -136,7 +143,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'users.authentication.EmailAuthBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '185389017125-rnlqhg4ssbgpck2geqo6olpati3dnde8.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    },
+    'yandex': {
+        'APP': {
+            'client_id': '62af34a4fd51488cbfb54d7431af6f64',
+            'secret': 'd27c3cda02d74e6aa653d807c85cdc48',
+            'key': ''
+        }
+    }
+}
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 # Static files (CSS, JavaScript, Images)
