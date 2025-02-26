@@ -1,5 +1,5 @@
 {% extends 'main/layout.html' %}
-
+{% load custom_filters %}
 {% load static %}
 
 {% block title %}Название поста - Connect{% endblock %}
@@ -62,7 +62,7 @@
     <div class="comments-section">
         <!-- Форма для нового комментария -->
         <img src="{{ request.user.get_avatar_url }}" class="post-avatar" alt="{{ request.user.username }}">
-        <form method="POST">
+        <form method="POST" id="comment-form">
             {% csrf_token %}
             <div class="custom-form-group">
                 <textarea name="content" class="custom-form-control" rows="4" placeholder="Напишите комментарий..." required></textarea>
@@ -75,9 +75,8 @@
     
         <div class="comments-list">
             {% for comment in comments %}
-                <div class="comment-item">
+                <div class="comment-item" data-comment-id="{{ comment.id }}">
                     <div class="post-header">
-                        <!-- Аватар пользователя, который оставил комментарий -->
                         <img src="{{ comment.user.get_avatar_url }}" class="post-avatar" alt="{{ comment.user.username }}">
                         <div class="post-details">
                             <h3>
@@ -89,12 +88,15 @@
                         </div>
                     </div>
                     <p>{{ comment.content }}</p>
-                    <button class="delete-btn" style="display: none;">Удалить</button>
                 </div>
                 {% if not forloop.last %}
                     <hr class="comment-line">
                 {% endif %}
             {% endfor %}
+        </div>
+        <!-- Контекстное меню -->
+        <div id="context-menu" class="context-menu" style="display: none; position: absolute;">
+            <button id="delete-comment-btn" data-comment-id="{{ comment.id }}">Удалить</button>
         </div>
     </div>
 </div>
@@ -105,4 +107,5 @@
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'person/js/delete_comments.js' %}"></script>
+    <script src="{% static 'person/js/commentsEnter.js' %}"></script>
 {% endblock %}

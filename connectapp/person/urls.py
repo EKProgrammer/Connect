@@ -20,6 +20,7 @@ urlpatterns = [
     path('service/following/', views.following_list, name='following_list'),
     path('service/following/<str:username>/', views.user_following_list, name='user_following_list'),
     path('service/post/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('service/delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('service/load_more_posts_other_user/<str:username>/', views.load_more_posts_other_user,
          name='load_more_posts_other_user'),
 ]
