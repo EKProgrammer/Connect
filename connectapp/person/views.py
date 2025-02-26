@@ -2,13 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
-from django.http import JsonResponse, StreamingHttpResponse
+from django.http import JsonResponse, StreamingHttpResponse, HttpResponseBadRequest
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage
-
 from datetime import datetime, timedelta
 from django.utils import timezone
-
 from PIL import Image
 import json
 from mistralai import Mistral
@@ -19,6 +17,7 @@ from users.models import User
 from .models import Post, Comment
 from .forms import AboutForm, PostForm
 from .forms import CommentForm
+from django.views.decorators.http import require_POST
 
 api_key = os.environ["MISTRAL_API_KEY"]
 model = "mistral-small-latest"
@@ -365,3 +364,16 @@ def post_detail(request, post_id):
         'comments': comments,
         'form': form
     })
+
+@login_required
+@require_POST
+def delete_comment(request, comment_id):
+    try:
+        comment = Comment.objects.get(id=comment_id)
+        if request.user == comment.user or request.user == comment.post.user:
+            comment.delete()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'error': 'Нет прав для удаления'})
+    except Comment.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Комментарий не найден'})
