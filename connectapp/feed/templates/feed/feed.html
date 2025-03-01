@@ -9,11 +9,13 @@
 {% endblock %}
 
 {% block content %}
+<main class="custom-container">
+
 <section class="container-profile">
     {% if posts %}
         {% for post in posts %}
             <div class="post-item">
-                <div class="post-header-feed">
+                <div class="post-header">
                     <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
                     <div class="post-info">
                         <h3>
@@ -40,13 +42,14 @@
                     <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Нравится">
                         <i class="fas fa-heart"></i>
                     </button>
-                    <span class="likes-count">{{ post.total_likes }}</span>
+                    <span class="reaction-counter">{{ post.total_likes }}</span>
+
                     <a href="{% url 'post_detail' post.id %}">
-                        <button class="comment-btn" title="Комментарий">
-                            <!-- Загружаем исправленный SVG -->
+                        <button class="comment-btn" title="Комментировать">
                             <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="30" height="30">
                         </button>
                     </a>
+                    <span class="reaction-counter">{{ post.total_comments }}</span>
                 </div>
             </div>
         {% endfor %}
@@ -78,6 +81,8 @@
         <li id="showLikedUsers">Посмотреть список</li>
     </ul>
 </div>
+
+</main>
 {% endblock %}
 
 {% block script %}

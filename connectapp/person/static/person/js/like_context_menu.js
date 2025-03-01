@@ -48,6 +48,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 likedUsersList.innerHTML = '';
 
                 if (data && data.length > 0) {
+                    const likedUsersModalLabel = document.getElementById('likedUsersModalLabel');
+                    const count = data.length;
+                    let wordForm;
+                    if (count % 10 === 1 && count % 100 !== 11) {
+                        wordForm = 'человеку';
+                    } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
+                        wordForm = 'человекам';
+                    } else {
+                        wordForm = 'людям';
+                    }
+                    likedUsersModalLabel.textContent = `Понравилось ${count} ${wordForm}`;
+
                     data.forEach(user => {
                         const userElement = document.createElement('div');
                         userElement.classList.add('user-item');

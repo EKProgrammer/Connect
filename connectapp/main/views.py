@@ -8,7 +8,6 @@ from users.forms import UserRegisterForm
 
 
 def index(request):
-    print("index called")
     if request.user.is_authenticated:
         return redirect("/feed")
     if request.method == "POST":

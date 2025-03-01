@@ -28,9 +28,8 @@ $(document).ready(function () {
 
         $('#context-menu')
             .css({
-                top: (e.pageY - 181)+ 'px',
-                left: (e.pageX - 396)+ 'px',
-
+                top: e.pageY + 'px',
+                left: e.pageX + 'px',
                 display: 'block'
             });
     });
@@ -48,6 +47,7 @@ $(document).ready(function () {
                             $(`.comment-item[data-comment-id="${selectedCommentId}"]`).remove();
                             $('#context-menu').hide();
                             selectedCommentId = null;
+                            location.reload();
                         } else {
                             alert(response.error || 'Ошибка при удалении комментария.');
                         }

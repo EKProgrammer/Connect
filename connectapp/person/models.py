@@ -2,6 +2,7 @@ from django.db import models
 from users.models import User
 from django.utils import timezone
 
+
 class Post(models.Model):
     text = models.TextField('Текст', max_length=5000)
     date = models.DateTimeField('Дата публикации')
@@ -12,12 +13,16 @@ class Post(models.Model):
     def total_likes(self):
         return self.likes.count()
 
+    def total_comments(self):
+        return self.comments.count()
+
     def __str__(self):
         return f'{self.user.username} - {self.date}'
     
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+
 
 class Comment(models.Model):
     post = models.ForeignKey('Post', related_name='comments', on_delete=models.CASCADE)

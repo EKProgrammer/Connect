@@ -11,6 +11,7 @@
 
 {% block content %}
 
+<main class="custom-container">
 <section class="profile-header container-profile">
     <span class="profile-image-container">
         <img src="{{ user.get_avatar_url }}" class="profile-image" alt="person">
@@ -72,7 +73,7 @@
 </div>
 
 <section class="container-profile">
-<div class="d-flex justify-content-between align-items-center">
+<div class="posts-container-header">
     <h2>Посты</h2>
     <!-- https://bootstrap-4.ru/docs/5.3/components/modal/ -->
     <!-- Кнопка-триггер модального окна -->
@@ -204,21 +205,20 @@
         </div>
     </div>
 </div>
-
+    
+</main>    
 {% endblock %}
 
 {% block script %}
     <script src="{% static 'person/js/hide_text.js' %}"></script>
     <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="{% static 'person/js/like_context_menu.js' %}"></script>
-
+    <script src="{% static 'person/js/post_actions_context_menu.js' %}"></script>
     <script src="{% static 'person/js/lazy_loading.js' %}"></script>
     <script src="{% static 'person/js/images.js' %}"></script>
-
     <script src="{% static 'person/js/ai_chat.js' %}"></script>
     <script src="{% static 'person/js/modal_pages.js' %}"></script>
     <script src="{% static 'person/js/text_counters.js' %}"></script>
-
     <script src="{% static 'person/js/followers_list.js' %}"></script>
     <script src="{% static 'person/js/following_list.js' %}"></script>
     <script src="{% static 'person/js/preventEnter.js' %}"></script>

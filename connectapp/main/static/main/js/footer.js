@@ -1,18 +1,24 @@
 "use strict"
 
-document.addEventListener('DOMContentLoaded', function() {
-    function updateFooterPosition() {
-        const mainContainer = document.querySelector('main');
-        const footer = document.querySelector('footer');
+document.addEventListener('click', function(event) {
+    const footer = document.getElementById('verticalFooter');
+    const button = document.getElementById('toggle-footer-btn');
 
-        const mainStyles = getComputedStyle(mainContainer);
-        const marginLeft = parseInt(mainStyles.marginLeft, 10);
-
-        footer.style.left = `${mainContainer.clientWidth + marginLeft + 30}px`;
+    // Проверяем, был ли клик сделан вне кнопки и футера
+    if (!button.contains(event.target) && !footer.contains(event.target)) {
+        footer.style.display = 'none';
     }
-
-    updateFooterPosition();
-
-    window.addEventListener('resize', updateFooterPosition);
 });
 
+document.getElementById('toggle-footer-btn').addEventListener('click', function(event) {
+    const footer = document.getElementById('verticalFooter');
+
+    if (footer.style.display === 'none' || footer.style.display === '') {
+        footer.style.display = 'block';
+    } else {
+        footer.style.display = 'none';
+    }
+
+    // Останавливаем всплытие события, чтобы клик по кнопке не скрывал футер
+    event.stopPropagation();
+});

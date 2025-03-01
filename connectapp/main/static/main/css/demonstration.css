@@ -51,6 +51,7 @@ main {
     .login-container {
         height: 90vh;
         width: 100%;
+
     }
 
     body {
@@ -61,16 +62,6 @@ main {
         height: auto;
         flex-direction: column;
         flex-grow: 0;
-    }
-}
-
-@media(max-height: 800px) {
-    .demonstration-container {
-        height: 800px;
-    }
-
-    .login-container {
-        height: 800px;
     }
 }
 

@@ -25,7 +25,6 @@ function parseMarkdown() {
     postTexts.forEach(postText => {
         const markdownContent = postText.innerText;
         const parsedContent = marked.parse(markdownContent);
-        console.log("Parsed content:", parsedContent);
         postText.innerHTML = parsedContent;
     });
 }

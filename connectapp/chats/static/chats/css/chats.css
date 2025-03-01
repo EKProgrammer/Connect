@@ -3,8 +3,16 @@
     background-color: #111111;
     padding: 20px;
     border-radius: 20px;
-    height: 87vh;
-    border: 0.3px solid rgb(114, 114, 114); 
+    height: 90vh;
+    width: 1300px;
+    margin: 75px auto 0;
+    border: 2px solid #727272;
+}
+
+@media (max-width: 1500px) {
+    .container-chats {
+        width: 90%;
+    }
 }
 
 .chat-list {
@@ -36,15 +44,15 @@
 }
 
 .chat-item:hover {
-    background-color: #394047;
-}
-
-.chat-link.active .chat-item {
-    background-color: #394047;
+    background-color: #333;
 }
 
 .chat-link {
     color: #fff;
+}
+
+.chat-link.active .chat-item {
+    background-color: #444;
 }
 
 .chat-image {
@@ -64,7 +72,7 @@
 
 .resizer {
     border-radius: 2px;
-    background-color: #333;
+    background-color: #727272;
     height: 100%;
     width: 5px;
 }
@@ -86,6 +94,11 @@
     flex-direction: column;
     flex-grow: 1;
     width: 1px; /* без этого работает некорректно */
+}
+
+.chat-name-ref {
+    color: white;
+    border-bottom: 2px solid #727272;
 }
 
 .chat-name-window {
@@ -152,17 +165,20 @@
     height: 68px; /* Начальная высота */
     resize: none;
     overflow-y: hidden; /* Скрыть скроллбар по умолчанию */
-
     padding: 10px 15px 10px 15px;
     border-radius: 10px;
-    background-color: #333;
-    border: 1px solid #444;
+    background-color: transparent;
+    border: 2px solid #727272;
     color: white;
     font-size: 16px;
 }
 
 .text-message-field:focus {
     outline: none;
+}
+
+.text-message-field::placeholder {
+    color: #727272;
 }
 
 .input-area button {
@@ -205,12 +221,10 @@
 }
 
 .commentary-centered {
-    /* center position */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     font-style: italic;
     color: #fff;
     font-size: 1.2rem;
@@ -244,10 +258,4 @@
 
 .context-menu button:hover {
     background-color: #495057;
-}
-
-.chat-name-line {
-    width: 100%;
-    height: 0.3px;
-    background-color: rgb(114, 114, 114);
 }

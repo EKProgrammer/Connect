@@ -9,97 +9,93 @@
 {% endblock %}
 
 {% block content %}
+<main class="container-chats">
 
-<section class="container-chats">
-    <!-- Список чатов -->
-    <aside class="chat-list">
-        <h2 class="list-name">Чаты</h2>
-        <div class="chats">
-            {% if chats_list %}
-                {% for chat_info in chats_list %}
-                    <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
-                        <div class="chat-item" title="{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}">
-                            <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="40" width="40" alt="Avatar">
-                            <span class="chat-name-list">{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
-                        </div>
-                    </a>
-                {% endfor %}
-            {% else %}
-                <p class="commentary">У вас нет чатов</p>
-            {% endif %}
-        </div>
-    </aside>
-
-
-    <div class="resizer" id="dragMe">
-        <button type="button" style="height: 100%;"></button>
-    </div>
-
-    <!-- Окно чата -->
-    <div class="chat-window">
-        {% if chat %}
-            {% for participant in chat.participants.all %}
-                {% if participant != request.user %}
-                    <a style="color: white" href="{% url 'user_profile' participant.username %}">
-                        <h2 class="chat-name-window">
-                            <img src="{{ participant.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
-                            {{ participant.first_name }} {{ participant.last_name }}
-                        </h2>
-                        <div class="chat-name-line"></div>
-                    </a>
-                {% endif %}
-            {% endfor %}
-
-            <div class="messages" id="chat-messages">
-                {% for message in messages %}
-                    {% if message.sender.id == request.user.id %}
-                        <div class="message message-sent" data-message-id="{{ message.id }}">
-                            <div class="message-text">{{ message.content }}</div>
-                            <span class="message-sent-time">
-                                {% if message.is_changed %}
-                                    <span style="margin-right: 5px;">Изменено</span>
-                                {% else %}
-                                    <span></span>
-                                {% endif %}
-                                {{ message.timestamp }}
-                            </span>
-                        </div>
-                    {% else %}
-                        <div class="message message-received" data-message-id="{{ message.id }}">
-                            <div class="message-text">{{ message.content }}</div>
-                            <span class="message-received-time">
-                                {% if message.is_changed %}
-                                    <span style="margin-right: 5px;">Изменено</span>
-                                {% else %}
-                                    <span></span>
-                                {% endif %}
-                                {{ message.timestamp }}
-                            </span>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-
-            <!-- Поле ввода текста -->
-            <form method="post">
-                {% csrf_token %}
-                <div class="input-area">
-                    <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
-                    <div class="input-area-buttons">
-                        <button type="submit">
-                            <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px">
-                        </button>
-                        <button type="button" id="aiHelpButton" data-chat-id="{{ chat.id }}">
-                            <img src="{% static 'chats/img/ai.svg' %}" id="aiHelpIcon" height="30px" width="30px">
-                        </button>
+<!-- Список чатов -->
+<aside class="chat-list">
+    <h2 class="list-name">Чаты</h2>
+    <div class="chats">
+        {% if chats_list %}
+            {% for chat_info in chats_list %}
+                <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
+                    <div class="chat-item" title="{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}">
+                        <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="40" width="40" alt="Avatar">
+                        <span class="chat-name-list">{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
                     </div>
-                </div>
-            </form>
+                </a>
+            {% endfor %}
         {% else %}
-            <p class="commentary-centered">Чат не выбран</p>
+            <p class="commentary">У вас нет чатов</p>
         {% endif %}
     </div>
-</section>
+</aside>
+
+<div class="resizer" id="dragMe">
+    <button type="button" style="height: 100%;"></button>
+</div>
+
+<!-- Окно чата -->
+<div class="chat-window">
+    {% if chat %}
+        {% for participant in chat.participants.all %}
+            {% if participant != request.user %}
+                <a class="chat-name-ref" href="{% url 'user_profile' participant.username %}">
+                    <h2 class="chat-name-window">
+                        <img src="{{ participant.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
+                        {{ participant.first_name }} {{ participant.last_name }}
+                    </h2>
+                    <div class="chat-name-line"></div>
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        <div class="messages" id="chat-messages">
+            {% for message in messages %}
+                {% if message.sender.id == request.user.id %}
+                    <div class="message message-sent" data-message-id="{{ message.id }}">
+                        <div class="message-text">{{ message.content }}</div>
+                        <span class="message-sent-time">
+                            {% if message.is_changed %}
+                                <span style="margin-right: 5px;">Изменено</span>
+                            {% else %}
+                                <span></span>
+                            {% endif %}
+                            {{ message.timestamp }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="message message-received" data-message-id="{{ message.id }}">
+                        <div class="message-text">{{ message.content }}</div>
+                        <span class="message-received-time">
+                            {% if message.is_changed %}
+                                <span style="margin-right: 5px;">Изменено</span>
+                            {% endif %}
+                            {{ message.timestamp }}
+                        </span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Поле ввода текста -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-area">
+                <textarea class="text-message-field" name="message-content" placeholder="Введите сообщение..."></textarea>
+                <div class="input-area-buttons">
+                    <button type="submit">
+                        <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px">
+                    </button>
+                    <button type="button" id="aiHelpButton" data-chat-id="{{ chat.id }}">
+                        <img src="{% static 'chats/img/ai.svg' %}" id="aiHelpIcon" height="30px" width="30px">
+                    </button>
+                </div>
+            </div>
+        </form>
+    {% else %}
+        <p class="commentary-centered">Чат не выбран</p>
+    {% endif %}
+</div>
 
 <!-- Контекстное меню -->
 <div id="context-menu" class="context-menu">
@@ -107,6 +103,7 @@
     <button id="delete-message-btn">Удалить</button>
 </div>
 
+</main>
 {% endblock %}
 
 {% block script %}

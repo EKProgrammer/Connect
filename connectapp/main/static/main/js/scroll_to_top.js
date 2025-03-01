@@ -3,9 +3,9 @@ const rootElement = document.documentElement;
 
 function handleScroll() {
     if (rootElement.scrollTop > 500) {
-        scrollToTopBtn.style.display = "block";
+        scrollToTopBtn.classList.add("visible");
     } else {
-        scrollToTopBtn.style.display = "none";
+        scrollToTopBtn.classList.remove("visible");
     }
 }
 

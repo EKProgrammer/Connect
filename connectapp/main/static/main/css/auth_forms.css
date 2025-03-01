@@ -1,0 +1,65 @@
+/* Форма авторизации */
+
+.login-container {
+    width: 49%;
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    margin-top: 7vh;
+    width: 500px;
+    background-color: #111111;
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid #727272;
+}
+
+.form-floating {
+    margin: 1rem 0;
+}
+
+.form-floating label {
+    color: #727272;
+}
+
+/* Альтернативные методы регистрации */
+
+.striped {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.striped-line {
+    flex: auto;
+    height: 2px;
+    background: #727272;
+}
+
+.striped-text {
+    font-size: 1rem;
+    color: #727272;
+    margin: 0 1rem;
+}
+
+.auth-method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #727272;
+    border-radius: 10px;
+    padding: 10px;
+    color: #727272;
+}
+
+.auth-method img {
+    margin-right: 10px;
+}
+
+.auth-method span {
+    font-size: 1.2rem;
+}

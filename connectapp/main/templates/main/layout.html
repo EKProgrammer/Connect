@@ -77,17 +77,19 @@
         {% endif %}
     </header>
 
-    <main class="custom-container">
-        {% block content %}
-        {% endblock %}
-    </main>
+    {% block content %}
+    {% endblock %}
 
-    <footer class="vertical-footer">
+    <button id="toggle-footer-btn">
+        <img src="{% static 'main/img/link.svg' %}" width="30" height="30" alt="Ссылки">
+    </button>
+
+    <footer id="verticalFooter" class="vertical-footer">
         <ul>
-            <li><a class="custom-link small-link" href="/about">О Connect</a></li>
-            <li><a class="custom-link small-link" href="/regulations/user_agreement">Пользовательское соглашение</a></li>
-            <li><a class="custom-link small-link" href="/regulations/subscription_agreement">Соглашение о подписке</a></li>
-            <li><a class="custom-link small-link" href="/faq">Вопросы и ответы</a></li>
+            <li><a class="footer-link" href="/about">О Connect</a></li>
+            <li><a class="footer-link" href="/regulations/user_agreement">Пользовательское соглашение</a></li>
+            <li><a class="footer-link" href="/regulations/subscription_agreement">Соглашение о подписке</a></li>
+            <li><a class="footer-link" href="/faq">Вопросы и ответы</a></li>
         </ul>
     </footer>
 

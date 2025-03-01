@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+<main class="custom-container">
     <div class="container mt-5">
         <h1>Поиск друзей</h1>
         <form method="get" action="{% url 'search_friends' %}" class="d-flex mb-4">
@@ -56,4 +57,5 @@
             <p>Ничего не найдено.</p>
         {% endif %}
     </div>
+</main>
 {% endblock %}

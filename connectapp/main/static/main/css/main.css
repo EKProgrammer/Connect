@@ -14,6 +14,7 @@ body {
     align-items: center;
     padding: 0.5rem;
     background-color: #111111;
+    border-bottom: 2px solid #727272;
     position: fixed;
     top: 0;
     left: 0;
@@ -122,115 +123,58 @@ body {
 
 /* Базовые стили для контейнера */
 .custom-container {
-    width: 1080px;
+    width: 800px;
     margin: 75px auto 0;
-}
-
-/* для экранов с шириной меньше или равной 1585px */
-@media (max-width: 1585px) {
-    .custom-container {
-        width: 60%;
-        margin: 75px auto 0;
-    }
 }
 
 /* для экранов с шириной меньше или равной 800px */
 @media (max-width: 800px) {
     .custom-container {
         width: 100%;
-        min-width: 500px;
+        min-width: 400px;
         margin: 75px 0;
     }
 }
 
-/* Форма авторизации */
-
-.login-container {
-    width: 49%;
-    margin-top: 10vh;
-    display: flex;
-    justify-content: center;
-}
-
-.login-form {
-    margin-top: 7vh;
-    width: 500px;
-    background-color: #111111;
-    padding: 30px;
-    border-radius: 20px;
-    border: 2px solid #727272;
-}
-
-.form-floating {
-    margin: 1rem 0;
-}
-
-.form-floating label {
-    color: #727272;
-}
-
-/* Альтернативные методы регистрации */
-
-.striped {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem 0;
-}
-
-.striped-line {
-    flex: auto;
-    height: 2px;
-    background: #727272;
-}
-
-.striped-text {
-    font-size: 1rem;
-    color: #727272;
-    margin: 0 1rem;
-}
-
-.auth-method {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid #727272;
-    border-radius: 5px;
-    padding: 10px;
-    color: #727272;
-}
-
-.auth-method img {
-    margin-right: 10px;
-}
-
-.auth-method span {
-    font-size: 1.2rem;
-}
-
 /* Стили для нижней части страницы */
 .vertical-footer {
+    display: none;
     position: fixed;
-    bottom: 0;
+    bottom: 70px;
+    right: 20px;
+    background-color: #111111;
+    border: 2px solid #727272;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .vertical-footer ul {
     list-style: none;
     padding: 0;
-    margin-bottom: 25px;
+    margin-bottom: 0;
 }
 
-.custom-link {
+.footer-link {
+    display: block;
+    padding: 3px;
     color: #727272;
-}
-
-.small-link {
     font-size: 0.8rem;
 }
 
-.custom-link:hover {
-    color: #444444;
+.footer-link:hover {
+    border-radius: 5px;
+    background-color: #333;
+}
+
+#toggle-footer-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #111111;
+    border: 2px solid #727272;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 2px 2px;
 }
 
 .horizontal-footer {
@@ -277,10 +221,10 @@ body {
 
 .gradient-btn:hover::before {
     opacity: 0%;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
 .gradient-btn:hover::after{
@@ -298,19 +242,18 @@ a {
 
 /* Кнопка "Наверх" */
 #scrollToTopBtn {
-    display: none;
     position: fixed;
     bottom: 20px;
     left: 20px;
-    z-index: 99;
     border: none;
     outline: none;
     background-color: #111111;
-    cursor: pointer;
     padding: 0;
     border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-#scrollToTopBtn:hover {
-    background-color: #333;
+#scrollToTopBtn.visible {
+    opacity: 1;
 }

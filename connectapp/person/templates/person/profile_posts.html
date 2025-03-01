@@ -4,7 +4,7 @@
 {% for post in posts %}
     {% with post_id=post.id %}
     <div class="post-item">
-        <div class="post-header-profile">
+        <div class="post-header">
             <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
 
             <!-- Информация о пользователе -->
@@ -16,17 +16,19 @@
                 </h3>
                 <p class="post-username">@{{ post.user.username }}</p>
             </div>
-            
             <p class="post-date">{{ post.date }}</p>
-            <div>
-                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}" title="Редактировать">
-                    <i class="fa-solid fa-pen-to-square"></i>
+            
+            <div class="post-actions">
+                <button class="post-actions-toggle" title="Действия над постом">
+                    <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="50" height="50">
                 </button>
-                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}" title="Удалить">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
+                <ul class="post-actions-list">
+                    <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">Редактировать</button></li>
+                    <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">Удалить</button></li>
+                </ul>
             </div>
         </div>
+        
         <div class="post-content">
             <p class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</p>
             <div class="fade-out"></div>
@@ -37,19 +39,19 @@
                 <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
             </div>
         {% endif %}
-        <div class="post-footer">
-            <div class="like-group">
-                <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
-                    <i class="fas fa-heart"></i>
-                </button>
-                <span class="likes-count">{{ post.total_likes }}</span>
-            </div>
         
+        <div class="post-footer">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
+                <i class="fas fa-heart"></i>
+            </button>
+            <span class="reaction-counter">{{ post.total_likes }}</span>
+    
             <a href="{% url 'post_detail' post.id %}">
-                <button class="comment-btn" title="Комментарий">
+                <button class="comment-btn" title="Комментировать">
                     <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="30" height="30">
                 </button>
             </a>
+            <span class="reaction-counter">{{ post.total_comments }}</span>
         </div>
         
         <!-- Модальное окно для редактирования поста -->

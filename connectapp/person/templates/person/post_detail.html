@@ -10,14 +10,15 @@
 {% endblock %}
 
 {% block content %}
+<main class="custom-container">    
 <section class="container-profile">
-    <div class="back-arrow-container">
+    <div class="posts-container-header">
         <button class="back-arrow-btn" onclick="window.history.back()">
             <i class="fa-solid fa-arrow-left"></i> Пост 
         </button>
     </div>
     <div class="post-item">
-        <div class="post-header-profile">
+        <div class="post-header">
             <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
 
             <!-- Информация о пользователе -->
@@ -29,22 +30,23 @@
                 </h3>
                 <p class="post-username">@{{ post.user.username }}</p>
             </div>
-            
             <p class="post-date">{{ post.date }}</p>
-            <div>
-                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}" title="Редактировать">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}" title="Удалить">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
+
+            {% if user.is_authenticated and user == post.user %}
+                <div class="post-actions">
+                    <button class="post-actions-toggle" title="Действия над постом">
+                        <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="50" height="50">
+                    </button>
+                    <ul class="post-actions-list">
+                        <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">Редактировать</button></li>
+                        <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">Удалить</button></li>
+                    </ul>
+                </div>
+            {% endif %}
         </div>
-        <div class="post-content">
-            <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
-            <div class="fade-out"></div>
-            <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
-        </div>
+
+        <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+
         {% if post.image %}
             <div class="post-image-container">
                 <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
@@ -55,57 +57,59 @@
             <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
                 <i class="fas fa-heart"></i>
             </button>
-            <span class="likes-count">{{ post.total_likes }}</span>
+            <span class="reaction-counter">{{ post.total_likes }}</span>
         </div>
-    <hr class="comment-divider">
-    
-    <div class="comments-section">
-        <!-- Форма для нового комментария -->
-        <img src="{{ request.user.get_avatar_url }}" class="post-avatar" alt="{{ request.user.username }}">
-        <form method="POST" id="comment-form">
+    </div>
+
+    <!-- Форма для нового комментария -->
+    {% if user.is_authenticated %}
+        <form method="POST" class="comment-form">
             {% csrf_token %}
-            <div class="custom-form-group">
+            <div class="comment-field">
+                <img src="{{ request.user.get_avatar_url }}" class="post-avatar" alt="{{ request.user.username }}">
                 <textarea name="content" class="custom-form-control" rows="4" placeholder="Напишите комментарий..." required></textarea>
             </div>
-            <button type="submit" class="custom-btn">Отправить</button>
+            <button type="submit" class="gradient-btn" data="Отправить"></button>
         </form>
-        {% if comments %}
-            <hr class="comment-line">
-        {% endif %}
-    
-        <div class="comments-list">
-            {% for comment in comments %}
-                <div class="comment-item" data-comment-id="{{ comment.id }}">
-                    <div class="post-header">
-                        <img src="{{ comment.user.get_avatar_url }}" class="post-avatar" alt="{{ comment.user.username }}">
-                        <div class="post-details">
-                            <h3>
-                                <a href="{% url 'user_profile' comment.user.username %}">
-                                    {{ comment.user.first_name }} {{ comment.user.last_name }}
-                                </a>
-                            </h3>
-                            <p class="post-username">@{{ comment.user.username }}</p>
-                        </div>
-                    </div>
-                    <p>{{ comment.content }}</p>
+    {% else %}
+        <div class="commentary" style="padding: 20px;">Войдите в свою учётную запись, чтобы прокомментировать пост.</div>
+    {% endif %}
+
+    <div class="comments-counter-info">
+        <h3>{{ comments_counter_info }}</h3>
+    </div>
+
+    {% for comment in comments %}
+        <div class="comment-item" data-comment-id="{{ comment.id }}" data-user-id="{{ comment.user.id }}">
+            <div class="post-header">
+                <img src="{{ comment.user.get_avatar_url }}" class="post-avatar" alt="{{ comment.user.username }}">
+                <div class="post-info">
+                    <h3>
+                        <a href="{% url 'user_profile' comment.user.username %}">
+                            {{ comment.user.first_name }} {{ comment.user.last_name }}
+                        </a>
+                    </h3>
+                    <p class="post-username">@{{ comment.user.username }}</p>
                 </div>
-                {% if not forloop.last %}
-                    <hr class="comment-line">
-                {% endif %}
-            {% endfor %}
+            </div>
+            <p class="comment-text">{{ comment.content }}</p>
         </div>
-        <!-- Контекстное меню -->
+    {% endfor %}
+
+    <!-- Контекстное меню -->
+    {% if user.is_authenticated %}
         <div id="context-menu" class="context-menu" style="display: none; position: absolute;">
             <button id="delete-comment-btn" data-comment-id="{{ comment.id }}">Удалить</button>
         </div>
-    </div>
-</div>
+   {% endif %}
 </section>
+</main>    
 {% endblock %}
 
 
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'person/js/post_actions_context_menu.js' %}"></script>
     <script src="{% static 'person/js/delete_comments.js' %}"></script>
     <script src="{% static 'person/js/commentsEnter.js' %}"></script>
 {% endblock %}

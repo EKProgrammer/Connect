@@ -287,8 +287,6 @@ def liked_users(request, post_id):
     } for user in liked_user_instances]
     return JsonResponse(users_data, safe=False)
 
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def get_followers(request):
@@ -300,6 +298,7 @@ def get_followers(request):
         'avatar_url': follower.user.get_avatar_url()
     } for follower in followers]
     return JsonResponse(followers_data, safe=False)
+
 
 @login_required
 def get_user_followers(request, username):
@@ -329,6 +328,7 @@ def user_following_list(request, username):
     ]
     return JsonResponse(following_data, safe=False)
 
+
 @login_required
 def following_list(request):
     following = request.user.subscriptions.all()
@@ -343,7 +343,7 @@ def following_list(request):
     ]
     return JsonResponse(following_data, safe=False)
 
-@login_required 
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post=post).order_by('-created_at')
@@ -359,11 +359,24 @@ def post_detail(request, post_id):
     else:
         form = CommentForm()
 
+    total_comments = len(comments)
+    last_digit = total_comments % 10
+    last_two_digits = total_comments % 100
+
+    if last_digit == 1 and last_two_digits != 11:
+        word_form = "комментарий"
+    elif 2 <= last_digit <= 4 and (last_two_digits < 10 or last_two_digits >= 20):
+        word_form = "комментария"
+    else:
+        word_form = "комментариев"
+
     return render(request, 'person/post_detail.html', {
         'post': post,
         'comments': comments,
-        'form': form
+        'form': form,
+        'comments_counter_info': f"Всего {total_comments} {word_form}",
     })
+
 
 @login_required
 @require_POST
