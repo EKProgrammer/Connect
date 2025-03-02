@@ -14,7 +14,7 @@
 <main class="custom-container">
 <section class="profile-header container-profile">
     <span class="profile-image-container">
-        <img src="{{ user.get_avatar_url }}" class="profile-image new-class" alt="person">
+        <img src="{{ user.get_avatar_url }}" class="profile-image" alt="person">
         <span class="image-actions">
             <form method="post" enctype="multipart/form-data" id="avatarForm">
                 {% csrf_token %}
