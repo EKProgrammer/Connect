@@ -20,7 +20,7 @@
             
             <div class="post-actions">
                 <button class="post-actions-toggle" title="Действия над постом">
-                    <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="50" height="50">
+                    <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="40" height="40">
                 </button>
                 <ul class="post-actions-list">
                     <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">Редактировать</button></li>
@@ -48,7 +48,7 @@
     
             <a href="{% url 'post_detail' post.id %}">
                 <button class="comment-btn" title="Комментировать">
-                    <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="30" height="30">
+                    <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
                 </button>
             </a>
             <span class="reaction-counter">{{ post.total_comments }}</span>

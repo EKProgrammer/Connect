@@ -6,7 +6,7 @@
     height: 90vh;
     width: 1300px;
     margin: 75px auto 0;
-    border: 2px solid #727272;
+    border: 1.5px solid #727272;
 }
 
 @media (max-width: 1500px) {
@@ -98,7 +98,7 @@
 
 .chat-name-ref {
     color: white;
-    border-bottom: 2px solid #727272;
+    border-bottom: 1px solid #353535;
 }
 
 .chat-name-window {

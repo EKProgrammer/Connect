@@ -19,7 +19,7 @@
             {% for chat_info in chats_list %}
                 <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
                     <div class="chat-item" title="{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}">
-                        <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="40" width="40" alt="Avatar">
+                        <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
                         <span class="chat-name-list">{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
                     </div>
                 </a>

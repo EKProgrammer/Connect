@@ -42,7 +42,7 @@
 
 .striped-text {
     font-size: 1rem;
-    color: #727272;
+    color: #ffffff;
     margin: 0 1rem;
 }
 
@@ -53,7 +53,7 @@
     border: 2px solid #727272;
     border-radius: 10px;
     padding: 10px;
-    color: #727272;
+    color: #ffffff;
 }
 
 .auth-method img {
