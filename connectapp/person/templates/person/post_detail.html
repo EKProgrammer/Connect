@@ -37,6 +37,8 @@
             cursor: context-menu;
         }
     </style>
+    <link rel="stylesheet" href="{% static 'main/css/markdown.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/github-dark.min.css">
 {% endblock %}
 
 {% block content %}
@@ -79,7 +81,7 @@
             {% endif %}
         </div>
 
-        <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+        <div class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</div>
 
         {% if post.image %}
             <div class="post-image-container">
@@ -92,7 +94,11 @@
                 <i class="fas fa-heart"></i>
             </button>
             <span class="reaction-counter">{{ post.total_likes }}</span>
-            <button class="comment-btn" title="Поделиться" data-url="https://connect-ai.ru/person/service/post/{{ post.id }}/" onclick="copyToClipboard(this)">
+        
+            <img style="margin-left: 30px;" src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="30" height="30">
+            <span class="reaction-counter">{{ post.total_comments }}</span>
+        
+            <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
                 <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
             </button>
         </div>
@@ -109,12 +115,8 @@
             <button type="submit" class="gradient-btn" data="Отправить"></button>
         </form>
     {% else %}
-        <div class="commentary" style="padding: 20px;">Войдите в свою учётную запись, чтобы прокомментировать пост.</div>
+        <div class="commentary">Войдите в свою учётную запись, чтобы прокомментировать пост.</div>
     {% endif %}
-
-    <div class="comments-counter-info">
-        <h3>{{ comments_counter_info }}</h3>
-    </div>
 
     {% for comment in comments %}
         <div class="comment-item" data-comment-id="{{ comment.id }}" data-user-id="{{ comment.user.id }}">
@@ -178,4 +180,10 @@
     <script src="{% static 'person/js/post_actions_context_menu.js' %}"></script>
     <script src="{% static 'person/js/comment_context_menu.js' %}"></script>
     <script src="{% static 'person/js/commentsEnter.js' %}"></script>
+    <script src="{% static 'person/js/copy_post_link.js' %}"></script>
+    <script src="{% static 'main/js/format_text.js' %}"></script>
+    <script src="{% static 'person/js/format_post.js' %}"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}

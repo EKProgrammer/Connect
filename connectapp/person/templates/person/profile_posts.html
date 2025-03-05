@@ -30,7 +30,7 @@
         </div>
         
         <div class="post-content">
-            <p class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</p>
+            <div class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</div>
             <div class="fade-out"></div>
             <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
         </div>
@@ -52,7 +52,7 @@
                 </button>
             </a>
             <span class="reaction-counter">{{ post.total_comments }}</span>
-            <button class="comment-btn" title="Поделиться" data-url="https://connect-ai.ru{% url 'post_detail' post.id %}" onclick="copyToClipboard(this)">
+            <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
                 <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
             </button>
         </div>

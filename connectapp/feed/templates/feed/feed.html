@@ -4,8 +4,10 @@
 {% block title %}Лента новостей - Connect{% endblock %}
 
 {% block link %}
-  <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
-  <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
+    <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
+    <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/markdown.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/github-dark.min.css">
 {% endblock %}
 
 {% block content %}
@@ -13,6 +15,7 @@
 
 <section class="container-profile">
     {% if posts %}
+        <div class="posts-list">
         {% for post in posts %}
             <div class="post-item">
                 <div class="post-header">
@@ -28,7 +31,7 @@
                     <p class="post-date">{{ post.date }}</p>
                 </div>
                 <div class="post-content">
-                    <p class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</p>
+                    <div class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</div>
                     <div class="fade-out"></div>
                     <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
                 </div>
@@ -50,12 +53,13 @@
                         </button>
                     </a>
                     <span class="reaction-counter">{{ post.total_comments }}</span>
-                    <button class="comment-btn" title="Поделиться" data-url="https://connect-ai.ru/person/service/post/{{ post.id }}/" onclick="copyToClipboard(this)">
+                    <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
                         <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
                     </button>
                 </div>
             </div>
         {% endfor %}
+        </div>
     {% else %}
         <p class="commentary">В вашей ленте пока нет постов. Подпишитесь на других пользователей, чтобы видеть их записи.</p>
     {% endif %}
@@ -91,33 +95,10 @@
     <script src="{% static 'person/js/hide_text.js' %}"></script>
     <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="{% static 'person/js/like_context_menu.js' %}"></script>
-    <script>
-        function copyToClipboard(button) {
-            const url = button.getAttribute('data-url');
-            navigator.clipboard.writeText(url).then(() => {
-                showCopyMessage();
-            }).catch(err => {
-                console.error('Ошибка при копировании: ', err);
-            });
-        }
-    
-        function showCopyMessage() {
-            const message = document.createElement('div');
-            message.textContent = 'Ссылка скопирована';
-            message.style.position = 'fixed';
-            message.style.bottom = '20px';
-            message.style.left = '50%';
-            message.style.transform = 'translateX(-50%)';
-            message.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-            message.style.color = 'white';
-            message.style.padding = '10px 20px';
-            message.style.borderRadius = '5px';
-            message.style.zIndex = '1000';
-            document.body.appendChild(message);
-    
-            setTimeout(() => {
-                document.body.removeChild(message);
-            }, 3000);
-        }
-    </script>
+    <script src="{% static 'person/js/copy_post_link.js' %}"></script>
+    <script src="{% static 'main/js/format_text.js' %}"></script>
+    <script src="{% static 'person/js/format_post.js' %}"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}

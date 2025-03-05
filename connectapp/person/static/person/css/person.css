@@ -2,7 +2,7 @@
 .container-profile {
     background-color: #111111;
     border-radius: 20px;
-    border: 1.5px solid #727272;
+    border: 1px solid #727272;
     margin-bottom: 1rem;
 }
 
@@ -226,7 +226,7 @@ input[type="file"] {
 .post-item {
     background-color: transparent;
     padding: 1.5rem;
-    border-bottom: 1.5px solid #727272;
+    border-bottom: 1px solid #727272;
     overflow-wrap: break-word;
     hyphens: auto;
     position: relative; 
@@ -315,6 +315,7 @@ input[type="file"] {
     font-style: italic;
     color: #888;
     font-size: 1.4rem;
+    padding: 20px;
 }
 
 .post-header {
@@ -591,21 +592,16 @@ input[type="file"] {
     border: none;
     background-color: #111111;
     color: white;
-    font-size: 20px; 
+    font-size: 20px;
     box-sizing: border-box; 
     resize: none; 
     outline: none;
     height: 91px; 
 }
 
-.comments-counter-info {
-    border-top: 2px solid #727272;
-    padding: 1rem;
-}
-
 .comment-item {
     padding: 1rem;
-    border-top: 2px solid #727272;
+    border-top: 1px solid #727272;
 }
 
 .comment-text {

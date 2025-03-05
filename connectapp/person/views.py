@@ -24,6 +24,7 @@ model = "mistral-small-latest"
 
 client = Mistral(api_key=api_key)
 
+
 @login_required
 def profile(request):
     avatar_edit(request)
@@ -358,22 +359,10 @@ def post_detail(request, post_id):
     else:
         form = CommentForm()
 
-    total_comments = len(comments)
-    last_digit = total_comments % 10
-    last_two_digits = total_comments % 100
-
-    if last_digit == 1 and last_two_digits != 11:
-        word_form = "комментарий"
-    elif 2 <= last_digit <= 4 and (last_two_digits < 10 or last_two_digits >= 20):
-        word_form = "комментария"
-    else:
-        word_form = "комментариев"
-
     return render(request, 'person/post_detail.html', {
         'post': post,
         'comments': comments,
         'form': form,
-        'comments_counter_info': f"Всего {total_comments} {word_form}",
     })
 
 

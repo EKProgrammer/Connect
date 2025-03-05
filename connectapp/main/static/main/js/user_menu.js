@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     const userAvatar = document.querySelector('.user-avatar-wrapper');
+    if (!userAvatar) {
+        return;
+    }
     const userDropdown = document.querySelector('.user-dropdown');
     
     // Закрытие меню при клике вне его
