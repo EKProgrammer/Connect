@@ -23,3 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function copyToClipboard(button) {
+    const url = button.getAttribute('data-url');
+    navigator.clipboard.writeText(url).then(() => {
+    }).catch(err => {
+        console.error('Ошибка при копировании: ', err);
+    });
+}

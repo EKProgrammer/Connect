@@ -58,6 +58,9 @@
                 <i class="fas fa-heart"></i>
             </button>
             <span class="reaction-counter">{{ post.total_likes }}</span>
+            <button class="comment-btn" title="Поделиться" data-url="https://connect-ai.ru/person/service/post/{{ post.id }}/" onclick="copyToClipboard(this)">
+                <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
+            </button>
         </div>
     </div>
 
@@ -103,7 +106,7 @@
         </div>
    {% endif %}
 </section>
-</main>    
+</main>   
 {% endblock %}
 
 
