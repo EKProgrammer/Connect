@@ -50,7 +50,7 @@ def logout(request):
 
 
 def about(request):
-    return render(request, "main/about.html")
+    return render(request, "main/layout_second_verison.html")
 
 
 def user_agreement(request):
