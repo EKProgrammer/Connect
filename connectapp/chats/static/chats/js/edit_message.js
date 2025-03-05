@@ -15,6 +15,9 @@ function getCookie(name) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const messagesContainer = document.getElementById("chat-messages");
+    if (!messagesContainer) {
+        return;
+    }
     let currentMessage = null;
     const contextMenu = document.getElementById("context-menu");
     messagesContainer.addEventListener("contextmenu", (event) => {
