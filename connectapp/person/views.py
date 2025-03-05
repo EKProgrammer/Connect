@@ -24,7 +24,6 @@ model = "mistral-small-latest"
 
 client = Mistral(api_key=api_key)
 
-
 @login_required
 def profile(request):
     avatar_edit(request)
@@ -383,10 +382,37 @@ def post_detail(request, post_id):
 def delete_comment(request, comment_id):
     try:
         comment = Comment.objects.get(id=comment_id)
-        if request.user == comment.user or request.user == comment.post.user:
+        if comment.user == request.user:
             comment.delete()
             return JsonResponse({'success': True})
         else:
-            return JsonResponse({'success': False, 'error': 'Нет прав для удаления'})
+            return JsonResponse({'success': False, 'error': 'Вы не являетесь автором этого комментария'})
     except Comment.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Комментарий не найден'})
+
+@login_required
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    
+    # Проверяем, является ли текущий пользователь автором комментария
+    if request.user != comment.user:
+        return JsonResponse({'success': False, 'error': 'Вы не можете редактировать этот комментарий'})
+    
+    if request.method == 'POST':
+        content = request.POST.get('content', '').strip()
+        
+        if not content:
+            return JsonResponse({'success': False, 'error': 'Комментарий не может быть пустым'})
+
+        comment.content = content
+        comment.save()
+        
+        # Если запрос был AJAX, возвращаем JSON-ответ
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True})
+        
+        # Иначе перенаправляем на страницу поста
+        return redirect('post_detail', post_id=comment.post.id)
+    
+    # Если метод не POST, перенаправляем на страницу поста
+    return redirect('post_detail', post_id=comment.post.id)

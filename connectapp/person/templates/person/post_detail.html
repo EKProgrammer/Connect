@@ -7,11 +7,45 @@
 {% block link %}
     <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
     <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
+    <style>
+        .context-menu {
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            padding: 5px 0;
+            z-index: 1000;
+        }
+        
+        .context-menu button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: block;
+            padding: 8px 15px;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .context-menu button:hover {
+            background-color: #444;
+        }
+        
+        .comment-item {
+            position: relative;
+            cursor: context-menu;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
+{% if user.is_authenticated %}
+<meta name="user-id" content="{{ user.id }}">
+{% endif %}
 <main class="custom-container">    
 <section class="container-profile">
+    {% csrf_token %}
     <div class="posts-container-header">
         <button class="back-arrow-btn" onclick="window.history.back()">
             <i class="fa-solid fa-arrow-left"></i> Пост 
@@ -97,22 +131,51 @@
             </div>
             <p class="comment-text">{{ comment.content }}</p>
         </div>
+
+        <!-- Модальное окно для редактирования комментария -->
+        <div class="modal fade" id="editCommentModal{{ comment.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCommentModalLabel{{ comment.id }}">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content modal-adaptive-size text-light">
+                    <div class="modal-header border-secondary">
+                        <h1 class="modal-title fs-5" id="editCommentModalLabel{{ comment.id }}">Редактировать комментарий</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="post-form-content">
+                            <form action="{% url 'edit_comment' comment.id %}" method="post" id="editCommentForm{{ comment.id }}" class="d-flex flex-column flex-grow-1">
+                                {% csrf_token %}
+                                <textarea name="content" class="custom-form-control" rows="4" required>{{ comment.content }}</textarea>
+                                <span class="post-char-count">0 / 1000</span>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer border-secondary">
+                        <div class="post-form-footer">
+                            <button type="submit" class="gradient-btn" form="editCommentForm{{ comment.id }}" data="Сохранить изменения"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 
     <!-- Контекстное меню -->
     {% if user.is_authenticated %}
         <div id="context-menu" class="context-menu" style="display: none; position: absolute;">
-            <button id="delete-comment-btn" data-comment-id="{{ comment.id }}">Удалить</button>
+            <button id="edit-comment-btn" data-comment-id="">Редактировать</button>
+            <button id="delete-comment-btn" data-comment-id="">Удалить</button>
         </div>
    {% endif %}
 </section>
-</main>   
+</main>
 {% endblock %}
 
 
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'person/js/post_actions_context_menu.js' %}"></script>
-    <script src="{% static 'person/js/delete_comments.js' %}"></script>
+    <script src="{% static 'person/js/comment_context_menu.js' %}"></script>
     <script src="{% static 'person/js/commentsEnter.js' %}"></script>
 {% endblock %}
