@@ -132,6 +132,7 @@
     <script src="{% static 'main/js/footer.js' %}"></script>
     <script src="{% static 'main/js/scroll_to_top.js' %}"></script>
     <script src="{% static 'main/js/user_menu.js' %}"></script>
+    {% if not user.is_authenticated %}
     <script>
         // Script to handle closing the banner and storing the preference in localStorage
         document.addEventListener('DOMContentLoaded', function() {
@@ -143,6 +144,7 @@
             });
         });
     </script>
+    {% endif %}
     {% block script %}{% endblock %}
 </body>
 </html>

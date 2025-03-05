@@ -66,12 +66,14 @@
     {% endif %}
 
     <footer class="horizontal-footer">
+        <a class="footer-link" href="/about">О Connect</a>
         <a class="footer-link" href="/regulations/user_agreement">Пользовательское соглашение</a>
         <a class="footer-link" href="/regulations/subscription_agreement">Соглашение о подписке</a>
         <a class="footer-link" href="/faq">Вопросы и ответы</a>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% if not user.is_authenticated %}
     <script>
         // Script to handle closing the banner and storing the preference in localStorage
         document.addEventListener('DOMContentLoaded', function() {
@@ -83,6 +85,7 @@
             });
         });
     </script>
+    {% endif %}
     {% block script %}{% endblock %}
 </body>
 </html>
