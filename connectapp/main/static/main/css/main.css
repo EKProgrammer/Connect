@@ -267,3 +267,94 @@ a {
 #scrollToTopBtn.visible {
     opacity: 1;
 }
+
+/* Стили для меню пользователя */
+
+.user-menu-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #727272;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background-color: #111111;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 2px solid #727272;
+    min-width: 120px;
+    padding: 10px;
+}
+
+.user-dropdown ul {
+    list-style: none;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.user-dropdown li {
+    padding: 0;
+}
+
+.header-link {
+    display: block;
+    padding: 3px;
+    color: #727272;
+    font-size: 0.8rem;
+}
+
+.header-link:hover {
+    border-radius: 5px;
+    background-color: #333;
+}
+
+/* Стили для кнопок авторизации */
+.auth-buttons {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-login, .btn-register {
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-login {
+    color: #ffffff;
+    border: 2px solid #727272;
+}
+
+.btn-login:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.btn-register {
+    background: linear-gradient(90deg, #4a90e2, #cf28b9);
+    color: #ffffff;
+}
+
+.btn-register:hover {
+    opacity: 0.9;
+}

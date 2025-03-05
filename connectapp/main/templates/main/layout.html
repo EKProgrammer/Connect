@@ -71,8 +71,21 @@
                     <span class="nav-indicator"></span>
                 </nav>
             </div>
-            <div class="text-end">
-                <a class="quit-btn" href="{% url 'logout' %}">Выйти</a>
+            <div class="text-end user-menu-container">
+                <div class="user-avatar-wrapper">
+                    <img src="{{ user.get_avatar_url }}" alt="{{ user.username }}" class="user-avatar">
+                    <div class="user-dropdown">
+                        <ul>
+                            <li><a class="header-link" href="{% url 'profile' %}">Мой профиль</a></li>
+                            <li><a class="header-link" href="{% url 'logout' %}">Выйти</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-end auth-buttons">
+                <a href="/" class="btn-login">Войти</a>
+                <a href="/register" class="btn-register">Зарегистрироваться</a>
             </div>
         {% endif %}
     </header>
@@ -101,6 +114,7 @@
     <script src="{% static 'main/js/nav.js' %}"></script>
     <script src="{% static 'main/js/footer.js' %}"></script>
     <script src="{% static 'main/js/scroll_to_top.js' %}"></script>
+    <script src="{% static 'main/js/user_menu.js' %}"></script>
     {% block script %}{% endblock %}
 </body>
 </html>
