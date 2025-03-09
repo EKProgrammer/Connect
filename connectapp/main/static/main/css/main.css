@@ -172,8 +172,7 @@ body {
 }
 
 .footer-link:hover {
-    border-radius: 5px;
-    background-color: #333;
+    color: #555;
 }
 
 #toggle-footer-btn {
@@ -248,6 +247,20 @@ a {
 .form-error {
     margin-top: 4px;
     color: red;
+}
+
+.commentary {
+    font-style: italic;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 1.5rem;
+}
+
+.commentary-centered {
+    margin: auto auto;
+    font-style: italic;
+    color: #fff;
+    font-size: 1.2rem;
 }
 
 /* Кнопка "Наверх" */

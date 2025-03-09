@@ -15,40 +15,42 @@
 
 <main class="custom-container">
 <section class="profile-header container-profile">
-    <span class="profile-image-container">
-        <img src="{{ user.get_avatar_url }}" class="profile-image" alt="person">
-        <span class="image-actions">
-            <form method="post" enctype="multipart/form-data" id="avatarForm">
-                {% csrf_token %}
-                <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
-                <a href="#" class="edit-image-btn" id="uploadAvatarBtn" title="Редактировать">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </a>
-            </form>
-            {% if user.image %}
-                <a href="{% url 'delete_avatar' %}" class="delete-img-btn" title="Удалить">
-                    <i class="fa-solid fa-trash"></i>
-                </a>
-            {% endif %}
-        </span>
-    </span>
-    <span class="user-info">
-        <span class="person-name">{{ user.first_name }} {{ user.last_name }}</span>
-        <span class="person-username">@{{ user.username }}</span>
-        <span class="about-section">
-            <span class="about-label">О себе
-                <button class="edit-about-btn" id="editAboutBtn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </button>
+    <div class="profile-header-first-part">
+        <span class="profile-image-container">
+            <img src="{{ user.get_avatar_url }}" class="profile-image" alt="person">
+            <span class="image-actions">
+                <form method="post" enctype="multipart/form-data" id="avatarForm">
+                    {% csrf_token %}
+                    <input type="file" name="avatar" id="avatar" class="form-control d-none" accept="image/*">
+                    <a href="#" class="edit-image-btn" id="uploadAvatarBtn" title="Редактировать">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </form>
+                {% if user.image %}
+                    <a href="{% url 'delete_avatar' %}" class="delete-img-btn" title="Удалить">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                {% endif %}
             </span>
-            {% if user.about %}
-                <span class="about-container">{{ user.about }}</span>
-            {% endif %}
         </span>
-        <span class="subscribers-info">
-            <span id="followersCount">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-            <span id="SubscribeCount">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+        <span class="user-info">
+            <span class="person-name">{{ user.first_name }} {{ user.last_name }}</span>
+            <span class="person-username">@{{ user.username }}</span>
         </span>
+    </div>
+    <div class="about-section">
+        <span class="about-label">О себе
+            <button class="edit-about-btn" id="editAboutBtn" data-bs-toggle="modal" data-bs-target="#editAboutModal" title="Редактировать">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+        </span>
+        {% if user.about %}
+            <p class="about-container">{{ user.about }}</p>
+        {% endif %}
+    </div>
+    <span class="subscribers-info">
+        <span id="followersCount">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+        <span id="SubscribeCount">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
     </span>
 </section>
 
@@ -225,6 +227,7 @@
     <script src="{% static 'person/js/following_list.js' %}"></script>
     <script src="{% static 'person/js/preventEnter.js' %}"></script>
     <script src="{% static 'person/js/copy_post_link.js' %}"></script>
+    <script src="{% static 'main/js/copy_code.js' %}"></script>
     <script src="{% static 'main/js/format_text.js' %}"></script>
     <script src="{% static 'person/js/format_post.js' %}"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>

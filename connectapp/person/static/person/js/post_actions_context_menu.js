@@ -1,33 +1,18 @@
 'use strict'
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const menuToggles = document.querySelectorAll('.post-actions-toggle');
-
-    menuToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(event) {
-            event.stopPropagation(); // Предотвращаем всплытие события
-            const menuList = this.nextElementSibling;
-            menuList.style.display = menuList.style.display === 'block' ? 'none' : 'block';
+document.addEventListener('click', function(event) {
+    // Проверяем, был ли клик по кнопке .post-actions-toggle
+    const toggle = event.target.closest('.post-actions-toggle');
+    if (toggle) {
+        event.stopPropagation(); // Предотвращаем всплытие события
+        const menuList = toggle.nextElementSibling;
+        menuList.style.display = menuList.style.display === 'block' ? 'none' : 'block';
+    } else {
+        // Закрываем все открытые меню, если клик был вне кнопки
+        const openMenus = document.querySelectorAll('.post-actions-list[style="display: block;"]');
+        openMenus.forEach(menu => {
+            menu.style.display = 'none';
         });
-    });
-
-    document.addEventListener('click', function(event) {
-        const isMenuToggle = event.target.closest('.post-actions-toggle');
-        const isMenuList = event.target.closest('.post-actions-list');
-
-        if (!isMenuToggle && !isMenuList) {
-            document.querySelectorAll('.post-actions-list').forEach(menu => {
-                menu.style.display = 'none';
-            });
-        }
-    });
+    }
 });
-
-function copyToClipboard(button) {
-    const url = button.getAttribute('data-url');
-    navigator.clipboard.writeText(url).then(() => {
-    }).catch(err => {
-        console.error('Ошибка при копировании: ', err);
-    });
-}

@@ -266,20 +266,6 @@
     }
 }
 
-.commentary {
-    font-style: italic;
-    color: #fff;
-    font-size: 1.2rem;
-}
-
-.commentary-centered {
-    margin-top: 50%;
-    text-align: center;
-    font-style: italic;
-    color: #fff;
-    font-size: 1.2rem;
-}
-
 .context-menu {
     display: none;
     position: absolute;

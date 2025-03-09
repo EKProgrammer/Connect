@@ -43,6 +43,7 @@
 
     ul, ol {
         line-height: 1;
+        margin-bottom: 0;
     }
 
     p {
@@ -78,8 +79,26 @@
     pre {
         background-color: #272822;
         color: #f8f8f2;
-        border-radius: 5px;
+        border-radius: 0 0 5px 5px;
         overflow-x: auto;
+    }
+
+    .code-header {
+        padding: 5px;
+        border-radius: 5px 5px 0 0;
+        background-color: #666666;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .lang-name {
+        margin-top: 0.7rem;
+        margin-left: 0.5rem;
+    }
+
+    .copy-code {
+        background-color: transparent;
+        border: none;
     }
 
     pre code {

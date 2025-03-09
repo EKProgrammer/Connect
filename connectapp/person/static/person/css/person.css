@@ -4,6 +4,7 @@
     border-radius: 20px;
     border: 1px solid #727272;
     margin-bottom: 1rem;
+    min-width: 420px;
 }
 
 /* Изображение профиля пользователя */
@@ -81,46 +82,50 @@
 
 /* Секция с общей информацией о профиле */
 .profile-header {
-    display: flex;
     padding: 1.5rem;
 }
 
-.user-info {
-    width: 50%;
+.profile-header-first-part {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    margin-left: 1.2rem;
 }
 
-@media (max-width: 1100px) {
-    .profile-header {
+.user-info {
+    margin-left: 1.5rem;
+    margin-block: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: end;
+}
+
+@media (max-width: 769px) {
+    .profile-header-first-part {
         flex-direction: column;
     }
 
     .user-info {
-        width: 100%;
+        margin: 0;
     }
-}
-
-.user-username {
-    color: #727272;
 }
 
 .person-name {
     font-size: 2rem;
     font-weight: bold;
-    margin-top: 12%;
-    margin-left: 3%;
+}
+
+.person-username {
+    color: #727272;
+    font-size: 1.8rem;
+    font-weight: bold;
 }
 
 /* О себе */
-.about-section {
-    display: flex;
-    flex-direction: column;
-    margin-top: 15%;
-    margin-left: -50%;
-    width: 190%;
-}
 
 .about-label {
     color: #888;
@@ -153,7 +158,6 @@
 .subscribers-info {
     word-spacing: 5px;
     display: flex;
-    margin-left: -50%;
 }
 
 .subscribers-info #followersCount:hover,
@@ -184,14 +188,6 @@
     color: #666;
 }
 
-.person-username {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: -5px;
-    color: #939393;
-    margin-left: 3%;
-}
-
 /* Стили для кнопок в секции профиля */
 .follow-btn {
     border: 2px solid #ffffff;
@@ -203,8 +199,8 @@
     padding: 10px 20px;
     transition: color 0.3s ease, background-color 0.3s ease;
     font-family: 'Arial', sans-serif;
-    border-radius: 20px; 
-    margin-left: 1%;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
     width: 180px; /* Фиксированная ширина */
     height: 50px; 
 }
@@ -233,17 +229,10 @@
     background-color: #111111; 
 }
 
-.chat-link-container {
-    display: inline-block;
-    margin-left: 10px;
-}
-
 .chat-link img {
     width: 60px;
     height: 60px;
     transition: transform 0.3s ease;
-    margin-left: 170%;
-    margin-top: 15%;
 }
 
 .chat-link img:hover {
@@ -364,13 +353,6 @@ input[type="file"] {
     height: 50px;
     background: linear-gradient(transparent, #111111);
     pointer-events: none;
-}
-
-.commentary {
-    font-style: italic;
-    color: #888;
-    font-size: 1.4rem;
-    padding: 20px;
 }
 
 .post-header {

@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const userList = document.getElementById("user-list");
     const nextBtn = document.getElementById("next-btn");
     const cancelBtn = document.getElementById("cancel-group-btn");
+    if (!cancelBtn) {
+        return;
+    }
     const createGroupContainer = document.getElementById("create-group-container");
     const groupNameContainer = document.getElementById("group-name-container");
     const groupTitle = document.querySelector("#create-group-container h2"); 

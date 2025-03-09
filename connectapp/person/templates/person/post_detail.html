@@ -72,14 +72,9 @@
                 <i class="fas fa-heart"></i>
             </button>
             <span class="reaction-counter">{{ post.total_likes }}</span>
-        
-            <a href="{% url 'post_detail' post.id %}">
-                <button class="comment-btn" title="Комментировать">
-                    <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
-                </button>
-            </a>
+            
+            <img style="margin-left: 40px;" src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
             <span class="reaction-counter">{{ post.total_comments }}</span>
-
         
             <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
                 <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
@@ -159,11 +154,13 @@
 
 
 {% block script %}
+    <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'person/js/post_actions_context_menu.js' %}"></script>
     <script src="{% static 'person/js/comment_context_menu.js' %}"></script>
     <script src="{% static 'person/js/commentsEnter.js' %}"></script>
     <script src="{% static 'person/js/copy_post_link.js' %}"></script>
+    <script src="{% static 'main/js/copy_code.js' %}"></script>
     <script src="{% static 'main/js/format_text.js' %}"></script>
     <script src="{% static 'person/js/format_post.js' %}"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>

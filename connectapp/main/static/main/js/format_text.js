@@ -22,7 +22,8 @@ function formatText(text) {
     let isCodeBlock = false;
     let result = [];
     let listType = null;
-    let codeLang = "";
+    let codeBlock = "";
+    let codeClass = "";
 
     paragraphs.forEach(line => {
         let codeBlockMatch = line.match(/^```\s*(\w+)?/);
@@ -30,8 +31,16 @@ function formatText(text) {
             if (isCodeBlock) {
                 result.push('</code></pre>');
             } else {
-                codeLang = codeBlockMatch[1] ? `language-${codeBlockMatch[1]}` : "";
-                result.push(`<pre><code class="${codeLang}">`);
+                codeBlock = codeBlockMatch[1] ? `${codeBlockMatch[1]}` : "plain text";
+                codeClass = codeBlockMatch[1] ? `language-${codeBlockMatch[1]}` : "";
+                result.push(`<div class="code-header">
+                                 <span class="lang-name">${codeBlock}</span>
+                                 <button class="copy-code" title="Копировать">
+                                     <img src="/static/main/img/copy_code.svg" alt="Копировать"> 
+                                 </button>
+                             </div>
+                             <pre>
+                             <code class="${codeClass}">`);
             }
             isCodeBlock = !isCodeBlock;
             return;
@@ -43,8 +52,12 @@ function formatText(text) {
         }
 
         // Закрываем список перед началом нового блока
-        if (listType && !/^\s*[-*\d+\.]/.test(line)) {
-            result.push(`</${listType}>`);
+        if (listType === 'ul' && !/^\s*[-*+]\s/.test(line)) {
+            result.push(`</ul>`);
+            listType = null;
+        }
+        if (listType === 'ol' && !/^\s*\d+\.\s/.test(line)) {
+            result.push(`</ol>`);
             listType = null;
         }
 
@@ -75,14 +88,15 @@ function formatText(text) {
         }
 
         // Маркированные и нумерованные списки
-        if (/^\* (.*)/.test(line) || /^- (.*)/.test(line)) {
+        if (/^\* (.*)/.test(line) || /^- (.*)/.test(line) || /^\+ (.*)/.test(line)) {
             if (listType !== 'ul') {
                 result.push('<ul>');
                 listType = 'ul';
             }
-            result.push(line.replace(/^[-*] (.*)/, (match, p1) => `<li>${inline_formatting(p1)}</li>`));
+            result.push(line.replace(/^[-*\+] (.*)/, (match, p1) => `<li>${inline_formatting(p1)}</li>`));
             return;
         }
+
         if (/^\d+\. (.*)/.test(line)) {
             if (listType !== 'ol') {
                 result.push('<ol>');

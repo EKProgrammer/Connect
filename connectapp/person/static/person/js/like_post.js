@@ -2,7 +2,6 @@ document.addEventListener('click', function(event) {
     const button = event.target.closest('.like-btn');
     if (button) {
         const postId = button.getAttribute('data-post-id');
-        console.log(postId);
         fetch('/person/service/like_post/', {
             method: 'POST',
             headers: {
@@ -11,10 +10,24 @@ document.addEventListener('click', function(event) {
             },
             body: `id=${postId}`
         })
-        .then(response => response.json())
+        .then(response => {
+             if (response.status === 403) {
+                // Пользователь не авторизован
+                throw new Error('Для выполнения этого действия необходимо авторизоваться.');
+            }
+            if (!response.ok) {
+                // Другие ошибки сервера
+                throw new Error('Произошла ошибка при обработке запроса.');
+            }
+            return response.json();
+        })
         .then(data => {
             button.classList.toggle('liked', data.liked);
             button.nextElementSibling.textContent = data.likes_count;
+        })
+        .catch(error => {
+            // Уведомляем пользователя об ошибке
+            console.error(error.message);
         });
     }
 });

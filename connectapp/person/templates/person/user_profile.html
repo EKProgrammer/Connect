@@ -7,48 +7,51 @@
 {% block link %}
     <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
     <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/markdown.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/github-dark.min.css">
 {% endblock %}
 
 {% block content %}
+    
 <main class="custom-container">
-    
 <section class="profile-header container-profile">
-    <span class="profile-image-container">
-        <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
-    </span>
-    <span class="user-info">
-        <span class="person-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</span>
-        <span class="person-username">@{{ profile_user }}</span>
-        <span class="about-section">
-            <span class="about-label">О себе</span>
-            {% if profile_user.about %}
-                <span class="about-container">{{ profile_user.about }}</span>
-            {% endif %}
+    <div class="profile-header-first-part">
+        <span class="profile-image-container">
+            <img src="{{ profile_user.get_avatar_url }}" class="profile-image" width="400" height="400" alt="person">
         </span>
-        <span class="subscribers-info">
-            <span id="userFollowersCount" data-username="{{ profile_user.username }}">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
-            <span id="userFollowingCount" data-username="{{ profile_user.username }}">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+        <span class="user-info">
+            <span class="person-name">{{ profile_user.first_name }} {{ profile_user.last_name }}</span>
+            <span class="person-username">@{{ profile_user }}</span>
         </span>
-    </span>
-    <div class="user-actions">
-        {% if is_following %}
-        <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
-            {% csrf_token %}
-            <button class="follow-btn unfollow" type="submit">Отписаться</button>
-        </form>
-        {% else %}
-            <form action="{% url 'follow_user' profile_user.username %}" method="post">
-                {% csrf_token %}
-                <button class="follow-btn follow" type="submit">Подписаться</button>
-            </form>
-        {% endif %}
     
-        <div class="chat-link-container">
+        <span class="user-actions">
+            {% if is_following %}
+            <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
+                {% csrf_token %}
+                <button class="follow-btn unfollow" type="submit">Отписаться</button>
+            </form>
+            {% else %}
+                <form action="{% url 'follow_user' profile_user.username %}" method="post">
+                    {% csrf_token %}
+                    <button class="follow-btn follow" type="submit">Подписаться</button>
+                </form>
+            {% endif %}
+        
             <a href="{% url 'start_chat' profile_user.id %}" class="chat-link">
                 <img src="{% static 'person/img/mail.svg' %}" alt="Написать сообщение" width="60" height="60">
             </a>
-        </div>
+        </span>
     </div>
+    <div class="about-section">
+        <span class="about-label">О себе</span>
+        {% if profile_user.about %}
+            <p class="about-container">{{ profile_user.about }}</p>
+        {% endif %}
+    </div>
+    <span class="subscribers-info">
+        <span id="userFollowersCount" data-username="{{ profile_user.username }}">Подписчики <span class="follow-numbers">{{ followers_count }}</span></span>
+        <span id="userFollowingCount" data-username="{{ profile_user.username }}">Подписки <span class="follow-numbers">{{ following_count }}</span></span>
+    </span>
 </section>
 
 <section class="container-profile">
@@ -133,8 +136,18 @@
 
     <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="{% static 'person/js/like_context_menu.js' %}"></script>
-
-    <script src="{% static 'person/js/user_followers_list.js' %}"></script>
+    
+        <script src="{% static 'person/js/user_followers_list.js' %}"></script>
     <script src="{% static 'person/js/user_following_list.js' %}"></script>
-    <script src="{% static 'person/js/copyLinkWithMessage.js' %}"></script>
+    
+    <script src="{% static 'person/js/copy_post_link.js' %}"></script>
+    <script src="{% static 'main/js/copy_code.js' %}"></script>
+    
+    <script src="{% static 'main/js/copy_code.js' %}"></script>
+    <script src="{% static 'main/js/format_text.js' %}"></script>
+    <script src="{% static 'person/js/format_post.js' %}"></script>
+    
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {% endblock %}
