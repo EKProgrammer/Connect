@@ -7,36 +7,6 @@
 {% block link %}
     <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
     <link rel="stylesheet" href="{% static 'person/css/like_users_list.css' %}">
-    <style>
-        .context-menu {
-            background-color: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            padding: 5px 0;
-            z-index: 1000;
-        }
-        
-        .context-menu button {
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            display: block;
-            padding: 8px 15px;
-            text-align: left;
-            width: 100%;
-        }
-        
-        .context-menu button:hover {
-            background-color: #444;
-        }
-        
-        .comment-item {
-            position: relative;
-            cursor: context-menu;
-        }
-    </style>
     <link rel="stylesheet" href="{% static 'main/css/markdown.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/styles/github-dark.min.css">
 {% endblock %}
@@ -74,8 +44,16 @@
                         <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="50" height="50">
                     </button>
                     <ul class="post-actions-list">
-                        <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">Редактировать</button></li>
-                        <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">Удалить</button></li>
+                        <li>
+                            <button class="post-actions-btn edit" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">
+                                Редактировать
+                            </button>
+                        </li>
+                        <li>
+                            <button class="post-actions-btn delete" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">
+                                Удалить
+                            </button>
+                        </li>
                     </ul>
                 </div>
             {% endif %}
@@ -95,8 +73,13 @@
             </button>
             <span class="reaction-counter">{{ post.total_likes }}</span>
         
-            <img style="margin-left: 30px;" src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="30" height="30">
+            <a href="{% url 'post_detail' post.id %}">
+                <button class="comment-btn" title="Комментировать">
+                    <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+                </button>
+            </a>
             <span class="reaction-counter">{{ post.total_comments }}</span>
+
         
             <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
                 <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">

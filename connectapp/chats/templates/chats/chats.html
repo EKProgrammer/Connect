@@ -13,7 +13,13 @@
 
 <!-- Список чатов -->
 <aside class="chat-list">
-    <h2 class="list-name">Чаты</h2>
+    <h2 class="list-name">
+        Чаты
+        <img src="{% static 'chats/img/square-pen.svg' %}" alt="Чаты" class="group-icon" id="group-icon">
+        <div class="dropdown-menu" id="dropdown-menu">
+            <button class="dropdown-item" id="create-group-btn">Создать группу</button>
+        </div>
+    </h2>
     <div class="chats">
         {% if chats_list %}
             {% for chat_info in chats_list %}
@@ -25,7 +31,7 @@
                 </a>
             {% endfor %}
         {% else %}
-            <p class="commentary-centered">У вас нет чатов</p>
+            <p class="commentary">У вас нет чатов</p>
         {% endif %}
     </div>
 </aside>
@@ -35,7 +41,7 @@
 </div>
 
 <!-- Окно чата -->
-<div class="chat-window">
+<div class="chat-window" id="chat-window">
     {% if chat %}
         {% for participant in chat.participants.all %}
             {% if participant != request.user %}
@@ -87,7 +93,7 @@
                         <img src="{% static 'chats/img/send.svg' %}" height="30px" width="30px">
                     </button>
                     <button type="button" id="aiHelpButton" data-chat-id="{{ chat.id }}">
-                        <img src="{% static 'chats/img/ai.svg' %}" id="aiHelpIcon" height="30px" width="30px">
+                        <img src="{% static 'chats/img/ai.svg' %}" id="aiHelpIƒcon" height="30px" width="30px">
                     </button>
                 </div>
             </div>
@@ -95,6 +101,34 @@
     {% else %}
         <p class="commentary-centered">Чат не выбран</p>
     {% endif %}
+</div>
+
+<div id="create-group-container" class="hidden">
+    <button id="cancel-group-btфn" class="back-btn">Назад</button>
+    <h2>Выбор пользователей</h2>
+    <form id="search-form" class="d-flex mb-4" method="POST">
+        {% csrf_token %}
+        <input type="text" id="search-input" name="query" class="form-control" placeholder="Кого бы вы хотели выбрать?" value="{{ query }}">
+    </form>
+    
+    <div id="user-list">
+        {% for user in page_obj %}
+            <div class="user-card" data-id="{{ user.id }}">
+                <div class="user-info">
+                    <img src="{{ user.get_avatar_url }}" alt="Фото пользователя">
+                    <div>
+                        <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                    </div>
+                    <button class="select-btn"></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="group-name-container" style="display:none;">
+        <h2>Новая группа</h2>
+        <input type="text" id="group-name" class="form-control mb-4" placeholder="Название группы">
+    </div>
+    <button id="next-btn" class="next-btn">Далее</button>
 </div>
 
 <!-- Контекстное меню -->
@@ -112,6 +146,9 @@
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>
     <script src="{% static 'chats/js/resizer.js' %}"></script>
     <script src="{% static 'chats/js/messageSender.js' %}"></script>
+    <script src="{% static 'chats/js/toggleDropdown.js' %}"></script>
+    <script src="{% static 'chats/js/hidden.js' %}"></script>
+    <script src="{% static 'chats/js/search_users.js' %}"></script>
     <script src="{% static 'chats/js/edit_message.js' %}"></script>
 {#    <script src="{% static 'chats/js/web_socket.js' %}"></script>#}
 {% endblock %}

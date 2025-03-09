@@ -23,8 +23,16 @@
                     <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="40" height="40">
                 </button>
                 <ul class="post-actions-list">
-                    <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">Редактировать</button></li>
-                    <li><button class="post-actions-btn" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">Удалить</button></li>
+                    <li>
+                        <button class="post-actions-btn edit" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">
+                            Редактировать
+                        </button>
+                    </li>
+                    <li>
+                        <button class="post-actions-btn delete" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">
+                            Удалить
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
