@@ -32,17 +32,22 @@
     </span>
     <div class="user-actions">
         {% if is_following %}
-            <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
-                {% csrf_token %}
-                <button class="gradient-btn" type="submit" data="Отписаться"></button>
-            </form>
+        <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
+            {% csrf_token %}
+            <button class="follow-btn unfollow" type="submit">Отписаться</button>
+        </form>
         {% else %}
             <form action="{% url 'follow_user' profile_user.username %}" method="post">
                 {% csrf_token %}
-                <button class="gradient-btn" type="submit" data="Подписаться"></button>
+                <button class="follow-btn follow" type="submit">Подписаться</button>
             </form>
         {% endif %}
-        <a href="{% url 'start_chat' profile_user.id %}" class="btn btn-secondary">Написать сообщение</a>
+    
+        <div class="chat-link-container">
+            <a href="{% url 'start_chat' profile_user.id %}" class="chat-link">
+                <img src="{% static 'person/img/mail.svg' %}" alt="Написать сообщение" width="60" height="60">
+            </a>
+        </div>
     </div>
 </section>
 
@@ -131,33 +136,5 @@
 
     <script src="{% static 'person/js/user_followers_list.js' %}"></script>
     <script src="{% static 'person/js/user_following_list.js' %}"></script>
-    <script>
-        function copyToClipboard(button) {
-            const url = button.getAttribute('data-url');
-            navigator.clipboard.writeText(url).then(() => {
-                showCopyMessage();
-            }).catch(err => {
-                console.error('Ошибка при копировании: ', err);
-            });
-        }
-    
-        function showCopyMessage() {
-            const message = document.createElement('div');
-            message.textContent = 'Ссылка скопирована';
-            message.style.position = 'fixed';
-            message.style.bottom = '20px';
-            message.style.left = '50%';
-            message.style.transform = 'translateX(-50%)';
-            message.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-            message.style.color = 'white';
-            message.style.padding = '10px 20px';
-            message.style.borderRadius = '5px';
-            message.style.zIndex = '1000';
-            document.body.appendChild(message);
-    
-            setTimeout(() => {
-                document.body.removeChild(message);
-            }, 3000);
-        }
-    </script>
+    <script src="{% static 'person/js/copyLinkWithMessage.js' %}"></script>
 {% endblock %}

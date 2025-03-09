@@ -8,7 +8,8 @@ from django.http import JsonResponse
 import json
 import os
 from mistralai import Mistral
-from django.utils import timezone
+from django.core.paginator import Paginator
+from django.db.models import Q as QueryFilter
 
 @login_required
 def start_chat(request, user_id):
@@ -59,11 +60,34 @@ def chats(request, chat_id):
 
     chats_list = get_user_chats(request)
 
+    # ADD SEARCH USERS
+    query = request.GET.get('query', '').strip()
+    page_obj = None
+
+    if query:
+        users = User.objects.filter(
+            QueryFilter(first_name__icontains=query) | 
+            QueryFilter(last_name__icontains=query) | 
+            QueryFilter(username__icontains=query)
+        )
+        paginator = Paginator(users, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                "users": [
+                    {"id": user.id, "first_name": user.first_name, "last_name": user.last_name, "avatar": user.get_avatar_url()} 
+                    for user in page_obj
+                ]
+            })
     data = {
-        'user': request.user, 
+        'user': request.user,
         'chats_list': chats_list,
         'chat': chat,
-        'messages': messages
+        'messages': messages,
+        'page_obj': page_obj,
+        'query': query
     }
     return render(request, 'chats/chats.html', data)
 
