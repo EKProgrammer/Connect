@@ -239,7 +239,10 @@ def user_profile(request, username):
 
     followers_count = user.followers.count()
     following_count = user.subscriptions.count()
-    is_following = user.followers.filter(user=request.user).exists()
+    if request.user.is_authenticated:
+        is_following = user.followers.filter(user=request.user).exists()
+    else:
+        is_following = False
 
     data = {
         "profile_user": user,

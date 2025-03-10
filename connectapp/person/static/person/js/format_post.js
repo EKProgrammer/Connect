@@ -1,8 +1,10 @@
 function formatPosts(postsList) {
-    const postText = postsList.querySelectorAll('.post-text');
-    postText.forEach(post => {
-        post.innerHTML = formatText(post.innerText);
-    });
+    if (postsList) {
+        const postText = postsList.querySelectorAll('.post-text');
+        postText.forEach(post => {
+            post.innerHTML = formatText(post.innerText);
+        });
+    }
 }
 
 function formatPost() {

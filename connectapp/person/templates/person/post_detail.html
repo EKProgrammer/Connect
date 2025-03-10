@@ -2,7 +2,7 @@
 {% load custom_filters %}
 {% load static %}
 
-{% block title %}Название поста - Connect{% endblock %}
+{% block title %}Пост - Connect{% endblock %}
 
 {% block link %}
     <link rel="stylesheet" href="{% static 'person/css/person.css' %}">
@@ -12,9 +12,11 @@
 {% endblock %}
 
 {% block content %}
+    
 {% if user.is_authenticated %}
 <meta name="user-id" content="{{ user.id }}">
 {% endif %}
+    
 <main class="custom-container">    
 <section class="container-profile">
     {% csrf_token %}
@@ -68,7 +70,7 @@
         {% endif %}
 
         <div class="post-footer">
-            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}">
+            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Лайк">
                 <i class="fas fa-heart"></i>
             </button>
             <span class="reaction-counter">{{ post.total_likes }}</span>

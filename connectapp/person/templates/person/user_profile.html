@@ -24,23 +24,25 @@
             <span class="person-username">@{{ profile_user }}</span>
         </span>
     
-        <span class="user-actions">
-            {% if is_following %}
-            <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
-                {% csrf_token %}
-                <button class="follow-btn unfollow" type="submit">Отписаться</button>
-            </form>
-            {% else %}
-                <form action="{% url 'follow_user' profile_user.username %}" method="post">
-                    {% csrf_token %}
-                    <button class="follow-btn follow" type="submit">Подписаться</button>
-                </form>
-            {% endif %}
-        
-            <a href="{% url 'start_chat' profile_user.id %}" class="chat-link">
-                <img src="{% static 'person/img/mail.svg' %}" alt="Написать сообщение" width="60" height="60">
-            </a>
-        </span>
+        {% if user.is_authenticated %}
+            <span class="user-actions">
+                {% if is_following %}
+                    <form action="{% url 'unfollow_user' profile_user.username %}" method="post">
+                        {% csrf_token %}
+                        <button class="follow-btn unfollow" type="submit">Отписаться</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'follow_user' profile_user.username %}" method="post">
+                        {% csrf_token %}
+                        <button class="follow-btn follow" type="submit">Подписаться</button>
+                    </form>
+                {% endif %}
+            
+                <a href="{% url 'start_chat' profile_user.id %}" class="chat-link">
+                    <img src="{% static 'person/img/mail.svg' %}" alt="Написать сообщение" width="60" height="60">
+                </a>
+            </span>
+        {% endif %}
     </div>
     <div class="about-section">
         <span class="about-label">О себе</span>
@@ -137,7 +139,7 @@
     <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="{% static 'person/js/like_context_menu.js' %}"></script>
     
-        <script src="{% static 'person/js/user_followers_list.js' %}"></script>
+    <script src="{% static 'person/js/user_followers_list.js' %}"></script>
     <script src="{% static 'person/js/user_following_list.js' %}"></script>
     
     <script src="{% static 'person/js/copy_post_link.js' %}"></script>

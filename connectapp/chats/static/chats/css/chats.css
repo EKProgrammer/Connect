@@ -1,11 +1,20 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 .container-chats {
     display: flex;
     background-color: #111111;
     padding: 20px;
     border-radius: 20px;
-    height: 88vh;
+    flex-grow: 1;
     width: 1300px;
-    margin: 75px auto 0;
+    margin: 75px auto 15px;
     border: 1px solid #727272;
 }
 

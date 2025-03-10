@@ -10,6 +10,17 @@
 .login-form {
     margin-top: 7vh;
     width: 500px;
+    min-width: 400px;
+    background-color: #111111;
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid #727272;
+}
+
+.register-form {
+    display: flex;
+    margin: 75px auto 0;
+    width: 977px;
     background-color: #111111;
     padding: 30px;
     border-radius: 20px;
