@@ -24,7 +24,7 @@ class Chat(models.Model):
         chat = cls.objects.create(is_group_chat=False)
         chat.participants.set([user1, user2])
         return chat
-
+    
     class Meta:
         verbose_name = 'Чат'
         verbose_name_plural = 'Чаты'

@@ -24,14 +24,17 @@ def get_user_chats(request):
     chats_list_filtered = []
     
     for chat in chats_list:
-        other_participants = chat.participants.exclude(id=request.user.id)
-        for user in other_participants:
-            chats_list_filtered.append({'user': user, 'chat_id': chat.id, 'chat': chat})
+        if chat.is_group_chat:
+            chats_list_filtered.append({'chat_id': chat.id, 'chat': chat, 'name': chat.name})
+        else:
+            other_participant = chat.participants.exclude(id=request.user.id).first()
+            if other_participant:
+                chats_list_filtered.append({'user': other_participant, 'chat_id': chat.id, 'chat': chat})
     
-    # Сортируем чаты по последнему сообщению (если оно есть) или по времени создания
     chats_list_filtered.sort(key=lambda x: x['chat'].messages.latest('timestamp').timestamp if x['chat'].messages.exists() else x['chat'].created_at, reverse=True)
     
     return chats_list_filtered
+
 
 
 @login_required
@@ -49,6 +52,7 @@ def chats_empty_page(request):
 def chats(request, chat_id):
     chat = get_object_or_404(Chat, id=chat_id)
     messages = chat.messages.all()
+    last_sender = None  # Переменная для отслеживания последнего отправителя
     if request.method == 'POST':
         content = request.POST.get('message-content')
         if content:
@@ -86,10 +90,12 @@ def chats(request, chat_id):
         'chats_list': chats_list,
         'chat': chat,
         'messages': messages,
+        'last_sender': last_sender,
         'page_obj': page_obj,
         'query': query
     }
     return render(request, 'chats/chats.html', data)
+
 
 @csrf_exempt
 @login_required
@@ -164,3 +170,26 @@ def delete_message(request, message_id):
         return JsonResponse({'status': 'success'})
     except Message.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Message not found'}, status=404)
+    
+@login_required
+@csrf_exempt
+def create_group_chat(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            group_name = data.get("group_name", "").strip()
+            user_ids = data.get("user_ids", [])
+
+            if not group_name or not user_ids:
+                return JsonResponse({"success": False, "error": "Заполните все поля"}, status=400)
+
+            chat = Chat.objects.create(name=group_name, is_group_chat=True)
+            chat.participants.add(request.user, *User.objects.filter(id__in=user_ids))
+
+            return JsonResponse({"success": True, "chat_id": chat.id})
+
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)}, status=500)
+
+    return JsonResponse({"success": False, "error": "Метод не поддерживается"}, status=405)
+

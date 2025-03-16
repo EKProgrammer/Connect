@@ -8,4 +8,5 @@ urlpatterns = [
     path('service/edit_message/', views.edit_message, name='edit_message'),
     path('service/delete_message/<int:message_id>/', views.delete_message, name='delete_message'),
     path('<int:chat_id>', views.chats, name='chats'),
+    path('service/create_group_chat/', views.create_group_chat, name='create_group_chat'),
 ]
