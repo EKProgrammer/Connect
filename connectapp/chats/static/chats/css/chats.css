@@ -298,23 +298,9 @@
 }
 
 /* create group */
-#create-group-container {
-    display: none; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 53%;
-    height: 92%;
-    padding: 50px;
-    position: absolute; 
-    left: 32%;
-    top: 10%;
-}
-
-#create-group-container h2 {
-    margin-top: -92%;
-    text-align: center;
-    margin-left: -10%;
+.create-group-controls {
+    display: flex;
+    justify-content: space-between;
 }
 
 .user-selection-title {
@@ -322,13 +308,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
-.line-separator {
-    border: none;    
-    margin: 0; 
-    margin-top: 10px; 
-}
-  
 
 .search-wrapper {
     display: flex;
@@ -339,9 +318,8 @@
     border-radius: 8px;
     min-height: 40px;
     cursor: text;
-    margin-left: -30%;
+    margin-top: 10px;
     width: 100%;
-    max-width: 100%;
 }
 
 #search-input {
@@ -351,49 +329,23 @@
     padding: 5px;
     min-width: 150px;
     background: transparent;
-    width: 100%; 
     box-sizing: border-box; 
     color: white;
-}
-
-#search-form {
-    width: 90%;       
-    display: flex;     
-    justify-content: flex-start;
-    box-sizing: border-box; 
-    margin-left: 50%;
 }
 
 #search-input::placeholder {
     color: #ababab;
 }
 
-
-.hidden {
-    display: none;
-}
-
 .back-btn,
 .next-btn {
-    position: absolute;
-    margin-top: -97%; 
-    transform: translateY(-50%); 
     padding: 10px 20px;
     background-color: white;
     color: black;
     border: 1px solid black;
     border-radius: 5px;
     font-size: 16px;
-    cursor: pointer;
     transition: all 0.3s ease;
-}
-
-.back-btn {
-    left: 7%;
-}
-
-.next-btn {
-    right: 11%;
 }
 
 .back-btn:hover,
@@ -418,7 +370,6 @@
     margin-top: 10px;
     margin-bottom: 50px; 
     z-index: 10;
-    top: 100%;
 }
 
 .user-card {
@@ -538,18 +489,6 @@
     background-color: #ebebeb;
 }
 
-
-#group-name-container {
-    margin-top: -120%; 
-    margin-left: -28%;
-}
-
-#group-name-container h2 {
-    margin-top: -160%; 
-    margin-left: -40%;
-}
-
-
 /* Общий стиль для кнопки "Создать" */
 #create-btn {
     background-color: transparent;  
@@ -561,8 +500,6 @@
     cursor: pointer; 
     border-radius: 4px;
     transition: all 0.3s ease;
-    margin-top: -100%;
-    margin-left: 140%;
 }
 
 /* Эффект при наведении */

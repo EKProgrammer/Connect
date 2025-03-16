@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
             createBtn.id = "create-btn";
             createBtn.textContent = "Создать";
             createBtn.classList.add("create-btn"); 
-            groupNameContainer.appendChild(createBtn);
+            document.querySelector(".create-group-controls").appendChild(createBtn);
 
             createBtn.addEventListener("click", function () {
                 createGroup();

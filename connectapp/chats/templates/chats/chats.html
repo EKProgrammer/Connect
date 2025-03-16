@@ -133,37 +133,37 @@
     {% else %}
         <p class="commentary-centered">Чат не выбран</p>
     {% endif %}
-</div>
 
+    <div id="create-group-container" style="display: none">
+        <div class="create-group-controls">
+            <button id="cancel-group-btn" class="back-btn">Назад</button>
+            <h2 class="user-selection-title">Выбор пользователей</h2>
+            <button id="next-btn" class="next-btn">Далее</button>
+        </div>
+        <form id="search-form" class="d-flex mb-4" method="POST">
+            {% csrf_token %}
+            <input type="text" id="search-input" name="query" class="form-control" placeholder="Кого бы вы хотели выбрать?" value="{{ query }}">
+        </form>
 
-<div id="create-group-container" class="hidden">
-    <button id="cancel-group-btфn" class="back-btn">Назад</button>
-    <h2 class="user-selection-title">Выбор пользователей</h2>
-    <hr class="line-separator">
-    <form id="search-form" class="d-flex mb-4" method="POST">
-        {% csrf_token %}
-        <input type="text" id="search-input" name="query" class="form-control" placeholder="Кого бы вы хотели выбрать?" value="{{ query }}">
-    </form>
-    <div id="user-list">
-        {% for user in page_obj %}
-            <div class="user-card" data-id="{{ user.id }}">
-                <div class="user-info">
-                    <img src="{{ user.get_avatar_url }}" alt="Фото пользователя">
-                    <div>
-                        <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+        <div id="user-list">
+            {% for user in page_obj %}
+                <div class="user-card" data-id="{{ user.id }}">
+                    <div class="user-info">
+                        <img src="{{ user.get_avatar_url }}" alt="Фото пользователя">
+                        <div>
+                            <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                        </div>
+                        <button class="select-btn"></button>
                     </div>
-                    <button class="select-btn"></button>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <div id="group-name-container" style="display:none;">
+            <h2>Новая группа</h2>
+            <input type="text" id="group-name" class="form-control mb-4" placeholder="Название группы">
+        </div>
     </div>
-    <div id="group-name-container" style="display:none;">
-        <h2>Новая группа</h2>
-        <input type="text" id="group-name" class="form-control mb-4" placeholder="Название группы">
-    </div>
-    <button id="next-btn" class="next-btn">Далее</button>
 </div>
-
 
 <!-- Контекстное меню -->
 <div id="context-menu" class="context-menu">
@@ -175,22 +175,6 @@
 {% endblock %}
 
 {% block script %}
-    <script>
-        // Функция для сворачивания и отображения информации о группе
-        document.getElementById('group-info-toggle').addEventListener('click', function() {
-            var messages = document.getElementById('chat-messages');
-            var groupInfo = document.getElementById('group-info');
-            if (messages.style.display === "none") {
-                // Показываем сообщения, скрываем информацию о группе
-                messages.style.display = "block";
-                groupInfo.style.display = "none";
-            } else {
-                // Скрываем сообщения, показываем информацию о группе
-                messages.style.display = "none";
-                groupInfo.style.display = "block";
-            }
-        });
-    </script>
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>
