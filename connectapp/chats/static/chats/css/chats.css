@@ -39,6 +39,8 @@
     position: absolute;
     right: 0; 
     margin-right: 20px; 
+    width: 30px;
+    height: 30px;
 }
 
 .group-icon:active {
@@ -186,6 +188,7 @@
 .message-received {
     background-color: #6668;
     align-self: flex-start;
+    margin-top: -1%;
 }
 
 .message-text {
@@ -300,19 +303,32 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 55%;
-    height: 85%;
+    width: 53%;
+    height: 92%;
     padding: 50px;
     position: absolute; 
     left: 32%;
-    top: 15%;
+    top: 10%;
 }
 
 #create-group-container h2 {
-    margin-top: -88%;
+    margin-top: -92%;
     text-align: center;
     margin-left: -10%;
 }
+
+.user-selection-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.line-separator {
+    border: none;    
+    margin: 0; 
+    margin-top: 10px; 
+}
+  
 
 .search-wrapper {
     display: flex;
@@ -324,7 +340,8 @@
     min-height: 40px;
     cursor: text;
     margin-left: -30%;
-    width: 200%;
+    width: 100%;
+    max-width: 100%;
 }
 
 #search-input {
@@ -334,8 +351,23 @@
     padding: 5px;
     min-width: 150px;
     background: transparent;
-    width: 200%; 
+    width: 100%; 
+    box-sizing: border-box; 
+    color: white;
 }
+
+#search-form {
+    width: 90%;       
+    display: flex;     
+    justify-content: flex-start;
+    box-sizing: border-box; 
+    margin-left: 50%;
+}
+
+#search-input::placeholder {
+    color: #ababab;
+}
+
 
 .hidden {
     display: none;
@@ -361,7 +393,7 @@
 }
 
 .next-btn {
-    right: 14%;
+    right: 11%;
 }
 
 .back-btn:hover,
@@ -506,10 +538,75 @@
     background-color: #ebebeb;
 }
 
+
 #group-name-container {
-    margin-bottom: 70%; 
+    margin-top: -120%; 
+    margin-left: -28%;
 }
 
 #group-name-container h2 {
-    margin-bottom: 60%; 
+    margin-top: -160%; 
+    margin-left: -40%;
+}
+
+
+/* Общий стиль для кнопки "Создать" */
+#create-btn {
+    background-color: transparent;  
+    color: #333; 
+    border: 2px solid #333; 
+    padding: 10px 20px;
+    font-size: 16px;  
+    font-weight: bold;
+    cursor: pointer; 
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-top: -100%;
+    margin-left: 140%;
+}
+
+/* Эффект при наведении */
+#create-btn:hover {
+    background-color: #333; 
+    color: white;
+}
+
+/* Эффект при нажатии */
+#create-btn:active {
+    background-color: #555; 
+    transform: scale(0.98); 
+}
+
+/* Состояние при отключенной кнопке */
+#create-btn:disabled {
+    background-color: #ccc;
+    border: 2px solid #ccc; 
+    color: #777; 
+    cursor: not-allowed; 
+}
+
+.message-wrapper {
+    display: flex;
+    margin-bottom: 21px;
+}
+
+.message-sender {
+    display: flex;
+    align-items: center;
+    margin-right: -17%;
+}
+
+.sender-avatar {
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -42%;
+}
+
+.sender-name {
+    font-weight: bold;
+    margin-top: -50%;
+}
+
+.message {
+    max-width: 80%;
 }

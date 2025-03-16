@@ -24,9 +24,23 @@
         {% if chats_list %}
             {% for chat_info in chats_list %}
                 <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
-                    <div class="chat-item" title="{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}">
-                        <img src="{{ chat_info.user.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
-                        <span class="chat-name-list">{{ chat_info.user.first_name }} {{ chat_info.user.last_name }}</span>
+                    <div class="chat-item" title="{{ chat_info.name }}">
+                        <img src="{% if chat_info.chat.is_group_chat %}
+                                    {% static 'chats/img/group_chats_avatar.svg' %}
+                                  {% else %}
+                                    {{ chat_info.user.get_avatar_url }}
+                                  {% endif %}" 
+                             class="chat-image" 
+                             height="50" 
+                             width="50" 
+                             alt="Avatar">
+                        <span class="chat-name-list">
+                            {% if chat_info.chat.is_group_chat %}
+                                {{ chat_info.name }} 
+                            {% else %}
+                                {{ chat_info.user.first_name }} {{ chat_info.user.last_name }}
+                            {% endif %}
+                        </span>
                     </div>
                 </a>
             {% endfor %}
@@ -36,6 +50,7 @@
     </div>
 </aside>
 
+
 <div class="resizer" id="dragMe">
     <button type="button" style="height: 100%;"></button>
 </div>
@@ -43,45 +58,62 @@
 <!-- Окно чата -->
 <div class="chat-window" id="chat-window">
     {% if chat %}
-        {% for participant in chat.participants.all %}
-            {% if participant != request.user %}
-                <a class="chat-name-ref" href="{% url 'user_profile' participant.username %}">
-                    <h2 class="chat-name-window">
+        <h2 class="chat-name-window">
+            {% if chat.name %}
+                <img src="{{ chat.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
+                {{ chat.name }} 
+            {% else %}
+                {% for participant in chat.participants.all %}
+                    {% if participant != request.user %}
                         <img src="{{ participant.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
                         {{ participant.first_name }} {{ participant.last_name }}
-                    </h2>
-                    <div class="chat-name-line"></div>
-                </a>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
-        {% endfor %}
+        </h2>
+        <div class="chat-name-line"></div>
 
         <div class="messages" id="chat-messages">
             {% for message in messages %}
-                {% if message.sender.id == request.user.id %}
-                    <div class="message message-sent" data-message-id="{{ message.id }}">
-                        <div class="message-text">{{ message.content }}</div>
-                        <span class="message-sent-time">
-                            {% if message.is_changed %}
-                                <span style="margin-right: 5px;">Изменено</span>
-                            {% else %}
-                                <span></span>
-                            {% endif %}
-                            {{ message.timestamp }}
-                        </span>
-                    </div>
-                {% else %}
-                    <div class="message message-received" data-message-id="{{ message.id }}">
-                        <div class="message-text">{{ message.content }}</div>
-                        <span class="message-received-time">
-                            {% if message.is_changed %}
-                                <span style="margin-right: 5px;">Изменено</span>
-                            {% endif %}
-                            {{ message.timestamp }}
-                        </span>
-                    </div>
-                {% endif %}
+                <div class="message-wrapper">
+                    {% if message.sender != request.user %}
+                        {% if last_sender != message.sender.id %}
+                            <div class="message-sender">
+                                <img src="{{ message.sender.get_avatar_url }}" alt="Avatar" class="sender-avatar" width="40" height="40">
+                                <span class="sender-name">{{ message.sender.first_name }} {{ message.sender.last_name }}</span>
+                            </div>
+                            {% with message.sender.id as last_sender %}
+                            {% endwith %}
+                        {% endif %}
+                    {% endif %}
+                    
+                    {% if message.sender.id == request.user.id %}
+                        <div class="message message-sent" data-message-id="{{ message.id }}">
+                            <div class="message-text">{{ message.content }}</div>
+                            <span class="message-sent-time">
+                                {% if message.is_changed %}
+                                    <span style="margin-right: 5px;">Изменено</span>
+                                {% else %}
+                                    <span></span>
+                                {% endif %}
+                                {{ message.timestamp }}
+                            </span>
+                        </div>
+                    {% else %}
+                        <div class="message message-received" data-message-id="{{ message.id }}">
+                            <div class="message-text">{{ message.content }}</div>
+                            <span class="message-received-time">
+                                {% if message.is_changed %}
+                                    <span style="margin-right: 5px;">Изменено</span>
+                                {% endif %}
+                                {{ message.timestamp }}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
+
 
         <!-- Поле ввода текста -->
         <form method="post">
@@ -103,14 +135,15 @@
     {% endif %}
 </div>
 
+
 <div id="create-group-container" class="hidden">
     <button id="cancel-group-btфn" class="back-btn">Назад</button>
-    <h2>Выбор пользователей</h2>
+    <h2 class="user-selection-title">Выбор пользователей</h2>
+    <hr class="line-separator">
     <form id="search-form" class="d-flex mb-4" method="POST">
         {% csrf_token %}
         <input type="text" id="search-input" name="query" class="form-control" placeholder="Кого бы вы хотели выбрать?" value="{{ query }}">
     </form>
-    
     <div id="user-list">
         {% for user in page_obj %}
             <div class="user-card" data-id="{{ user.id }}">
@@ -131,6 +164,7 @@
     <button id="next-btn" class="next-btn">Далее</button>
 </div>
 
+
 <!-- Контекстное меню -->
 <div id="context-menu" class="context-menu">
     <button id="edit-message-btn">Редактировать</button>
@@ -141,6 +175,22 @@
 {% endblock %}
 
 {% block script %}
+    <script>
+        // Функция для сворачивания и отображения информации о группе
+        document.getElementById('group-info-toggle').addEventListener('click', function() {
+            var messages = document.getElementById('chat-messages');
+            var groupInfo = document.getElementById('group-info');
+            if (messages.style.display === "none") {
+                // Показываем сообщения, скрываем информацию о группе
+                messages.style.display = "block";
+                groupInfo.style.display = "none";
+            } else {
+                // Скрываем сообщения, показываем информацию о группе
+                messages.style.display = "none";
+                groupInfo.style.display = "block";
+            }
+        });
+    </script>
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>

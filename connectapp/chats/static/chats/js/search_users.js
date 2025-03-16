@@ -3,14 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const userList = document.getElementById("user-list");
     const nextBtn = document.getElementById("next-btn");
     const cancelBtn = document.getElementById("cancel-group-btn");
-    if (!cancelBtn) {
-        return;
-    }
     const createGroupContainer = document.getElementById("create-group-container");
     const groupNameContainer = document.getElementById("group-name-container");
-    const groupTitle = document.querySelector("#create-group-container h2"); 
+    const groupTitle = document.querySelector("#create-group-container h2");
+    const groupNameInput = document.getElementById("group-name");
+    
+    
     const selectedUsersContainer = document.createElement("div");
-
     selectedUsersContainer.id = "selected-users-container";
     selectedUsersContainer.style.display = "none";
     createGroupContainer.appendChild(selectedUsersContainer);
@@ -21,9 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
     searchWrapper.classList.add("search-wrapper");
     searchInput.parentNode.replaceChild(searchWrapper, searchInput);
     searchWrapper.appendChild(searchInput);
-
+    
     function updateSelectedUsers() {
-        searchWrapper.innerHTML = ""; 
+        searchWrapper.innerHTML = "";
 
         selectedUsers.forEach(user => {
             const tag = document.createElement("span");
@@ -99,22 +98,25 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
-    
-    
 
     nextBtn.addEventListener("click", function () {
+        if (selectedUsers.length === 0) {
+            alert("Выберите хотя бы одного пользователя!");
+            return;
+        }
+
         searchWrapper.style.display = "none";
         userList.style.display = "none";
+        nextBtn.style.display = "none";
 
         if (groupTitle) {
             groupTitle.remove();
         }
 
         selectedUsersContainer.innerHTML = "";
-
         selectedUsersContainer.appendChild(groupNameContainer);
         groupNameContainer.style.display = "block";
-
+ 
         const selectedUsersTitle = document.createElement("h4");
         selectedUsersTitle.textContent = "Выбранные пользователи:";
         selectedUsersContainer.appendChild(selectedUsersTitle);
@@ -131,8 +133,63 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         selectedUsersContainer.style.display = "block";
+
+        let createBtn = document.getElementById("create-btn");
+        if (!createBtn) {
+            createBtn = document.createElement("button");
+            createBtn.id = "create-btn";
+            createBtn.textContent = "Создать";
+            createBtn.classList.add("create-btn"); 
+            groupNameContainer.appendChild(createBtn);
+
+            createBtn.addEventListener("click", function () {
+                createGroup();
+            });
+        }
     });
-    
+
+    function createGroup() {
+        const groupName = groupNameInput.value.trim();
+        
+        if (!groupName) {
+            alert("Введите название группы!");
+            return;
+        }
+
+        const csrfToken = getCSRFToken();
+
+        if (!csrfToken) {
+            alert("CSRF-токен не найден!");
+            return;
+        }
+
+        const requestData = {
+            group_name: groupName,
+            user_ids: selectedUsers.map(user => user.id),
+        };
+
+        fetch("/chats/service/create_group_chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify(requestData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Редирект на страницу нового чата
+                window.location.href = `/chats/${data.chat_id}`;
+            } else {
+                alert("Ошибка при создании группы: " + data.error);
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка запроса:", error);
+            alert("Не удалось создать группу. Попробуйте еще раз.");
+        });
+    }
 
     cancelBtn.addEventListener("click", function () {
         searchWrapper.style.display = "flex";
@@ -147,8 +204,13 @@ document.addEventListener("DOMContentLoaded", function () {
             createGroupContainer.insertBefore(newTitle, searchWrapper);
         }
     });
-    
+
     function toggleButtonColor(button) {
         button.classList.toggle("selected");
+    }
+
+    function getCSRFToken() {
+        const csrfElement = document.querySelector("[name=csrfmiddlewaretoken]");
+        return csrfElement ? csrfElement.value : null;
     }
 });
