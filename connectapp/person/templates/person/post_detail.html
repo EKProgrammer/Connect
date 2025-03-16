@@ -25,7 +25,7 @@
             <i class="fa-solid fa-arrow-left"></i> Пост 
         </button>
     </div>
-    <div class="post-item">
+    <div class="post-item" data-post-id="{{ post.id }}">
         <div class="post-header">
             <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
 
@@ -61,7 +61,7 @@
             {% endif %}
         </div>
 
-        <div class="post-text" id="post-text-{{ post.id }}">{{ post.text }}</div>
+        <div class="post-text" id="post-text-{{ post.id }}">{{ post.formated_text|safe }}</div>
 
         {% if post.image %}
             <div class="post-image-container">
@@ -70,17 +70,25 @@
         {% endif %}
 
         <div class="post-footer">
-            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Лайк">
-                <i class="fas fa-heart"></i>
-            </button>
-            <span class="reaction-counter">{{ post.total_likes }}</span>
+            <span>
+                <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Лайк">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <span class="post-footer-counter">{{ post.total_likes }}</span>
+                
+                <img style="margin-left: 40px;" src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+                <span class="post-footer-counter">{{ post.total_comments }}</span>
             
-            <img style="margin-left: 40px;" src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
-            <span class="reaction-counter">{{ post.total_comments }}</span>
-        
-            <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
-                <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
-            </button>
+                <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
+                    <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
+                </button>
+            </span>
+            <span>
+                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра">
+                <span class="post-footer-counter">
+                    {{ post.views }}
+                </span>
+            </span>
         </div>
     </div>
 
@@ -159,12 +167,11 @@
     <script src="{% static 'person/js/like_post.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'person/js/post_actions_context_menu.js' %}"></script>
+    <script src="{% static 'person/js/add_view_for_post.js' %}"></script>
     <script src="{% static 'person/js/comment_context_menu.js' %}"></script>
     <script src="{% static 'person/js/commentsEnter.js' %}"></script>
     <script src="{% static 'person/js/copy_post_link.js' %}"></script>
     <script src="{% static 'main/js/copy_code.js' %}"></script>
-    <script src="{% static 'main/js/format_text.js' %}"></script>
-    <script src="{% static 'person/js/format_post.js' %}"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.7.0/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

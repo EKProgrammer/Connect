@@ -5,10 +5,12 @@ from django.utils import timezone
 
 class Post(models.Model):
     text = models.TextField('Текст', max_length=5000)
+    formated_text = models.TextField('Отформатированный текст', default='', max_length=5000)
     date = models.DateTimeField('Дата публикации')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    views = models.PositiveIntegerField('Число просмотров', default=0)
 
     def total_likes(self):
         return self.likes.count()

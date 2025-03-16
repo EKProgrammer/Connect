@@ -3,7 +3,7 @@
 
 {% for post in posts %}
     {% with post_id=post.id %}
-    <div class="post-item">
+    <div class="post-item" data-post-id="{{ post.id }}">
         <div class="post-header">
             <img src="{{ post.user.get_avatar_url }}" class="post-avatar" alt="{{ post.user.username }}">
 
@@ -38,7 +38,7 @@
         </div>
         
         <div class="post-content">
-            <div class="post-text" id="post-text-{{ post_id }}">{{ post.text }}</div>
+            <div class="post-text" id="post-text-{{ post_id }}">{{ post.formated_text|safe }}</div>
             <div class="fade-out"></div>
             <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
         </div>
@@ -49,20 +49,29 @@
         {% endif %}
         
         <div class="post-footer">
-            <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
-                <i class="fas fa-heart"></i>
-            </button>
-            <span class="reaction-counter">{{ post.total_likes }}</span>
-    
-            <a href="{% url 'post_detail' post.id %}">
-                <button class="comment-btn" title="Комментировать">
-                    <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+            <span>
+                <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
+                    <i class="fas fa-heart"></i>
                 </button>
-            </a>
-            <span class="reaction-counter">{{ post.total_comments }}</span>
-            <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
-                <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
-            </button>
+                <span class="post-footer-counter">{{ post.total_likes }}</span>
+        
+                <a href="{% url 'post_detail' post.id %}">
+                    <button class="comment-btn" title="Комментировать">
+                        <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+                    </button>
+                </a>
+                <span class="post-footer-counter">{{ post.total_comments }}</span>
+            
+                <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
+                    <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
+                </button>
+            </span>
+            <span>
+                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра">
+                <span class="post-footer-counter">
+                    {{ post.views }}
+                </span>
+            </span>
         </div>
         
         <!-- Модальное окно для редактирования поста -->

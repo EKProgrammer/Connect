@@ -9,7 +9,7 @@ from users.forms import UserRegisterForm
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect("/person")
+        return redirect("/feed")
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
         if form.is_valid():

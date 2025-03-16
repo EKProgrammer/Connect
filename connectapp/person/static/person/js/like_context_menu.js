@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchLikedUsers(postId) {
-        fetch(`/person/service/liked-users/${postId}/`)
+        fetch(`/person/service/liked_users/${postId}/`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

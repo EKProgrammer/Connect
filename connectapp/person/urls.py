@@ -13,7 +13,7 @@ urlpatterns = [
     path('service/delete_avatar/', views.delete_avatar, name='delete_avatar'),
     path('service/like_post/', views.like_post, name='like_post'),
     path('service/load_more_posts/', views.load_more_posts, name='load_more_posts'),
-    path('service/liked-users/<int:post_id>/', views.liked_users, name='liked_users'),
+    path('service/liked_users/<int:post_id>/', views.liked_users, name='liked_users'),
     path('service/could_use_ai/', views.could_use_ai, name='could_use_ai'),
     path('service/followers/', views.get_followers, name='get_followers'),
     path('service/followers/<str:username>/', views.get_user_followers, name='get_user_followers'),
@@ -24,4 +24,5 @@ urlpatterns = [
     path('service/edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
     path('service/load_more_posts_other_user/<str:username>/', views.load_more_posts_other_user,
          name='load_more_posts_other_user'),
+    path('service/add_view/<int:post_id>/', views.add_view, name='add_view'),
 ]

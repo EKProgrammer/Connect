@@ -156,6 +156,7 @@ body {
     border: 2px solid #727272;
     border-radius: 10px;
     padding: 10px;
+    z-index: 900;
 }
 
 .vertical-footer ul {
@@ -184,6 +185,7 @@ body {
     border-radius: 10px;
     cursor: pointer;
     padding: 2px 2px;
+    z-index: 900;
 }
 
 .horizontal-footer {
@@ -229,7 +231,7 @@ body {
 }
 
 .gradient-btn:hover::before {
-    opacity: 0%;
+    opacity: 0;
     top: 0;
     right: 0;
     bottom: 0;
@@ -275,6 +277,7 @@ a {
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 900;
 }
 
 #scrollToTopBtn.visible {

@@ -18,6 +18,8 @@ from .models import Post, Comment
 from .forms import AboutForm, PostForm
 from .forms import CommentForm
 from django.views.decorators.http import require_POST
+import markdown
+from .code_header import CodeHeaderExtension
 
 api_key = os.environ["MISTRAL_API_KEY"]
 model = "mistral-small-latest"
@@ -120,6 +122,16 @@ def create_post(request):
         post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             post = post_form.save(commit=False)
+
+            original_text = request.POST['text']
+            post.text = original_text
+            post.formated_text = markdown.markdown(
+                original_text,
+                extensions=[
+                    'markdown.extensions.extra',  # Включает поддержку таблиц, сносок и других элементов
+                    CodeHeaderExtension(),
+                    'markdown.extensions.fenced_code',  # Поддержка блоков кода с использованием ```
+                ])
             post.user = request.user
             post.date = timezone.now()
             post.save()
@@ -137,11 +149,21 @@ def edit_about(request):
 
 @login_required
 def edit_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id, user=request.user)
     if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id, user=request.user)
         post_form = PostForm(request.POST, request.FILES, instance=post)
         if post_form.is_valid():
-            post_form.save()
+            post = post_form.save(commit=False)
+
+            original_text = request.POST['text']
+            post.formated_text = markdown.markdown(
+                original_text,
+                extensions=[
+                    'markdown.extensions.extra',  # Включает поддержку таблиц, сносок и других элементов
+                    CodeHeaderExtension(),
+                    'markdown.extensions.fenced_code',  # Поддержка блоков кода с использованием ```
+                ])
+            post.save()
     return redirect('profile')
 
 
@@ -382,6 +404,7 @@ def delete_comment(request, comment_id):
     except Comment.DoesNotExist:
         return JsonResponse({'success': False, 'error': 'Комментарий не найден'})
 
+
 @login_required
 def edit_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
@@ -408,3 +431,10 @@ def edit_comment(request, comment_id):
     
     # Если метод не POST, перенаправляем на страницу поста
     return redirect('post_detail', post_id=comment.post.id)
+
+
+def add_view(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.views += 1
+    post.save()
+    return JsonResponse({'status': 'success'})

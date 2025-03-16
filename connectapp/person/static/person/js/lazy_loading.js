@@ -1,5 +1,6 @@
 "use strict"
 
+
 let page = 2; // Начинаем с второй страницы
 let isLoading = false;
 let pageEnded = false;
@@ -52,7 +53,6 @@ async function getContent() {
             postsList.insertAdjacentHTML('beforeend', data.posts_html);
             page++;
             hidePostText();
-            formatPosts(postsList);
         }
 
         if (!data.has_next) {

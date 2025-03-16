@@ -336,6 +336,7 @@ input[type="file"] {
     position: absolute;
     bottom: 0;
     right: 0;
+    border-radius: 5px 0 0 0;
     box-shadow: -2px -2px 2px 2px rgba(17, 17, 17, 0.8);
     background-color: #111111;
     cursor: pointer;
@@ -394,6 +395,11 @@ input[type="file"] {
 
 .post-footer {
     display: flex;
+    justify-content: space-between;
+}
+
+.post-footer span {
+    display: flex;
     align-items: center;
 }
 
@@ -414,8 +420,8 @@ input[type="file"] {
     color: red;
 }
 
-.reaction-counter {
-    margin-left: 3px;
+.post-footer-counter {
+    margin-left: 5px;
     font-size: 1rem;
     color: #cfcfcf;
 }
