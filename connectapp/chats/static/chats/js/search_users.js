@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const searchInput = document.getElementById("search-input");
+    searchInput.setAttribute("autocomplete", "off");
     const userList = document.getElementById("user-list");
     const nextBtn = document.getElementById("next-btn");
     const cancelBtn = document.getElementById("cancel-group-btn");
@@ -7,7 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const groupNameContainer = document.getElementById("group-name-container");
     const groupTitle = document.querySelector("#create-group-container h2");
     const groupNameInput = document.getElementById("group-name");
-    
+    groupNameInput.setAttribute("autocomplete", "off");
+    groupNameInput.setAttribute("autocorrect", "off");
+    groupNameInput.setAttribute("autocapitalize", "off");
+    groupNameInput.setAttribute("spellcheck", "false");
+
+        
     
     const selectedUsersContainer = document.createElement("div");
     selectedUsersContainer.id = "selected-users-container";
@@ -83,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedUsers.splice(userIndex, 1);
         }
         updateSelectedUsers();
+        console.log("Размер кнопки:", button.offsetWidth, button.offsetHeight);
         toggleButtonColor(button);
     }
 
@@ -100,23 +107,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     nextBtn.addEventListener("click", function () {
-        if (selectedUsers.length === 0) {
-            alert("Выберите хотя бы одного пользователя!");
-            return;
-        }
-
         searchWrapper.style.display = "none";
         userList.style.display = "none";
         nextBtn.style.display = "none";
-
+    
         if (groupTitle) {
             groupTitle.remove();
         }
-
+    
         selectedUsersContainer.innerHTML = "";
         selectedUsersContainer.appendChild(groupNameContainer);
         groupNameContainer.style.display = "block";
- 
+    
         const selectedUsersTitle = document.createElement("h4");
         selectedUsersTitle.textContent = "Выбранные пользователи:";
         selectedUsersContainer.appendChild(selectedUsersTitle);
@@ -131,9 +133,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>`;
             selectedUsersContainer.appendChild(userCard);
         });
-
+    
         selectedUsersContainer.style.display = "block";
-
+    
         let createBtn = document.getElementById("create-btn");
         if (!createBtn) {
             createBtn = document.createElement("button");
@@ -141,13 +143,13 @@ document.addEventListener("DOMContentLoaded", function () {
             createBtn.textContent = "Создать";
             createBtn.classList.add("create-btn"); 
             document.querySelector(".create-group-controls").appendChild(createBtn);
-
+    
             createBtn.addEventListener("click", function () {
                 createGroup();
             });
         }
     });
-
+    
     function createGroup() {
         const groupName = groupNameInput.value.trim();
         
@@ -155,19 +157,19 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Введите название группы!");
             return;
         }
-
+    
         const csrfToken = getCSRFToken();
-
+    
         if (!csrfToken) {
             alert("CSRF-токен не найден!");
             return;
         }
-
+    
         const requestData = {
             group_name: groupName,
             user_ids: selectedUsers.map(user => user.id),
         };
-
+    
         fetch("/chats/service/create_group_chat/", {
             method: "POST",
             headers: {
@@ -179,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Редирект на страницу нового чата
                 window.location.href = `/chats/${data.chat_id}`;
             } else {
                 alert("Ошибка при создании группы: " + data.error);
@@ -190,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Не удалось создать группу. Попробуйте еще раз.");
         });
     }
+    
 
     cancelBtn.addEventListener("click", function () {
         searchWrapper.style.display = "flex";

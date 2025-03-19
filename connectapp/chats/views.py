@@ -179,17 +179,36 @@ def create_group_chat(request):
             data = json.loads(request.body)
             group_name = data.get("group_name", "").strip()
             user_ids = data.get("user_ids", [])
+            avatar = request.FILES.get("group_avatar")
 
             if not group_name or not user_ids:
                 return JsonResponse({"success": False, "error": "Заполните все поля"}, status=400)
 
-            chat = Chat.objects.create(name=group_name, is_group_chat=True)
+            chat = Chat.objects.create(name=group_name, is_group_chat=True, avatar=avatar)
             chat.participants.add(request.user, *User.objects.filter(id__in=user_ids))
 
             return JsonResponse({"success": True, "chat_id": chat.id})
 
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)}, status=500)
-
     return JsonResponse({"success": False, "error": "Метод не поддерживается"}, status=405)
 
+def delete_chat(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+    
+    # Проверка на удаление для всех или только для пользователя
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        delete_for_all = data.get("delete_for_all", False)
+        
+        if delete_for_all:
+            # Удаление чата для всех участников (удаляем сам чат)
+            chat.delete()
+            return JsonResponse({'success': True})
+        else:
+            # Удаление чата только у текущего пользователя
+            # Удаляем текущего пользователя из списка участников чата
+            chat.participants.remove(request.user)
+            return JsonResponse({'success': True})
+    
+    return JsonResponse({'success': False}, status=400)

@@ -62,9 +62,18 @@
                 </button>
                 <nav class="main-nav">
                     <ul>
-                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">Профиль</a></li>
-                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}" href="{% url 'feed' %}">Лента</a></li>
-                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'chat_empty' or request.resolver_match.url_name == 'chats' %}active{% endif %}" href="{% url 'chat_empty' %}">Чаты</a></li>
+                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" href="{% url 'profile' %}">
+                            <img src="{% static 'main/img/user.svg' %}" height="22px" width="22px" style="margin-right: 3px;">
+                            Профиль
+                        </a></li>
+                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}" href="{% url 'feed' %}">
+                            <img src="{% static 'main/img/house.svg' %}" height="22px" width="22px" style="margin-right: 3px;">
+                            Лента
+                        </a></li>
+                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'chat_empty' or request.resolver_match.url_name == 'chats' %}active{% endif %}" href="{% url 'chat_empty' %}">
+                            <img src="{% static 'main/img/mail.svg' %}" height="22px" width="22px" style="margin-right: 3px;">
+                            Чаты
+                        </a></li>
                         <li><a class="main-nav-link {% if request.resolver_match.url_name == 'communities' %}active{% endif %}" href="{% url 'communities' %}">Каналы</a></li>
                         <li><a class="main-nav-link {% if request.resolver_match.url_name == 'friends' %}active{% endif %}" href="{% url 'friends' %}">Друзья</a></li>
                     </ul>

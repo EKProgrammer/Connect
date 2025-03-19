@@ -111,8 +111,8 @@
 }
 
 .chat-image {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     margin-right: 10px;
     object-fit: cover;
@@ -188,7 +188,8 @@
 .message-received {
     background-color: #6668;
     align-self: flex-start;
-    margin-top: -1%;
+    margin-left: 7%;
+    margin-top: 3%;
 }
 
 .message-text {
@@ -199,7 +200,7 @@
 .message-sent-time {
     align-self: flex-end;
     font-size: 0.8rem;
-    color: #65a1e6;
+    color: #888;
 }
 
 .message-received-time {
@@ -297,6 +298,9 @@
     color: red;
 }
 
+.context-menu #delete-chat-btn {
+    color: red;
+}
 /* create group */
 .create-group-controls {
     display: flex;
@@ -352,6 +356,7 @@
 .next-btn:hover {
     background-color: black;
     color: white;
+    outline: 2px solid white;
 }
 
 .back-btn:active,
@@ -439,6 +444,11 @@
     min-height: 40px;
     align-items: center;
 }
+
+#selected-users-container h4 {
+    margin-top: 6%
+}
+
 .user-tag {
     display: flex;
     align-items: center;
@@ -476,74 +486,191 @@
 }
 
 .select-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
     background-color: transparent; 
     border: 2px solid #929292;
     cursor: pointer;
     transition: border-color 0.3s ease; 
+    flex-shrink: 0; 
 }
   
 .select-btn.selected {
     background-color: #ebebeb;
 }
 
-/* Общий стиль для кнопки "Создать" */
 #create-btn {
-    background-color: transparent;  
-    color: #333; 
-    border: 2px solid #333; 
     padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
     font-size: 16px;  
+    font-size: 16px;  
+    font-weight: bold;
+    cursor: pointer; 
+    border-radius: 4px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer; 
     border-radius: 4px;
     transition: all 0.3s ease;
 }
 
-/* Эффект при наведении */
 #create-btn:hover {
-    background-color: #333; 
+    background-color: #000000; 
     color: white;
+    outline: 2px solid white;
 }
 
-/* Эффект при нажатии */
 #create-btn:active {
-    background-color: #555; 
-    transform: scale(0.98); 
-}
-
-/* Состояние при отключенной кнопке */
-#create-btn:disabled {
-    background-color: #ccc;
-    border: 2px solid #ccc; 
-    color: #777; 
-    cursor: not-allowed; 
+    background-color: #333
 }
 
 .message-wrapper {
     display: flex;
-    margin-bottom: 21px;
 }
 
 .message-sender {
     display: flex;
     align-items: center;
-    margin-right: -17%;
+    margin-right: -24%;
+    margin-top: -2%;
 }
 
 .sender-avatar {
     border-radius: 50%;
     margin-right: 10px;
-    margin-top: -42%;
+    margin-top: -20%;
 }
 
 .sender-name {
     font-weight: bold;
-    margin-top: -50%;
+    margin-top: -25%;
 }
 
 .message {
     max-width: 80%;
+}
+#group-name-container {
+    margin-top: 7%;
+    width: 85%;
+    margin-left: 15%;
+}
+
+
+#group-name-container h2 {
+    position: absolute;
+    margin-top: -11%;
+    left: 40%; 
+}
+
+
+.avatar-upload-container {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.avatar-label {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    margin-left: -110%;
+    margin-top: -30%;
+}
+
+.avatar-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.avatar-edit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.avatar-upload-container:hover .avatar-edit-icon {
+    opacity: 1;
+}
+
+#group-name {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: -17%;
+}
+
+#group-avatar {
+    display: none;
+}
+
+.modal {
+    display: none; /* Окно скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: #111111;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    border: 2px solid #ffffff;
+}
+
+.modal-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #a6a6a6;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    margin-bottom: 25px;
+    color: #666;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }

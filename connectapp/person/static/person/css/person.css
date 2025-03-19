@@ -263,7 +263,7 @@ input[type="file"] {
 
 .post-item {
     background-color: transparent;
-    padding: 1.5rem;
+    padding: 1.1rem;
     border-bottom: 1px solid #727272;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -668,12 +668,6 @@ input[type="file"] {
 }
 
 /* Кнопка комментария */
-.comment-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    margin-left: 30px;
-}
 
 .comment-btn svg {
     background: transparent;
@@ -686,6 +680,10 @@ input[type="file"] {
     padding: 10px;
     cursor: pointer;
     transition: transform 0.1s ease, background-color 0.3s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 30px;
 }
 
 .comment-btn:focus {
@@ -731,3 +729,4 @@ input[type="file"] {
 .context-menu #delete-comment-btn {
     color: red;
 }
+
