@@ -25,11 +25,14 @@
                 <ul class="post-actions-list">
                     <li>
                         <button class="post-actions-btn edit" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">
+                            <img src="{% static 'person/img/edit_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
                             Редактировать
                         </button>
                     </li>
-                    <li>
+                    <li> 
+                        <!-- Иконка слева от текста "Удалить" -->
                         <button class="post-actions-btn delete" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">
+                            <img src="{% static 'person/img/trash_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
                             Удалить
                         </button>
                     </li>
@@ -67,7 +70,7 @@
                 </button>
             </span>
             <span>
-                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра">
+                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра" width="28" height="28">
                 <span class="post-footer-counter">
                     {{ post.views }}
                 </span>

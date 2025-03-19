@@ -7,6 +7,12 @@ class Chat(models.Model):
     is_group_chat = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     participants = models.ManyToManyField(User, related_name='chats')
+    avatar = models.ImageField(upload_to='group_chatsw/', blank=True, null=True) 
+
+    def get_avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        return '/static/chats/img/group_chats_avatar.svg'
 
     def __str__(self):
         if self.is_group_chat:

@@ -17,32 +17,43 @@
         Чаты
         <img src="{% static 'chats/img/square-pen.svg' %}" alt="Чаты" class="group-icon" id="group-icon">
         <div class="dropdown-menu" id="dropdown-menu">
-            <button class="dropdown-item" id="create-group-btn">Создать группу</button>
+            <button class="dropdown-item" id="create-group-btn">
+                <img src="{% static 'chats/img/group_chats_icon.svg' %}" height="20px" width="20px" style="margin-right: 3px;">
+                Создать чат
+            </button>
         </div>
     </h2>
     <div class="chats">
         {% if chats_list %}
             {% for chat_info in chats_list %}
-                <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
-                    <div class="chat-item" title="{{ chat_info.name }}">
-                        <img src="{% if chat_info.chat.is_group_chat %}
-                                    {% static 'chats/img/group_chats_avatar.svg' %}
-                                  {% else %}
+                <div class="chat-item-container">
+                    <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
+                        <div class="chat-item" title="{{ chat_info.name }}" data-chat-id="{{ chat_info.chat_id }}">
+                            <img src="{% if chat_info.chat.is_group_chat %}
+                                    {{ chat_info.chat.get_avatar_url }}
+                                {% else %}
                                     {{ chat_info.user.get_avatar_url }}
-                                  {% endif %}" 
-                             class="chat-image" 
-                             height="50" 
-                             width="50" 
-                             alt="Avatar">
-                        <span class="chat-name-list">
-                            {% if chat_info.chat.is_group_chat %}
-                                {{ chat_info.name }} 
-                            {% else %}
-                                {{ chat_info.user.first_name }} {{ chat_info.user.last_name }}
-                            {% endif %}
-                        </span>
+                                {% endif %}" 
+                                 class="chat-image" 
+                                 height="50" 
+                                 width="50" 
+                                 alt="Avatar">
+                            <span class="chat-name-list">
+                                {% if chat_info.chat.is_group_chat %}
+                                    {{ chat_info.name }} 
+                                {% else %}
+                                    {{ chat_info.user.first_name }} {{ chat_info.user.last_name }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </a>
+                    <div id="chat-context-menu" class="context-menu">
+                        <button id="delete-chat-btn">
+                            <img src="{% static 'person/img/trash_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
+                            Удалить
+                        </button>
                     </div>
-                </a>
+                </div>
             {% endfor %}
         {% else %}
             <p class="commentary" style="padding: 0">У вас нет чатов</p>
@@ -50,6 +61,16 @@
     </div>
 </aside>
 
+<div id="delete-chat-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Вы точно хотите удалить чат?</h3>
+        <div class="modal-buttons">
+            <button id="cancel-delete-btn">Отмена</button>
+            <button id="delete-for-me-btn">Удалить только у меня</button>
+            <button id="delete-for-all-btn">Удалить для всех</button>
+        </div>
+    </div>
+</div>
 
 <div class="resizer" id="dragMe">
     <button type="button" style="height: 100%;"></button>
@@ -160,6 +181,13 @@
         </div>
         <div id="group-name-container" style="display:none;">
             <h2>Новая группа</h2>
+            <div class="avatar-upload-container">
+                <label for="group-avatar" class="avatar-label">
+                    <img id="avatar-preview" src="{% static 'chats/img/group_chats_avatar.svg' %}" alt="Аватар" class="avatar-preview">
+                    <span class="avatar-edit-icon">&#9998;</span>
+                </label>
+                <input type="file" id="group-avatar" class="form-control mb-4" accept="image/*">
+            </div>
             <input type="text" id="group-name" class="form-control mb-4" placeholder="Название группы">
         </div>
     </div>
@@ -167,8 +195,14 @@
 
 <!-- Контекстное меню -->
 <div id="context-menu" class="context-menu">
-    <button id="edit-message-btn">Редактировать</button>
-    <button id="delete-message-btn">Удалить</button>
+    <button id="edit-message-btn">
+        <img src="{% static 'person/img/edit_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
+        Редактировать
+    </button>
+    <button id="delete-message-btn">
+        <img src="{% static 'person/img/trash_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
+        Удалить
+    </button>
 </div>
 
 </main>
@@ -184,5 +218,7 @@
     <script src="{% static 'chats/js/hidden.js' %}"></script>
     <script src="{% static 'chats/js/search_users.js' %}"></script>
     <script src="{% static 'chats/js/edit_message.js' %}"></script>
+    <script src="{% static 'chats/js/avatar_preview_uploader.js' %}"></script>
+    <script src="{% static 'chats/js/delete_chats.js' %}"></script>
 {#    <script src="{% static 'chats/js/web_socket.js' %}"></script>#}
 {% endblock %}

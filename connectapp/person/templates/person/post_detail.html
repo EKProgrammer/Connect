@@ -84,7 +84,7 @@
                 </button>
             </span>
             <span>
-                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра">
+                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра" width="28" height="28">
                 <span class="post-footer-counter">
                     {{ post.views }}
                 </span>
@@ -154,8 +154,14 @@
     <!-- Контекстное меню -->
     {% if user.is_authenticated %}
         <div id="context-menu" class="context-menu" style="display: none; position: absolute;">
-            <button id="edit-comment-btn" data-comment-id="">Редактировать</button>
-            <button id="delete-comment-btn" data-comment-id="">Удалить</button>
+            <button id="edit-comment-btn" data-comment-id="">
+                <img src="{% static 'person/img/edit_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
+                Редактировать
+            </button>
+            <button id="delete-comment-btn" data-comment-id="">
+                <img src="{% static 'person/img/trash_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
+                Удалить
+            </button>
         </div>
    {% endif %}
 </section>
