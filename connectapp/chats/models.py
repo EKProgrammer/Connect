@@ -11,6 +11,7 @@ class Chat(models.Model):
 
     def get_avatar_url(self):
         if self.avatar:
+            print(f"Avatar URL: {self.avatar.url}")
             return self.avatar.url
         return '/static/chats/img/group_chats_avatar.svg'
 

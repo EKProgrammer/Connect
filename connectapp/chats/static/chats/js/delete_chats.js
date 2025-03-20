@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const contextMenu = document.getElementById("chat-context-menu");
     let selectedChatId = null; 
     const deleteModal = document.getElementById("delete-chat-modal");
-    
+    const deleteForAllToggle = document.getElementById("delete-for-all-toggle");
+
     document.querySelectorAll(".chat-item").forEach(chatItem => {
         chatItem.addEventListener("contextmenu", function (event) {
-            event.preventDefault(); 
-
+            event.preventDefault();
             selectedChatId = this.dataset.chatId;
             showContextMenu(event.pageX, event.pageY);
         });
@@ -27,19 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("delete-chat-btn").addEventListener("click", function () {
         contextMenu.style.display = "none"; 
         deleteModal.style.display = "flex";
+
+        deleteForAllToggle.checked = false; 
     });
 
     document.getElementById("cancel-delete-btn").addEventListener("click", function () {
         deleteModal.style.display = "none";
     });
 
-    document.getElementById("delete-for-me-btn").addEventListener("click", function () {
-        deleteChat(false);
-        deleteModal.style.display = "none";
-    });
-
-    document.getElementById("delete-for-all-btn").addEventListener("click", function () {
-        deleteChat(true);
+    document.getElementById("confirm-delete-btn").addEventListener("click", function () {
+        const deleteForAll = deleteForAllToggle.checked; 
+        deleteChat(deleteForAll);
         deleteModal.style.display = "none";
     });
 
