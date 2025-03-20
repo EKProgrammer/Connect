@@ -63,11 +63,16 @@
 
 <div id="delete-chat-modal" class="modal" style="display:none;">
     <div class="modal-content">
-        <h3>Вы точно хотите удалить чат?</h3>
+        <h3>Вы уверены, что хотите удалить чат?</h3>
+        <div class="delete-option">
+            <input type="checkbox" id="delete-for-all-toggle">
+            <label for="delete-for-all-toggle" class="toggle-circle"></label>
+            <span>Удалить для всех</span>
+        </div>
+
         <div class="modal-buttons">
             <button id="cancel-delete-btn">Отмена</button>
-            <button id="delete-for-me-btn">Удалить только у меня</button>
-            <button id="delete-for-all-btn">Удалить для всех</button>
+            <button id="confirm-delete-btn">Удалить</button>
         </div>
     </div>
 </div>
@@ -93,7 +98,26 @@
             {% endif %}
         </h2>
         <div class="chat-name-line"></div>
-
+        <div class="chat-info-panel" id="chat-info-panel" style="display: none;">
+            <div class="panel-header">
+                <div class="return-btn-container">
+                    <a href="{% url 'chats' chat.id %}" class="return-btn">Назад</a>
+                </div>
+                <h2 class="panel-title">Информация о чате</h2>
+                <img src="{{ chat.get_avatar_url }}" class="chat-avatar" height="120" width="120" alt="Avatar">
+                <h3 id="chat-name">{{ chat.name }}</h3>
+                <p id="total-participants">{{ chat.participants.count }} участников</p>
+            </div>
+            <h4>Состав участников:</h4>
+            <ul class="members-list">
+                {% for participant in chat.participants.all %}
+                    <li class="member-item">
+                        <img src="{{ participant.get_avatar_url }}" class="member-img" height="60" width="60" alt="Avatar">
+                        <span>{{ participant.first_name }} {{ participant.last_name }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         <div class="messages" id="chat-messages">
             {% for message in messages %}
                 <div class="message-wrapper">
@@ -209,6 +233,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'chats/js/info_group_chats.js' %}"></script>
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
     <script src="{% static 'chats/js/message_ai_request.js' %}"></script>
