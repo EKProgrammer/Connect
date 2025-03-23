@@ -7,10 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const chatNameWindow = document.querySelector(".chat-name-window");
     const chatMessages =  document.getElementById("chat-messages");
     const chatMessageField = document.querySelector(".chat-window form");
+    const chatInfoPanel = document.getElementById("chat-info-panel");
     if (!createGroupBtn || !chatWindow || !createGroupContainer || !dropdownMenu ||
         !chatNameWindow || !chatMessages || !chatMessageField) return;
 
     createGroupBtn.addEventListener("click", function () {
+        chatInfoPanel.style.display = "none"; 
         chatNameWindow.style.display = "none";
         chatMessages.style.display = "none";
         chatMessageField.style.display = "none";

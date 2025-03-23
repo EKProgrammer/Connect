@@ -61,7 +61,7 @@
                         </button>
                     </a>
                     <span class="post-footer-counter">{{ post.total_comments }}</span>
-                    <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
+                    <button class="comment-btn" title="Поделиться" onclick="copyToClipboard('{{ post.id }}')">
                         <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
                     </button>
                 </span>
@@ -121,7 +121,7 @@
                         </button>
                     </a>
                     <span class="post-footer-counter">{{ post.total_comments }}</span>
-                    <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
+                    <button class="comment-btn" title="Поделиться" onclick="copyToClipboard('{{ post.id }}')">
                         <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
                     </button>
                 </span>
