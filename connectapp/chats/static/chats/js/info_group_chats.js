@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const chatWindow = document.getElementById("chat-messages"); 
     const inputArea = document.querySelector(".input-area"); 
     const chatInfoPanel = document.getElementById("chat-info-panel"); 
+    const chatNameLine = document.querySelector(".chat-name-line");
 
     if (panelHeader) {
         panelHeader.addEventListener("click", function () {
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 chatWindow.style.display = "none"; 
                 inputArea.style.display = "none"; 
                 panelHeader.style.display = "none"; 
+                if (chatNameLine) chatNameLine.style.display = "none";
             } else {
                 chatInfoPanel.style.display = "none";
                 chatWindow.style.display = "block"; 

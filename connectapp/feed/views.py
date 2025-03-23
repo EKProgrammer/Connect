@@ -13,8 +13,9 @@ def feed(request):
     popular_posts = Post.objects.annotate(
         total_likes=Count('likes'),
         total_comments=Count('comments'),
-        popularity=F('views') + 2 * F('total_likes') + 2 * F('total_comments')
-    ).order_by('-popularity')[:20]  # 20 самых популярных постов
+        total_views=Count('views'),
+        popularity=F('total_views') + 2 * F('total_likes') + 2 * F('total_comments')
+    ).order_by('-popularity')[:20]
 
     data = {
         'subscriptions_posts': subscriptions_posts,

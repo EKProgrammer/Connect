@@ -13,15 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
     groupNameInput.setAttribute("autocapitalize", "off");
     groupNameInput.setAttribute("spellcheck", "false");
 
-        
-    
     const selectedUsersContainer = document.createElement("div");
     selectedUsersContainer.id = "selected-users-container";
     selectedUsersContainer.style.display = "none";
     createGroupContainer.appendChild(selectedUsersContainer);
 
     let selectedUsers = [];
-
     const searchWrapper = document.createElement("div");
     searchWrapper.classList.add("search-wrapper");
     searchInput.parentNode.replaceChild(searchWrapper, searchInput);
