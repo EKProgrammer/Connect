@@ -1,5 +1,10 @@
 document.addEventListener('click', function(event) {
     const button = event.target.closest('.like-btn');
+    if (!button) {
+        return;
+    }
+    const img = button.querySelector('img');
+
     if (button) {
         const postId = button.getAttribute('data-post-id');
         fetch('/person/service/like_post/', {
@@ -24,6 +29,9 @@ document.addEventListener('click', function(event) {
         .then(data => {
             button.classList.toggle('liked', data.liked);
             button.nextElementSibling.textContent = data.likes_count;
+            img.src = data.liked
+                ? '/static/person/img/like_red.svg'
+                : '/static/person/img/like.svg';
         })
         .catch(error => {
             // Уведомляем пользователя об ошибке

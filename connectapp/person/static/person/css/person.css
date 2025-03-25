@@ -307,7 +307,8 @@ input[type="file"] {
 }
 
 .post-actions-btn {
-    display: block;  /* пока почему-то кнопка не растягивается на всю ширину */
+    width: 100%;
+    text-align: start;
     background-color: transparent;
     border: none;
     padding: 3px;
@@ -394,36 +395,47 @@ input[type="file"] {
 }
 
 .post-footer {
+    padding-top: 1rem;
     display: flex;
     justify-content: space-between;
 }
 
-.post-footer span {
+.post-footer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 30px;
+}
+
+.post-footer li {
     display: flex;
     align-items: center;
 }
 
-/* Лайки поста */
-.like-btn {
-    background: none;
+.post-footer-icon {
     border: none;
-    font-size: 1.5rem;
-    color: #888;
-    transition: opacity 0.3s ease;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.1s ease, background-color 0.3s ease;
 }
 
-.like-btn:hover {
-    color: #666;
+.post-footer-icon img {
+    transition: transform 0.1s ease;
 }
 
-.like-btn.liked {
-    color: red;
+.post-footer-icon:active {
+    transform: scale(0.95);
+}
+
+.post-footer-icon:active img {
+    transform: scale(0.9);
 }
 
 .post-footer-counter {
-    margin-left: 5px;
     font-size: 1rem;
-    color: #cfcfcf;
+    margin-left: 0.5rem;
 }
 
 /* Модальные окна */
@@ -469,18 +481,27 @@ input[type="file"] {
 
 .modal-list-images {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow-x: scroll;
     border: #888888 solid 2px;
     border-radius: 10px;
     height: 20vh;
+    padding: 10px;
     min-height: 100px;
     margin-top: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.add-image {
-    margin-left: 3px;
+.modal-list-images label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
+}
+
+.modal-list-images:hover {
+    background-color: #222222;
 }
 
 .post-form-footer {
@@ -665,41 +686,6 @@ input[type="file"] {
 .back-arrow-btn i {
     color: #727272;
     margin-right: 30px;
-}
-
-/* Кнопка комментария */
-
-.comment-btn svg {
-    background: transparent;
-}
-
-/* button copy link post*/
-.comment-btn {
-    border: none;
-    background: none;
-    padding: 10px;
-    cursor: pointer;
-    transition: transform 0.1s ease, background-color 0.3s ease;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    margin-left: 30px;
-}
-
-.comment-btn:focus {
-    outline: none;
-}
-
-.comment-btn img {
-    transition: transform 0.1s ease; 
-}
-
-.comment-btn:active {
-    transform: scale(0.95); 
-}
-
-.comment-btn:active img {
-    transform: scale(0.9);
 }
 
 /* edit panel comments */

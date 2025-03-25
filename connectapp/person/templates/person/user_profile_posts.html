@@ -23,36 +23,73 @@
             <div class="fade-out"></div>
             <a class="read-more-btn" id="read-more-btn-{{ post.id }}" style="display: none;">Читать далее</a>
         </div>
-        {% if post.image %}
+        {% if post.images.all %}
             <div class="post-image-container">
-                <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
+                <div id="carouselPost{{ post.id }}" class="carousel slide" data-ride="carousel">
+                    <!-- Индикаторы -->
+                    <div class="carousel-indicators">
+                        {% for image in post.images.all %}
+                            <button type="button" data-bs-target="#carouselPost{{ post.id }}" 
+                                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                                    {% if forloop.first %} class="active" aria-current="true" {% endif %}
+                                    aria-label="Slide {{ forloop.counter }}"></button>
+                        {% endfor %}
+                    </div>
+        
+                    <!-- Карусель изображений -->
+                    <div class="carousel-inner">
+                        {% for image in post.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img class="d-block w-100" src="{{ image.image.url }}" alt="Прикреплённая картинка">
+                            </div>
+                        {% endfor %}
+                    </div>
+        
+                    <!-- Кнопки навигации -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPost{{ post.id }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPost{{ post.id }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
         {% endif %}
 
         <div class="post-footer">
-            <span>
-                <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
-                    <i class="fas fa-heart"></i>
-                </button>
-                <span class="reaction-counter">{{ post.total_likes }}</span>
-            
-                <a href="{% url 'post_detail' post.id %}">
-                    <button class="comment-btn" title="Комментировать">
-                        <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="30" height="30">
+            <ul>
+                <li>
+                    <button class="post-footer-icon like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post.id }}" title="Лайк">
+                        {% if request.user in post.likes.all %}
+                            <img src="{% static 'person/img/like_red.svg' %}" alt="Like Icon" width="28" height="28">
+                        {% else %}
+                            <img src="{% static 'person/img/like.svg' %}" alt="Like Icon" width="28" height="28">
+                        {% endif %}
                     </button>
-                </a>
-                <span class="reaction-counter">{{ post.total_comments }}</span>
-                
-                <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
-                    <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
-                </button>
-            </span>
-            <span>
-                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра">
-                <span class="post-footer-counter">
-                    {{ post.views }}
-                </span>
-            </span>
+                    <span class="post-footer-counter">{{ post.total_likes }}</span>
+                </li>
+                <li>
+                    <a class="post-footer-icon" href="{% url 'post_detail' post.id %}" title="Комментировать">
+                        <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+                    </a>
+                    <span class="post-footer-counter">{{ post.total_comments }}</span>
+                </li>
+                <li>
+                    <button class="post-footer-icon" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
+                        <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
+                    </button>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра" width="28" height="28">
+                    <span class="post-footer-counter">
+                        {{ post.views }}
+                    </span>
+                </li>
+            </ul>
         </div>
     </div>
 {% endfor %}

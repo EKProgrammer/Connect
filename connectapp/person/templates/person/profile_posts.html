@@ -45,36 +45,73 @@
             <div class="fade-out"></div>
             <a class="read-more-btn" id="read-more-btn-{{ post_id }}" style="display: none;">Читать далее</a>
         </div>
-        {% if post.image %}
+        {% if post.images.all %}
             <div class="post-image-container">
-                <img src="{{ post.image.url }}" alt="Прикреплённая картинка">
+                <div id="carouselPost{{ post.id }}" class="carousel slide" data-ride="carousel">
+                    <!-- Индикаторы -->
+                    <div class="carousel-indicators">
+                        {% for image in post.images.all %}
+                            <button type="button" data-bs-target="#carouselPost{{ post.id }}" 
+                                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                                    {% if forloop.first %} class="active" aria-current="true" {% endif %}
+                                    aria-label="Slide {{ forloop.counter }}"></button>
+                        {% endfor %}
+                    </div>
+        
+                    <!-- Карусель изображений -->
+                    <div class="carousel-inner">
+                        {% for image in post.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img class="d-block w-100" src="{{ image.image.url }}" alt="Прикреплённая картинка">
+                            </div>
+                        {% endfor %}
+                    </div>
+        
+                    <!-- Кнопки навигации -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPost{{ post.id }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPost{{ post.id }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
         {% endif %}
         
         <div class="post-footer">
-            <span>
-                <button class="like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
-                    <i class="fas fa-heart"></i>
-                </button>
-                <span class="post-footer-counter">{{ post.total_likes }}</span>
-        
-                <a href="{% url 'post_detail' post.id %}">
-                    <button class="comment-btn" title="Комментировать">
-                        <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+            <ul>
+                <li>
+                    <button class="post-footer-icon like-btn {% if request.user in post.likes.all %}liked{% endif %}" data-post-id="{{ post_id }}" title="Лайк">
+                        {% if request.user in post.likes.all %}
+                            <img src="{% static 'person/img/like_red.svg' %}" alt="Like Icon" width="28" height="28">
+                        {% else %}
+                            <img src="{% static 'person/img/like.svg' %}" alt="Like Icon" width="28" height="28">
+                        {% endif %}
                     </button>
-                </a>
-                <span class="post-footer-counter">{{ post.total_comments }}</span>
-            
-                <button class="comment-btn" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
-                    <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
-                </button>
-            </span>
-            <span>
-                <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра" width="28" height="28">
-                <span class="post-footer-counter">
-                    {{ post.views }}
-                </span>
-            </span>
+                    <span class="post-footer-counter">{{ post.total_likes }}</span>
+                </li>
+                <li>
+                    <a class="post-footer-icon" href="{% url 'post_detail' post.id %}" title="Комментировать">
+                        <img src="{% static 'person/img/comments.svg' %}" alt="Comment Icon" width="28" height="28">
+                    </a>
+                    <span class="post-footer-counter">{{ post.total_comments }}</span>
+                </li>
+                <li>
+                    <button class="post-footer-icon" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
+                        <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
+                    </button>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <img src="{% static 'person/img/views.svg' %}" alt="Иконка просмотра" width="28" height="28">
+                    <span class="post-footer-counter">
+                        {{ post.views }}
+                    </span>
+                </li>
+            </ul>
         </div>
         
         <!-- Модальное окно для редактирования поста -->
@@ -93,11 +130,12 @@
                             <form action="{% url 'edit_post' post_id %}" method="post" id="editPostForm{{ post_id }}" class="d-flex flex-column flex-grow-1" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{ current_post_form.text }}
+                                {{ current_post_form.images }}
                                 <span class="post-char-count">0 / 5000</span>
-                                <!-- ДОДЕЛАТЬ: при загрузки первый span должен исчезать и добавить предпромостр загруженных изображений -->
                                 <div class="modal-list-images">
-                                    <div>Прикрепите изображения к посту</div>
-                                    <span id="selectedImageName{{ post_id }}"></span>
+                                    <label for="{{ current_post_form.images.id_for_label }}" title="Добавить изображение">
+                                        Добавить изображение
+                                    </label>
                                 </div>
                             </form>
                         </div>
@@ -110,15 +148,9 @@
                     <div class="modal-footer border-secondary">
                         <!-- Нижняя часть страницы с текстовым полем и изображениями -->
                         <div class="post-form-footer" id="postFormFooter{{ post_id }}">
-                            <span>
-                                <button type="button" class="ai-button" id="activateAiChat{{ post_id }}" title="Открыть чат ИИ">
-                                    <img src="{% static 'person/img/ai.svg' %}" height="35px" width="35px" alt="Открыть чат ИИ">
-                                </button>
-                                <label for="{{ current_post_form.image.id_for_label }}" title="Добавить изображение">
-                                    <img src="{% static 'person/img/add_image.svg' %}" class="add-image" alt="Добавить изображение">
-                                </label>
-                                {{ current_post_form.image }}
-                            </span>
+                            <button type="button" class="ai-button" id="activateAiChat{{ post_id }}" title="Открыть чат ИИ">
+                                <img src="{% static 'person/img/ai.svg' %}" height="35px" width="35px" alt="Открыть чат ИИ">
+                            </button>
                             <button type="submit" class="gradient-btn" form="editPostForm{{ post_id }}" data="Сохранить изменения"></button>
                         </div>
 

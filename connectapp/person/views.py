@@ -14,12 +14,12 @@ import os
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from users.models import User
-from .models import Post, Comment
+from .models import Post, PostImage, Comment
 from .forms import AboutForm, PostForm
 from .forms import CommentForm
 from django.views.decorators.http import require_POST
 import markdown
-from .code_header import CodeHeaderExtension
+from .markdown_extensions import CodeHeaderExtension, KatexExtension
 
 api_key = os.environ["MISTRAL_API_KEY"]
 model = "mistral-small-latest"
@@ -94,6 +94,7 @@ def load_more_posts(request):
 
 
 def is_image(file_path):
+    """ Проверка, является ли файл изображением """
     try:
         with Image.open(file_path) as img:
             img.verify()
@@ -131,10 +132,23 @@ def create_post(request):
                     'markdown.extensions.extra',  # Включает поддержку таблиц, сносок и других элементов
                     CodeHeaderExtension(),
                     'markdown.extensions.fenced_code',  # Поддержка блоков кода с использованием ```
+                    KatexExtension(),
                 ])
             post.user = request.user
             post.date = timezone.now()
             post.save()
+
+            images = request.FILES.getlist('images')
+            for image in images:
+                filename = f'post_images/{post.id}_{image.name}'
+                path = default_storage.save(filename, ContentFile(image.read()))
+
+                if is_image(default_storage.path(path)):
+                    PostImage.objects.create(post=post, image=path)
+                else:
+                    messages.error(request, 'Один или несколько загруженных файлов не являются изображениями')
+                    default_storage.delete(path)
+
     return redirect('profile')
 
 
@@ -162,8 +176,24 @@ def edit_post(request, post_id):
                     'markdown.extensions.extra',  # Включает поддержку таблиц, сносок и других элементов
                     CodeHeaderExtension(),
                     'markdown.extensions.fenced_code',  # Поддержка блоков кода с использованием ```
+                    KatexExtension(),
                 ])
             post.save()
+
+            # Удаляем старые изображения (если нужно)
+            PostImage.objects.filter(post=post).delete()
+
+            images = request.FILES.getlist('images')
+            for image in images:
+                filename = f'post_images/{post.id}_{image.name}'
+                path = default_storage.save(filename, ContentFile(image.read()))
+
+                if is_image(default_storage.path(path)):
+                    PostImage.objects.create(post=post, image=path)
+                else:
+                    messages.error(request, 'Один или несколько загруженных файлов не являются изображениями')
+                    default_storage.delete(path)
+
     return redirect('profile')
 
 
@@ -171,9 +201,12 @@ def edit_post(request, post_id):
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id, user=request.user)
     if request.method == 'POST':
-        if post.image:
-            if os.path.isfile(post.image.path):
-                os.remove(post.image.path)
+        images = post.images.all()
+        for image in images:
+            if image.image and os.path.isfile(image.image.path):
+                os.remove(image.image.path)
+            image.delete()
+
         post.delete()
     return redirect('profile')
 
@@ -181,6 +214,8 @@ def delete_post(request, post_id):
 @login_required
 def like_post(request):
     post_id = request.POST.get('id')
+    if not post_id or not post_id.isdigit():
+        return JsonResponse({'error': 'Invalid post ID'}, status=400)
     post = get_object_or_404(Post, id=post_id)
 
     if post.likes.filter(id=request.user.id).exists():

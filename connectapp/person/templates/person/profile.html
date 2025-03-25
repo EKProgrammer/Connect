@@ -96,11 +96,12 @@
                         <form action="{% url 'create_post' %}" method="post" id="createPostForm" class="d-flex flex-column flex-grow-1" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ empty_post_form.text }}
+                            {{ empty_post_form.images }}
                             <span class="post-char-count">0 / 5000</span>
-                            <!-- ДОДЕЛАТЬ: при загрузки первый span должен исчезать и добавить предпромостр загруженных изображений -->
                             <div class="modal-list-images">
-                                <div>Прикрепите изображения к посту</div>
-                                <span id="selectedImageName"></span>
+                                <label for="{{ empty_post_form.images.id_for_label }}" title="Добавить изображение">
+                                    Добавить изображение
+                                </label>
                             </div>
                         </form>
                     </div>
@@ -113,15 +114,9 @@
                 <div class="modal-footer border-secondary">
                     <!-- Нижняя часть страницы с текстовым полем и изображениями -->
                     <div class="post-form-footer" id="postFormFooter">
-                        <span>
-                            <button type="button" class="ai-button" id="activateAiChat" title="Открыть чат ИИ">
-                                <img src="{% static 'person/img/ai.svg' %}" height="35px" width="35px" alt="Открыть чат ИИ">
-                            </button>
-                            <label for="{{ empty_post_form.image.id_for_label }}" title="Добавить изображение">
-                                <img src="{% static 'person/img/add_image.svg' %}" class="add-image" alt="Добавить изображение">
-                            </label>
-                            {{ empty_post_form.image }}
-                        </span>
+                        <button type="button" class="ai-button" id="activateAiChat" title="Открыть чат ИИ">
+                            <img src="{% static 'person/img/ai.svg' %}" height="35px" width="35px" alt="Открыть чат ИИ">
+                        </button>
                         <button type="submit" class="gradient-btn" form="createPostForm" data="Опубликовать"></button>
                     </div>
 

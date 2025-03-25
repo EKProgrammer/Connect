@@ -8,7 +8,6 @@ class Post(models.Model):
     formated_text = models.TextField('Отформатированный текст', default='', max_length=5000)
     date = models.DateTimeField('Дата публикации')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     views = models.PositiveIntegerField('Число просмотров', default=0)
 
@@ -24,6 +23,11 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+
+
+class PostImage(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='post_images/')
 
 
 class Comment(models.Model):
