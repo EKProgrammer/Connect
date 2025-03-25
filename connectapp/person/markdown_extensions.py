@@ -50,6 +50,5 @@ class KatexPreprocessor(Preprocessor):
         return f'\\\\\[ {latex_code} \\\\\]'
 
     def _render_latex_inline(self, match):
-        print(match.group(1))
         latex_code = match.group(1).strip()
         return f'\\\\\( {latex_code} \\\\\)'
