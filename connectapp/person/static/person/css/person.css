@@ -716,3 +716,7 @@ input[type="file"] {
     color: red;
 }
 
+.carousel-inner img {
+    border-radius: 20px;
+}
+

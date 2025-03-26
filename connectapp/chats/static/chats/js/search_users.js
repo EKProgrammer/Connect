@@ -118,19 +118,26 @@ document.addEventListener("DOMContentLoaded", function () {
     
         const selectedUsersTitle = document.createElement("h4");
         selectedUsersTitle.textContent = "Выбранные пользователи:";
+        selectedUsersTitle.classList.add("custom-selected-title");
         selectedUsersContainer.appendChild(selectedUsersTitle);
-
+    
+        const customUserListContainer = document.createElement("div");
+        customUserListContainer.classList.add("custom-user-list"); 
+    
         selectedUsers.forEach(user => {
-            const userCard = document.createElement("div");
-            userCard.classList.add("selected-user-card");
-            userCard.innerHTML = `
-                <img src="${user.avatar}" alt="Фото">
+            const customUserCard = document.createElement("div");
+            customUserCard.classList.add("custom-user-card"); 
+    
+            customUserCard.innerHTML = `
+                <img class="custom-user-avatar" src="${user.avatar}" alt="Фото">
                 <div>
                     <h5>${user.first_name} ${user.last_name}</h5>
                 </div>`;
-            selectedUsersContainer.appendChild(userCard);
+    
+            customUserListContainer.appendChild(customUserCard);
         });
     
+        selectedUsersContainer.appendChild(customUserListContainer);
         selectedUsersContainer.style.display = "block";
     
         let createBtn = document.getElementById("create-btn");
@@ -146,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
+    
     
     function createGroup() {
         const groupName = groupNameInput.value.trim();
