@@ -25,8 +25,8 @@ class UserRegisterForm(UserCreationForm):
         label="Имя",
         validators=[
             RegexValidator(
-                regex=r'^[а-яА-Я]*$',
-                message='Разрешены только русские буквы',
+                regex=r'^[а-яА-Яa-zA-Z]*$',
+                message='Разрешены только русские и английские буквы',
                 code='invalid_username'
             ),
         ],
@@ -36,8 +36,8 @@ class UserRegisterForm(UserCreationForm):
         label="Фамилия",
         validators=[
             RegexValidator(
-                regex=r'^[а-яА-Я]*$',
-                message='Разрешены только русские буквы',
+                regex=r'^[а-яА-Яa-zA-Z]*$',
+                message='Разрешены только русские и английские буквы',
                 code='invalid_username'
             ),
         ],

@@ -47,8 +47,8 @@ class KatexPreprocessor(Preprocessor):
 
     def _render_latex_block(self, match):
         latex_code = match.group(1).strip()
-        return f'\\\\\[ {latex_code} \\\\\]'
+        return r'\\[ ' + latex_code + r' \\]'
 
     def _render_latex_inline(self, match):
         latex_code = match.group(1).strip()
-        return f'\\\\\( {latex_code} \\\\\)'
+        return r'\\( ' + latex_code + r' \\)'
