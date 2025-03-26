@@ -120,46 +120,48 @@
             </ul>
         </div>
         <div class="messages" id="chat-messages">
-            {% for message in messages %}
-                <div class="message-wrapper">
-                    {% if message.sender != request.user %}
-                        {% if last_sender != message.sender.id %}
-                            <div class="message-sender">
-                                <img src="{{ message.sender.get_avatar_url }}" alt="Avatar" class="sender-avatar" width="40" height="40">
-                                <span class="sender-name">{{ message.sender.first_name }} {{ message.sender.last_name }}</span>
-                            </div>
-                            {% with message.sender.id as last_sender %}
-                            {% endwith %}
+            {% regroup messages by timestamp.date as messages_by_date %}
+            {% for date_group in messages_by_date %}
+                <div class="message-date-divider">
+                    <span class="date-label">
+                        {% if date_group.grouper == today %}
+                            Сегодня
+                        {% elif date_group.grouper == yesterday %}
+                            Вчера
+                        {% else %}
+                            {{ date_group.grouper|date:"d E Y" }}
                         {% endif %}
-                    {% endif %}
-                    
-                    {% if message.sender.id == request.user.id %}
-                        <div class="message message-sent" data-message-id="{{ message.id }}">
-                            <div class="message-text">{{ message.content }}</div>
-                            <span class="message-sent-time">
-                                {% if message.is_changed %}
-                                    <span style="margin-right: 5px;">Изменено</span>
-                                {% else %}
-                                    <span></span>
-                                {% endif %}
-                                {{ message.timestamp }}
-                            </span>
-                        </div>
-                    {% else %}
-                        <div class="message message-received" data-message-id="{{ message.id }}">
-                            <div class="message-text">{{ message.content }}</div>
-                            <span class="message-received-time">
-                                {% if message.is_changed %}
-                                    <span style="margin-right: 5px;">Изменено</span>
-                                {% endif %}
-                                {{ message.timestamp }}
-                            </span>
-                        </div>
-                    {% endif %}
+                    </span>
                 </div>
+                
+                {% for message in date_group.list %}
+                    <div class="message-wrapper">
+                        {% if message.sender != request.user %}
+                            {% ifchanged message.sender.id %}
+                                <div class="message-sender">
+                                    <div class="sender-avatar-container">
+                                        <img src="{{ message.sender.get_avatar_url }}" alt="Avatar" class="sender-avatar">
+                                    </div>
+                                    <span class="sender-name">{{ message.sender.first_name }} {{ message.sender.last_name }}</span>
+                                </div>
+                            {% endifchanged %}
+                        {% endif %}
+                        
+                        <div class="message {% if message.sender.id == request.user.id %}message-sent{% else %}message-received{% endif %}" data-message-id="{{ message.id }}">
+                            <div class="message-content">
+                                <div class="message-text">{{ message.content }}</div>
+                                <div class="message-meta">
+                                    {% if message.is_changed %}
+                                        <span class="message-edited">Изменено</span>
+                                    {% endif %}
+                                    <span class="message-time">{{ message.timestamp|time:"H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             {% endfor %}
         </div>
-
 
         <!-- Поле ввода текста -->
         <form method="post">
@@ -234,6 +236,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="{% static 'chats/data_in_chats.js' %}"></script>
     <script src="{% static 'chats/js/info_group_chats.js' %}"></script>
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>
@@ -246,5 +249,4 @@
     <script src="{% static 'chats/js/edit_message.js' %}"></script>
     <script src="{% static 'chats/js/avatar_preview_uploader.js' %}"></script>
     <script src="{% static 'chats/js/delete_chats.js' %}"></script>
-{#    <script src="{% static 'chats/js/web_socket.js' %}"></script>#}
 {% endblock %}
