@@ -473,3 +473,35 @@ def add_view(request, post_id):
     post.views += 1
     post.save()
     return JsonResponse({'status': 'success'})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            user.first_name = request.POST.get('first_name', '')
+            user.last_name = request.POST.get('last_name', '')
+            username = request.POST.get('username', '')
+            
+            if username != user.username and User.objects.filter(username=username).exists():
+                messages.error(request, 'Это имя пользователя уже занято')
+                return redirect('profile')
+            
+            user.username = username
+            user.about = request.POST.get('about', '')
+            if 'remove_avatar' in request.POST and request.POST['remove_avatar'] == 'on':
+                user.image.delete()
+            elif 'avatar' in request.FILES:
+                if user.image:
+                    user.image.delete()
+                user.image = request.FILES['avatar']
+            
+            user.save()
+            messages.success(request, 'Профиль успешно обновлен')
+            return redirect('profile')
+        
+        except Exception as e:
+            messages.error(request, f'Произошла ошибка: {str(e)}')
+            return redirect('profile')
+    
+    return redirect('profile')

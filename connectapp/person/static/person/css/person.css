@@ -23,63 +23,57 @@
     border-radius: 50%;
 }
 
-.image-actions {
+/* button edit profile */
+.edit-profile-btn {
+    background: transparent !important; 
+    border: none !important; 
+    padding: 0 !important;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+
+.profile-header-top-wrapper {
+    position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.edit-profile-btn-wrapper {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(169, 169, 169, 0.5);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    top: 0;
+    right: 0;
+    transform: translate(10%, -10%); 
 }
 
-.image-actions a {
-    color: white;
-    font-size: 24px;
-    margin: 0 10px;
-}
-
-.profile-image-container:hover .image-actions {
-    opacity: 1;
-}
-
-.image-actions {
+.edit-profile-btn {
     display: flex;
-    justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    background: rgba(169, 169, 169, 0.5);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
-    padding: 10px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(40, 40, 40, 0.9);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.edit-profile-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-.image-actions a {
-    color: white;
-    font-size: 24px;
-    margin: 0 10px;
+.edit-profile-btn .edit-icon {
+    width: 22px;
+    height: 22px;
+    filter: brightness(0) invert(1); 
+    pointer-events: none; /
 }
-
-.image-actions .edit-image-btn {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.image-actions .edit-image-btn {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-
 /* Секция с общей информацией о профиле */
 .profile-header {
     padding: 1.5rem;
@@ -126,12 +120,6 @@
 }
 
 /* О себе */
-
-.about-label {
-    color: #888;
-    font-size: 1.4rem;
-}
-
 .about-section .edit-about-btn {
     background-color: transparent;
     border: none;
@@ -139,7 +127,7 @@
     transition: opacity 0.3s ease;
 }
 
-.about-section:hover .edit-about-btn {
+.about-section:hover {
     opacity: 1;
 }
 
@@ -172,20 +160,6 @@
 .follow-numbers {
     font-weight: bold;
     margin-right: 20px;
-}
-
-.edit-about-btn,
-.edit-image-btn,
-.delete-img-btn {
-    font-size: 1.7rem;
-    color: #888;
-    margin-left: 0.5rem;
-}
-
-.edit-about-btn:hover,
-.edit-image-btn:hover,
-.delete-img-btn:hover {
-    color: #666;
 }
 
 /* Стили для кнопок в секции профиля */
@@ -466,12 +440,6 @@ input[type="file"] {
     min-width: 500px;
 }
 
-.modal-body {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
 .ai-button {
     border: none;
     background-color: transparent;
@@ -648,7 +616,7 @@ input[type="file"] {
     flex-grow: 1;
 }
 
-.comment-form .gradient-btn {
+.comment-form  {
     align-self: flex-end;
 }
 
@@ -716,3 +684,33 @@ input[type="file"] {
     color: red;
 }
 
+/* style for edit avatar profile */
+.avatar-edit-container {
+    position: relative;
+    display: inline-block;
+}
+
+.avatar-edit-label {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: #444;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.avatar-edit-label:hover {
+    background: #555;
+    transform: scale(1.1);
+}
+
+#avatarPreview {
+    object-fit: cover;
+    border: 2px solid #444;
+}

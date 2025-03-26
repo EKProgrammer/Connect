@@ -26,27 +26,54 @@
     <div class="chats">
         {% if chats_list %}
             {% for chat_info in chats_list %}
-                <div class="chat-item-container">
-                    <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
-                        <div class="chat-item" title="{{ chat_info.name }}" data-chat-id="{{ chat_info.chat_id }}">
-                            <img src="{% if chat_info.chat.is_group_chat %}
-                                    {{ chat_info.chat.get_avatar_url }}
-                                {% else %}
-                                    {{ chat_info.user.get_avatar_url }}
-                                {% endif %}" 
-                                 class="chat-image" 
-                                 height="50" 
-                                 width="50" 
-                                 alt="Avatar">
-                            <span class="chat-name-list">
-                                {% if chat_info.chat.is_group_chat %}
-                                    {{ chat_info.name }} 
-                                {% else %}
-                                    {{ chat_info.user.first_name }} {{ chat_info.user.last_name }}
+            <div class="chat-item-container">
+                <a class="chat-link {% if request.resolver_match.kwargs.chat_id == chat_info.chat_id %}active{% endif %}" href="{% url 'chats' chat_info.chat_id %}">
+                    <div class="chat-item" title="{{ chat_info.name }}" data-chat-id="{{ chat_info.chat_id }}">
+                        <img src="{% if chat_info.chat.is_group_chat %}
+                                {{ chat_info.chat.get_avatar_url }}
+                            {% else %}
+                                {{ chat_info.user.get_avatar_url }}
+                            {% endif %}" 
+                             class="chat-image" 
+                             height="50" 
+                             width="50" 
+                             alt="Avatar">
+                        <div class="chat-info-container">
+                            <div class="chat-name-time-container">
+                                <span class="chat-name-list">
+                                    {% if chat_info.chat.is_group_chat %}
+                                        {{ chat_info.name }} 
+                                    {% else %}
+                                        {{ chat_info.user.first_name }} {{ chat_info.user.last_name }}
+                                    {% endif %}
+                                </span>
+                                {% if chat_info.last_message_time %}
+                                    <span class="chat-last-message-time">
+                                        {% if chat_info.last_message_time.date == today %}
+                                            {{ chat_info.last_message_time|time:"H:i" }}
+                                        {% elif chat_info.last_message_time.date == yesterday %}
+                                            Вчера
+                                        {% else %}
+                                            {{ chat_info.last_message_time|date:"d.m.y" }}
+                                        {% endif %}
+                                    </span>
                                 {% endif %}
-                            </span>
+                            </div>
+                            {% if chat_info.last_message_text %}
+                                <div class="last-message-preview">
+                                    {% if chat_info.chat.is_group_chat and chat_info.last_message_sender %}
+                                        <span class="last-message-sender">
+                                            {{ chat_info.last_message_sender.first_name }}:
+                                        </span>
+                                    {% endif %}
+                                    <span class="last-message-text">
+                                        {{ chat_info.last_message_text|truncatechars:30 }}
+                                    </span>
+                                </div>
+                            {% endif %}
                         </div>
-                    </a>
+                    </div>
+                </a>
                     <div id="chat-context-menu" class="context-menu">
                         <button id="delete-chat-btn">
                             <img src="{% static 'person/img/trash_icon.svg' %}" height="20px" width="20px" style="margin-right: 2px;">
@@ -249,4 +276,5 @@
     <script src="{% static 'chats/js/edit_message.js' %}"></script>
     <script src="{% static 'chats/js/avatar_preview_uploader.js' %}"></script>
     <script src="{% static 'chats/js/delete_chats.js' %}"></script>
+{#    <script src="{% static 'chats/js/web_socket.js' %}"></script>#}
 {% endblock %}

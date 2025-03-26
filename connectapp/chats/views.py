@@ -10,6 +10,7 @@ import os
 from mistralai import Mistral
 from django.core.paginator import Paginator
 from django.db.models import Q as QueryFilter
+from django.utils import timezone
 
 @login_required
 def start_chat(request, user_id):
@@ -20,22 +21,38 @@ def start_chat(request, user_id):
 
 def get_user_chats(request):
     """Возвращает отфильтрованный список чатов для текущего пользователя, отсортированный по времени последнего сообщения."""
-    chats_list = Chat.objects.filter(participants=request.user)
+    chats_list = Chat.objects.filter(participants=request.user).prefetch_related('messages')
     chats_list_filtered = []
     
     for chat in chats_list:
+        last_message = chat.messages.last()
         if chat.is_group_chat:
-            chats_list_filtered.append({'chat_id': chat.id, 'chat': chat, 'name': chat.name})
+            chats_list_filtered.append({
+                'chat_id': chat.id,
+                'chat': chat,
+                'name': chat.name,
+                'last_message_time': last_message.timestamp if last_message else None,
+                'last_message_text': last_message.content if last_message else None,
+                'last_message_sender': last_message.sender if last_message else None
+            })
         else:
             other_participant = chat.participants.exclude(id=request.user.id).first()
             if other_participant:
-                chats_list_filtered.append({'user': other_participant, 'chat_id': chat.id, 'chat': chat})
+                chats_list_filtered.append({
+                    'user': other_participant,
+                    'chat_id': chat.id,
+                    'chat': chat,
+                    'last_message_time': last_message.timestamp if last_message else None,
+                    'last_message_text': last_message.content if last_message else None,
+                    'last_message_sender': last_message.sender if last_message else None
+                })
     
-    chats_list_filtered.sort(key=lambda x: x['chat'].messages.latest('timestamp').timestamp if x['chat'].messages.exists() else x['chat'].created_at, reverse=True)
+    chats_list_filtered.sort(
+        key=lambda x: x['last_message_time'] if x['last_message_time'] else x['chat'].created_at,
+        reverse=True
+    )
     
     return chats_list_filtered
-
-
 
 @login_required
 def chats_empty_page(request):
@@ -44,7 +61,9 @@ def chats_empty_page(request):
         'user': request.user,
         'chats_list': chats_list,
         'chat': None,
-        'messages': None
+        'messages': None,
+        'today': timezone.now().date(),
+        'yesterday': timezone.now().date() - timezone.timedelta(days=1)
     }
     return render(request, 'chats/chats.html', data)
 
@@ -52,7 +71,7 @@ def chats_empty_page(request):
 def chats(request, chat_id):
     chat = get_object_or_404(Chat, id=chat_id)
     messages = chat.messages.all()
-    last_sender = None  # Переменная для отслеживания последнего отправителя
+    last_sender = None
     if request.method == 'POST':
         content = request.POST.get('message-content')
         if content:
@@ -92,7 +111,9 @@ def chats(request, chat_id):
         'messages': messages,
         'last_sender': last_sender,
         'page_obj': page_obj,
-        'query': query
+        'query': query,
+        'today': timezone.now().date(),
+        'yesterday': timezone.now().date() - timezone.timedelta(days=1)
     }
     return render(request, 'chats/chats.html', data)
 
