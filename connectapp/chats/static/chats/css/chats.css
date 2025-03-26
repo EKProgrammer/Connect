@@ -123,6 +123,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #ffffff;
 }
 
 .resizer {
@@ -1019,5 +1020,45 @@ h4 {
         background-color: #3e4042;
         color: #b0b3b8;
     }
+}
+
+/* time in list chats */
+.chat-name-time-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.chat-last-message-time {
+    font-size: 0.8rem;
+    color: #888;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.chat-info-container {
+    flex: 1;
+    min-width: 0;
+    margin-left: 10px;
+}
+
+.last-message-preview {
+    font-size: 0.9rem;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 3px;
+}
+
+.last-message-sender {
+    font-weight: 500;
+    color: #a1a1a1;
+}
+
+.last-message-text {
+    color: #5d5d5d;
 }
 

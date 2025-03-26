@@ -22,6 +22,7 @@ urlpatterns = [
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('service/delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('service/edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
+    path('service/edit_profile/', views.edit_profile, name='edit_profile'),
     path('service/load_more_posts_other_user/<str:username>/', views.load_more_posts_other_user,
          name='load_more_posts_other_user'),
     path('service/add_view/<int:post_id>/', views.add_view, name='add_view'),
