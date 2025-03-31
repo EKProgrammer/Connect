@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 } else {
                     const userElement = document.createElement('div');
-                    userElement.innerHTML = `<span style="font-size: 1.25rem;">Пользователь ни на кого не подписан</span>`;
+                    userElement.innerHTML = `<span style="font-size: 1.25rem;">Вы ни на кого не подписаны</span>`;
                     followingList.appendChild(userElement);
                 }
                 followingModal.show();

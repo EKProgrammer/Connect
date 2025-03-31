@@ -9,7 +9,7 @@ from users.forms import UserRegisterForm
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect("/feed")
+        return redirect("/feed/")
     if request.method == "POST":
         form = UserLoginForm(data=request.POST)
         if form.is_valid():
@@ -18,7 +18,7 @@ def index(request):
             user = auth.authenticate(email=email, password=password)
             if user:
                 auth.login(request, user)
-                return redirect("/feed")
+                return redirect("/feed/")
             else:
                 messages.error(request, "Неправильный логин или пароль")
     else:
@@ -29,14 +29,14 @@ def index(request):
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect("/feed")
+        return redirect("/feed/")
     if request.method == "POST":
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
             form.save()
             user = auth.authenticate(email=request.POST["email"], password=request.POST["password1"])
             auth.login(request, user)
-            return redirect("/person")
+            return redirect("/person/")
     else:
         form = UserRegisterForm()
 
