@@ -1,0 +1,124 @@
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 780px;
+}
+
+.register-container {
+    margin-top: 7vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.register-form {
+    display: flex;
+    margin: 7vh auto 0;
+    width: 977px;
+    background-color: #111111;
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid #727272;
+}
+
+.register-form form {
+    width: 400px;
+}
+
+@media(max-width: 1000px) {
+    body {
+        height: auto;
+    }
+
+    main {
+        height: auto;
+        flex-direction: column;
+    }
+
+    .register-form {
+        width: 460px;
+        flex-direction: column;
+        margin-bottom: 7vh;
+    }
+
+    .register-form form {
+        width: 100%;
+    }
+}
+
+@media(max-width: 460px) {
+    .register-form {
+        width: 100%;
+    }
+
+    .register-form form {
+        width: 100%;
+    }
+}
+
+/* Альтернативные методы регистрации */
+
+.form-floating {
+    margin: 1rem 0;
+}
+
+.form-floating label {
+    color: #727272;
+}
+
+.striped {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.striped-line {
+    height: 100%;
+    width: 2px;
+    background: #727272;
+}
+
+@media(max-width: 1000px) {
+    .striped {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .striped-line {
+        height: 2px;
+        width: 100%;
+    }
+}
+
+.striped-text {
+    font-size: 1rem;
+    color: #ffffff;
+    margin: 1rem;
+}
+
+.auth-method {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #727272;
+    border-radius: 10px;
+    padding: 10px;
+    color: #ffffff;
+}
+
+.auth-method img {
+    margin-right: 10px;
+}
+
+.auth-method span {
+    font-size: 1.2rem;
+}

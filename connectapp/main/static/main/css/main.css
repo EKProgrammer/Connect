@@ -10,7 +10,7 @@ body {
 /* Навигационная панель */
 .custom-header {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 3fr 10fr 3fr;
     align-items: center;
     padding: 0.5rem;
     background-color: #111111;
@@ -31,7 +31,6 @@ body {
     height: 1px;
     background-color: #727272;
 }
-
 
 .custom-header.hidden {
     transform: translateY(-100%);
@@ -190,10 +189,27 @@ body {
 
 .horizontal-footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+.horizontal-footer .footer-link {
+    text-align: center;
+    margin-inline: 10px;
+}
+
+@media (max-width: 630px) {
+    .footer-link {
+        width: 45%; /* 2 ссылки в строке */
+    }
+}
+
+@media (max-width: 450px) {
+    .footer-link {
+        width: 100%; /* каждая ссылка в отдельной строке */
+    }
 }
 
 .gradient-btn {
@@ -373,4 +389,63 @@ a {
 
 .btn-register:hover {
     opacity: 0.9;
+}
+
+/* Стили для всплывающего сообщения */
+
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    display: flex !important; /* из-за bootstrap требуется !important */
+    color: white;
+    padding: 10px 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    font-size: 14px;
+    position: relative;
+    opacity: 0;
+    animation: fadeInOut 10s forwards;
+}
+
+.toast-message {
+    flex-grow: 1;
+    align-items: center;
+    margin-left: 5px;
+}
+
+.toast-close {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.toast.error {
+    background-color: #bb0000;
+}
+
+.toast.success {
+    background-color: #00bb00;
+}
+
+.toast.warning {
+    background-color: #b8860b;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
 }

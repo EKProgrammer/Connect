@@ -21,15 +21,16 @@ function drop_scrollbar(postId) {
 
 
 document.addEventListener('click', async function(event) {
-    const button = event.target.closest('[id^="aiHelpButton"]');
-    if (button) {
-        const postId = button.id.replace('aiHelpButton', '');
+    const aiHelpButton = event.target.closest('[id^="aiHelpButton"]');
+    if (aiHelpButton) {
+        const postId = aiHelpButton.id.replace('aiHelpButton', '');
         const prompt_textarea = document.getElementById(`textMessageField${postId}`);
         const prompt = prompt_textarea.value;
+        const backButton = document.getElementById(`backButton${postId}`);
         const chat = document.getElementById(`aiChatContent${postId}`);
 
         if (!prompt) {
-            alert("Введите запрос ИИ");
+            showWarning("Введите запрос ИИ");
             return;
         }
 
@@ -57,9 +58,12 @@ document.addEventListener('click', async function(event) {
         }
 
         // Показываем индикатор загрузки
-        const img = button.querySelector('img');
-        img.src = '/static/person/img/send_disabled.svg';
-        button.disabled = true;
+        const aiHelpImg = aiHelpButton.querySelector('img');
+        aiHelpImg.src = '/static/person/img/send_disabled.svg';
+        aiHelpButton.disabled = true;
+        const backImg = backButton.querySelector('img');
+        backImg.src = '/static/person/img/back_arrow_disabled.svg';
+        backButton.disabled = true;
         prompt_textarea.value = '';
 
         if (current_post_text) {
@@ -129,16 +133,20 @@ document.addEventListener('click', async function(event) {
             // Генерация текста завершена
             eventSource.close();
             // Возвращаем кнопку в исходное состояние
-            button.disabled = false;
-            img.src = '/static/person/img/send.svg';
+            aiHelpImg.src = '/static/person/img/send.svg';
+            aiHelpButton.disabled = false;
+            backImg.src = '/static/person/img/back_arrow.svg';
+            backButton.disabled = false;
         });
 
         eventSource.onerror = function () {
             eventSource.close();
-            alert('Произошла ошибка при обращении к ИИ. Пожалуйста, попробуйте еще раз.');
-            // Возвращаем кнопку в исходное состояние
-            button.disabled = false;
-            img.src = '/static/person/img/send.svg';
+            showError('Произошла ошибка при обращении к ИИ. Пожалуйста, попробуйте еще раз.');
+            // Возвращаем кнопки в исходное состояние
+            aiHelpImg.src = '/static/person/img/send.svg';
+            aiHelpButton.disabled = false;
+            backImg.src = '/static/person/img/back_arrow.svg';
+            backButton.disabled = false;
         };
     }
 });

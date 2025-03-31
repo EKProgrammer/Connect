@@ -90,9 +90,9 @@
                                required>
                         <div id="usernameError" class="invalid-feedback d-block"></div>
                     </div>
-                    <div class="mb-3">
+                    <div>
                         <label for="profile_about" class="form-label">О себе</label>
-                        <textarea class="form-control bg-dark text-light" id="profile_about" name="about" rows="3" maxlength="200">{{ user.about }}</textarea>
+                        <textarea class="form-control bg-dark text-light" style="resize: none;" id="profile_about" name="about" rows="3" maxlength="200">{{ user.about }}</textarea>
                         <div class="text-end mt-1">
                             <span id="profile_char_count">{{ user.about|length|default:0 }} / 200</span>
                         </div>
@@ -100,7 +100,7 @@
                 </form>
             </div>
             <div class="modal-footer border-secondary">
-                <button type="submit" class="btn btn-primary" form="edit-profile-form">Сохранить</button>
+                <button type="submit" class="gradient-btn" form="edit-profile-form" data="Сохранить"></button>
             </div>
         </div>
     </div>
@@ -120,7 +120,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body modal-post-body">
                     <!-- Содержимое страницы с текстовым полем и изображениями -->
                     <div class="post-form-content" id="postFormContent">
                         <form action="{% url 'create_post' %}" method="post" id="createPostForm" class="d-flex flex-column flex-grow-1" enctype="multipart/form-data">
@@ -130,7 +130,8 @@
                             <span class="post-char-count">0 / 5000</span>
                             <div class="modal-list-images">
                                 <label for="{{ empty_post_form.images.id_for_label }}" title="Добавить изображение">
-                                    Добавить изображение
+                                    <span>Добавить изображение</span>
+                                    <img src="{% static 'person/img/plus.svg' %}" style="display: none" alt="Add image icon" width="48px" height="48px">
                                 </label>
                             </div>
                         </form>

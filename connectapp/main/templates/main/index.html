@@ -20,61 +20,58 @@
 {% endblock %}
 
 {% block link %}
-    <link rel="stylesheet" href="{% static 'main/css/auth_forms.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/demonstration.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/authentication.css' %}">
 {% endblock %}
 
 {% block content %}
 <main>
     <div class="login-container">
-        <div class="d-flex flex-column">
-            <img class="logo" src="{% static 'main/img/logo.svg' %}" height="60px" width="auto" alt="Логотип Connect">
-            <div class="login-form">
-                <h2>Вход</h2>
-                <form action="{% url 'home' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-floating">
-                        {{ form.email }}
-                        <label for="{{ form.email.id_for_label }}">Электронная почта</label>
-                    </div>
-                    <div class="form-floating">
-                        {{ form.password }}
-                        <label for="{{ form.password.id_for_label }}">Пароль</label>
-                    </div>
-                    {% if messages %}
-                        <div class="messages">
-                            {% for message in messages %}
-                                <div class="form-error">{{ message }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    <div class="row mt-3 align-items-center">
-                        <div class="col">
-                            <button type="submit" class="gradient-btn" data="Войти"></button>
-                        </div>
-                        <div class="col">
-                            <a style="color: #ffffff;" href="#">Забыли пароль?</a>
-                        </div>
-                        <div class="col">
-                            <a style="color: #ffffff;" class="custom-link" href="{% url 'register' %}">Создать аккаунт</a>
-                        </div>
-                    </div>
-                </form>
-                <div class="striped">
-                    <span class="striped-line"></span>
-                    <span class="striped-text">Или</span>
-                    <span class="striped-line"></span>
+        <img class="logo" src="{% static 'main/img/logo.svg' %}" height="60px" width="auto" alt="Логотип Connect">
+        <div class="login-form">
+            <h2>Вход</h2>
+            <form action="{% url 'home' %}" method="post">
+                {% csrf_token %}
+                <div class="form-floating">
+                    {{ form.email }}
+                    <label for="{{ form.email.id_for_label }}">Электронная почта</label>
                 </div>
-                <div>
-                    <a class="auth-method" style="margin-bottom: 16px;" href="{% provider_login_url 'google' %}">
-                        <img src="{% static 'main/img/google_icon.svg' %}" height="48px" width="auto" alt="Логотип Google">
-                        <span>Войти через Google</span>
-                    </a>
-                    <a class="auth-method" href="{% provider_login_url 'yandex' %}">
-                        <img src="{% static 'main/img/yandex_icon.svg' %}" height="48px" width="auto" alt="Логотип Google">
-                        <span>Войти через Яндекс.ID</span>
-                    </a>
+                <div class="form-floating">
+                    {{ form.password }}
+                    <label for="{{ form.password.id_for_label }}">Пароль</label>
                 </div>
+                {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                            <div class="form-error">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="row mt-3 align-items-center">
+                    <div class="col">
+                        <button type="submit" class="gradient-btn" data="Войти"></button>
+                    </div>
+{#                        <div class="col">#}
+{#                            <a style="color: #ffffff;" href="#">Забыли пароль?</a>#}
+{#                        </div>#}
+                    <div class="col">
+                        <a style="color: #ffffff; float: right;" class="custom-link" href="{% url 'register' %}">Создать аккаунт</a>
+                    </div>
+                </div>
+            </form>
+            <div class="striped">
+                <span class="striped-line"></span>
+                <span class="striped-text">Или</span>
+                <span class="striped-line"></span>
+            </div>
+            <div>
+                <a class="auth-method" style="margin-bottom: 16px;" href="{% provider_login_url 'google' %}">
+                    <img src="{% static 'main/img/google_icon.svg' %}" height="48px" width="auto" alt="Логотип Google">
+                    <span>Войти через Google</span>
+                </a>
+                <a class="auth-method" href="{% provider_login_url 'yandex' %}">
+                    <img src="{% static 'main/img/yandex_icon.svg' %}" height="48px" width="auto" alt="Логотип Google">
+                    <span>Войти через Яндекс.ID</span>
+                </a>
             </div>
         </div>
     </div>
@@ -84,19 +81,17 @@
     </div>
 
     <div class="demonstration-container">
-        <div class="d-flex flex-column">
-            <div class="slogan">
-                <h2>Ты думаешь - ИИ делает</h2>
+        <div class="slogan">
+            <h2>Ты думаешь - ИИ делает</h2>
+        </div>
+        <div class="chat">
+            <div class="message-part post-response">
+                <div style="color: #4a90e2;">Текст поста</div>
+                <div class="message-text"></div>
             </div>
-            <div class="chat">
-                <div class="message-part post-response">
-                    <div style="color: #4a90e2;">Текст поста</div>
-                    <div class="message-text"></div>
-                </div>
-                <div class="message-part user-prompt">
-                    <div style="color: #cf28b9;">Запрос</div>
-                    <div class="message-text"></div>
-                </div>
+            <div class="message-part user-prompt">
+                <div style="color: #cf28b9;">Запрос</div>
+                <div class="message-text"></div>
             </div>
         </div>
     </div>

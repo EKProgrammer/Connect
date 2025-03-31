@@ -7,14 +7,16 @@
 {% block title %}Регистрация - Connect{% endblock %}
 
 {% block link %}
-    <link rel="stylesheet" href="{% static 'main/css/auth_forms.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/registration.css' %}">
 {% endblock %}
 
 {% block content %}
 
 <main>
+<div class="register-container">
+    <img class="logo" src="/static/main/img/logo.svg" height="60px" width="auto" alt="Логотип Connect">
     <div class="register-form">
-        <div style="width: 400px">
+        <div>
             <h2>Регистрация</h2>
 
             <form action="{% url 'register' %}" method="post">
@@ -37,9 +39,13 @@
                 </div>
             </form>
         </div>
-        <div style="width: 80px; display: flex; align-items: center; justify-content: center;">
-            <span>Или</span>
+
+        <div class="striped">
+            <span class="striped-line"></span>
+            <span class="striped-text">Или</span>
+            <span class="striped-line"></span>
         </div>
+
         <div style="margin-block: auto;">
             <a class="auth-method" style="margin-bottom: 16px;" href="{% provider_login_url 'google' %}">
                 <img src="{% static 'main/img/google_icon.svg' %}" height="48px" width="auto" alt="Логотип Google">
@@ -51,6 +57,7 @@
             </a>
         </div>
     </div>
+</div>
 </main>
 
 {% endblock %}

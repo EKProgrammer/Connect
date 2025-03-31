@@ -49,8 +49,8 @@
         <div>
             <a href="{% url 'home' %}" title="Connect">
                 <picture>
-                    <source media="(max-width: 899px)" srcset="{% static 'main/img/mini_logo.svg' %}">
-                    <source media="(min-width: 900px)" srcset="{% static 'main/img/logo.svg' %}">
+                    <source media="(max-width: 1039px)" srcset="{% static 'main/img/mini_logo.svg' %}">
+                    <source media="(min-width: 1040px)" srcset="{% static 'main/img/logo.svg' %}">
                     <img class="logo" src="{% static 'main/img/logo.svg' %}" height="38px" width="auto" alt="Логотип">
                 </picture>
             </a>
@@ -74,8 +74,14 @@
                             <img src="{% static 'main/img/mail.svg' %}" height="22px" width="22px" style="margin-right: 3px;">
                             Чаты
                         </a></li>
-                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'communities' %}active{% endif %}" href="{% url 'communities' %}">Каналы</a></li>
-                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'friends' %}active{% endif %}" href="{% url 'friends' %}">Друзья</a></li>
+                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'communities' %}active{% endif %}" href="{% url 'communities' %}">
+                            <img src="{% static 'main/img/megaphone.svg' %}" height="22px" width="22px" style="margin-right: 3px;">
+                            Каналы
+                        </a></li>
+                        <li><a class="main-nav-link {% if request.resolver_match.url_name == 'friends' %}active{% endif %}" href="{% url 'friends' %}">
+                            <img src="{% static 'main/img/friends.svg' %}" height="22px" width="22px" style="margin-right: 3px;">
+                            Друзья
+                        </a></li>
                     </ul>
                     <span class="nav-indicator"></span>
                 </nav>
@@ -137,11 +143,14 @@
         <img src="{% static 'main/img/circle_arrow_up.svg' %}" height="50px" width="50px" title="Наверх" alt="Наверх">
     </button>
 
+    <div id="toast-container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'main/js/nav.js' %}"></script>
     <script src="{% static 'main/js/footer.js' %}"></script>
     <script src="{% static 'main/js/scroll_to_top.js' %}"></script>
     <script src="{% static 'main/js/user_menu.js' %}"></script>
+    <script src="{% static 'main/js/show_toast.js' %}"></script>
     {% if not user.is_authenticated %}
         <script src="{% static 'main/js/signup_banner.js' %}"></script>
     {% endif %}

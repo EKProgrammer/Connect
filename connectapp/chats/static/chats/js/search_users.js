@@ -151,14 +151,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const groupName = groupNameInput.value.trim();
         
         if (!groupName) {
-            alert("Введите название группы!");
+            showWarning("Введите название группы!");
             return;
         }
     
         const csrfToken = getCSRFToken();
     
         if (!csrfToken) {
-            alert("CSRF-токен не найден!");
+            showError("CSRF-токен не найден!");
             return;
         }
     
@@ -180,12 +180,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data.success) {
                 window.location.href = `/chats/${data.chat_id}`;
             } else {
-                alert("Ошибка при создании группы: " + data.error);
+                showError("Ошибка при создании группы: " + data.error);
             }
         })
         .catch(error => {
             console.error("Ошибка запроса:", error);
-            alert("Не удалось создать группу. Попробуйте еще раз.");
+            showError("Не удалось создать группу. Попробуйте еще раз.");
         });
     }
     

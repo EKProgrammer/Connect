@@ -468,11 +468,13 @@ def edit_comment(request, comment_id):
     return redirect('post_detail', post_id=comment.post.id)
 
 
+@require_POST
 def add_view(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     post.views += 1
     post.save()
     return JsonResponse({'status': 'success'})
+
 
 @login_required
 def edit_profile(request):

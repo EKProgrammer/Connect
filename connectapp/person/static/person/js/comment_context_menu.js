@@ -67,11 +67,11 @@ $(document).ready(function() {
                         const commentWord = getCommentWord(currentCount);
                         commentsCounter.text(`${currentCount} ${commentWord}`);
                     } else {
-                        alert('Ошибка при удалении комментария.');
+                        showError('Ошибка при удалении комментария.');
                     }
                 },
                 error: function() {
-                    alert('Произошла ошибка при выполнении запроса.');
+                    showError('Произошла ошибка при выполнении запроса.');
                 }
             });
         }

@@ -35,8 +35,8 @@
                                 {{ chat_info.user.get_avatar_url }}
                             {% endif %}" 
                              class="chat-image" 
-                             height="50" 
-                             width="50" 
+                             height="40px"
+                             width="40px"
                              alt="Avatar">
                         <div class="chat-info-container">
                             <div class="chat-name-time-container">
@@ -111,7 +111,7 @@
     {% if chat %}
         <h2 class="chat-name-window">
             {% if chat.name %}
-                <img src="{{ chat.get_avatar_url }}" class="chat-image" height="50" width="50" alt="Avatar">
+                <img src="{{ chat.get_avatar_url }}" class="chat-image" height="50px" width="50px" alt="Avatar">
                 <div class="chat-text">
                     <span class="chat-title">{{ chat.name }}</span>
                     <p id="count-users">{{ chat.participants.count }} участников</p>
@@ -167,7 +167,7 @@
                             {% ifchanged message.sender.id %}
                                 <div class="message-sender">
                                     <div class="sender-avatar-container">
-                                        <img src="{{ message.sender.get_avatar_url }}" alt="Avatar" class="sender-avatar">
+                                        <img src="{{ message.sender.get_avatar_url }}" alt="Avatar" class="sender-avatar" height="40px" width="40px">
                                     </div>
                                     <span class="sender-name">{{ message.sender.first_name }} {{ message.sender.last_name }}</span>
                                 </div>
@@ -175,14 +175,12 @@
                         {% endif %}
                         
                         <div class="message {% if message.sender.id == request.user.id %}message-sent{% else %}message-received{% endif %}" data-message-id="{{ message.id }}">
-                            <div class="message-content">
-                                <div class="message-text">{{ message.content }}</div>
-                                <div class="message-meta">
-                                    {% if message.is_changed %}
-                                        <span class="message-edited">Изменено</span>
-                                    {% endif %}
-                                    <span class="message-time">{{ message.timestamp|time:"H:i" }}</span>
-                                </div>
+                            <div class="message-text">{{ message.content }}</div>
+                            <div class="message-meta">
+                                {% if message.is_changed %}
+                                    <span class="message-edited">Изменено</span>
+                                {% endif %}
+                                <span class="message-time">{{ message.timestamp|time:"H:i" }}</span>
                             </div>
                         </div>
                     </div>
@@ -263,7 +261,6 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'chats/data_in_chats.js' %}"></script>
     <script src="{% static 'chats/js/info_group_chats.js' %}"></script>
     <script src="{% static 'chats/js/drop_scrollbar.js' %}"></script>
     <script src="{% static 'chats/js/update_message_field.js' %}"></script>

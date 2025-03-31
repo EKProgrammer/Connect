@@ -100,7 +100,7 @@
                 </li>
                 <li>
                     <button class="post-footer-icon" title="Поделиться" onclick="copyToClipboard({{ post.id }})">
-                        <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28" height="28">
+                        <img src="{% static 'person/img/share.svg' %}" alt="Share Icon" width="28px" height="28px">
                     </button>
                 </li>
             </ul>
@@ -124,7 +124,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body modal-post-body">
                         <!-- Содержимое страницы с текстовым полем и изображениями -->
                         <div class="post-form-content" id="postFormContent{{ post_id }}">
                             <form action="{% url 'edit_post' post_id %}" method="post" id="editPostForm{{ post_id }}" class="d-flex flex-column flex-grow-1" enctype="multipart/form-data">
@@ -133,9 +133,19 @@
                                 {{ current_post_form.images }}
                                 <span class="post-char-count">0 / 5000</span>
                                 <div class="modal-list-images">
-                                    <label for="{{ current_post_form.images.id_for_label }}" title="Добавить изображение">
-                                        Добавить изображение
+                                    <label style="{% if post.images.all %}width: 48px; height: auto; margin: auto 30px;{% endif %}"
+                                           for="{{ current_post_form.images.id_for_label }}" title="Добавить изображение">
+                                        <span style="{% if post.images.all %}display: none;{% endif %}">Добавить изображение</span>
+                                        <img src="{% static 'person/img/plus.svg' %}" 
+                                             style="{% if not post.images.all %}display: none;{% endif %}" 
+                                             alt="Add image icon" width="48px" height="48px">
                                     </label>
+                                    {% for image in post.images.all %}
+                                        <span class="modal-img-wrapper" data-src="{{ image.image.url }}" data-name="{{ image.image.name }}" data-size="{{ image.image.size }}">
+                                            <img src="{{ image.image.url }}">
+                                            <span class="modal-img-close-btn">×</span>
+                                        </span>
+                                    {% endfor %}
                                 </div>
                             </form>
                         </div>

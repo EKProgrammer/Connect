@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Произошла ошибка при обращении к AI. Пожалуйста, попробуйте еще раз.');
+                showError('Произошла ошибка при обращении к AI. Пожалуйста, попробуйте еще раз.');
             })
             .finally(() => {
                 // Возвращаем кнопку в исходное состояние

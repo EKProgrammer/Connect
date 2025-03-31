@@ -40,25 +40,25 @@
             </div>
             <p class="post-date">{{ post.date }}</p>
 
-            {% if user.is_authenticated and user == post.user %}
-                <div class="post-actions">
-                    <button class="post-actions-toggle" title="Действия над постом">
-                        <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="50" height="50">
-                    </button>
-                    <ul class="post-actions-list">
-                        <li>
-                            <button class="post-actions-btn edit" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">
-                                Редактировать
-                            </button>
-                        </li>
-                        <li>
-                            <button class="post-actions-btn delete" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">
-                                Удалить
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            {% endif %}
+{#            {% if user.is_authenticated and user == post.user %}#}
+{#                <div class="post-actions">#}
+{#                    <button class="post-actions-toggle" title="Действия над постом">#}
+{#                        <img src="{% static 'person/img/dots.svg' %}" alt="Comment Icon" width="50" height="50">#}
+{#                    </button>#}
+{#                    <ul class="post-actions-list">#}
+{#                        <li>#}
+{#                            <button class="post-actions-btn edit" data-bs-toggle="modal" data-bs-target="#editPostModal{{ post_id }}">#}
+{#                                Редактировать#}
+{#                            </button>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <button class="post-actions-btn delete" data-bs-toggle="modal" data-bs-target="#deletePostModal{{ post_id }}">#}
+{#                                Удалить#}
+{#                            </button>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            {% endif %}#}
         </div>
 
         <div class="post-text" id="post-text-{{ post.id }}">{{ post.formated_text|safe }}</div>
@@ -163,19 +163,19 @@
 
         <!-- Модальное окно для редактирования комментария -->
         <div class="modal fade" id="editCommentModal{{ comment.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editCommentModalLabel{{ comment.id }}">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content modal-adaptive-size text-light">
+            <div class="modal-dialog">
+                <div class="modal-content text-light">
                     <div class="modal-header border-secondary">
                         <h1 class="modal-title fs-5" id="editCommentModalLabel{{ comment.id }}">Редактировать комментарий</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div style="flex: 0;" class="modal-body">
                         <div class="post-form-content">
                             <form action="{% url 'edit_comment' comment.id %}" method="post" id="editCommentForm{{ comment.id }}" class="d-flex flex-column flex-grow-1">
                                 {% csrf_token %}
                                 <textarea name="content" class="custom-form-control" rows="4" required>{{ comment.content }}</textarea>
-                                <span class="post-char-count">0 / 1000</span>
+{#                                <span class="post-char-count">0 / 1000</span>#}
                             </form>
                         </div>
                     </div>

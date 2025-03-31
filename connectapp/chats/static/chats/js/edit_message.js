@@ -56,11 +56,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 contextMenu.style.display = "none";
                 currentMessage = null;
             } else {
-                alert("Ошибка удаления сообщения.");
+                showError("Ошибка удаления сообщения.");
             }
         } catch (error) {
             console.error("Ошибка при удалении сообщения:", error);
-            alert("Произошла ошибка. Попробуйте позже.");
+            showError("Произошла ошибка. Попробуйте позже.");
         }
     });
 
@@ -69,11 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
             const newContent = textarea.value.trim();
             if (newContent === originalText) {
-                alert("Изменений не внесено.");
+                showWarning("Изменений не внесено.");
                 textarea.value = "";
                 newSubmitButton.innerHTML = `<img src="/static/chats/img/send.svg" height="30px" width="30px">`;
                 currentMessage = null;
                 newSubmitButton.removeEventListener("click", submitHandler);
+                adjustTextareaHeight(textarea);
                 return;
             }
     
@@ -97,11 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     newSubmitButton.removeEventListener("click", submitHandler);
                     location.reload();
                 } else {
-                    alert("Ошибка редактирования сообщения.");
+                    showError("Ошибка редактирования сообщения.");
                 }
             } catch (error) {
                 console.error("Ошибка при редактировании сообщения:", error);
-                alert("Произошла ошибка. Попробуйте позже.");
+                showError("Произошла ошибка. Попробуйте позже.");
             }
         };
         if (!currentMessage) return;
@@ -116,6 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.parentNode.replaceChild(newSubmitButton, submitButton);
         newSubmitButton.addEventListener("click", submitHandler);
         adjustTextareaHeight(textarea);
+        contextMenu.style.display = "none";
         newSubmitButton.addEventListener("click", submitHandler);
     });
 });

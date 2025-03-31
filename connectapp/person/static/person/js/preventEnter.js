@@ -19,9 +19,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-aboutTextarea.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-        e.preventDefault(); 
-        document.getElementById('edit-about-modal-form').submit();
-    }
-});

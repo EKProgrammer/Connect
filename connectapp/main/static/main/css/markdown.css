@@ -107,6 +107,18 @@
     .copy-code {
         background-color: transparent;
         border: none;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        margin-right: 0.5rem;
+    }
+
+    .copy-code:active {
+        transform: scale(0.95);
+    }
+
+    .copy-code:active img {
+        transform: scale(0.9);
     }
 
     pre code {

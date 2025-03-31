@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     document.querySelector(`[data-chat-id="${selectedChatId}"]`).closest(".chat-item-container").remove();
                 } else {
-                    alert("Ошибка при удалении чата");
+                    showError("Ошибка при удалении чата");
                 }
             })
             .catch(error => console.error("Ошибка:", error));

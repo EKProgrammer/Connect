@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для отправки запроса на увеличение просмотров
     function sendViewRequest(postId) {
         fetch(`/person/service/add_view/${postId}/`, {
-            method: 'GET',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({}),
         })
         .then(response => {
             if (!response.ok) {

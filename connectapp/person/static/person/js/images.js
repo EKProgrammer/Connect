@@ -1,16 +1,51 @@
 "use strict"
 
 
-// Обработка формы для добавления изображения для аватара
-const avatarInput = document.getElementById('avatar');
-const uploadBtn = document.getElementById('uploadAvatarBtn');
-const avatarForm = document.getElementById('avatarForm');
-uploadBtn.addEventListener('click', function() {
-    avatarInput.click();
-});
-avatarInput.addEventListener('change', function() {
-    if (this.files && this.files[0]) {
-        avatarForm.submit();
+const MAX_IMAGES = 10;
+
+document.addEventListener('shown.bs.modal', async function(event) {
+    const modal = event.target;
+    const previewContainer = modal.querySelector('.modal-list-images');
+    if (!previewContainer) {
+        return;
+    }
+    const imageInput = modal.querySelector('input[type="file"]');
+
+    if (!modal.fileListArray) {
+        modal.fileListArray = [];
+    }
+
+    const fileListArray = modal.fileListArray;
+
+    // Загружаем уже существующие изображения, если они ещё не добавлены
+    const existingWrappers = previewContainer.querySelectorAll('.modal-img-wrapper');
+
+    for (const wrapper of existingWrappers) {
+        const src = wrapper.dataset.src;
+        const name = wrapper.dataset.name || 'image.jpg';
+        const size = parseInt(wrapper.dataset.size, 10) || 0;
+
+        const alreadyAdded = fileListArray.some(
+            f => f.name === name && f.size === size
+        );
+        if (!alreadyAdded && src) {
+            try {
+                const response = await fetch(src);
+                const blob = await response.blob();
+                const file = new File([blob], name, { type: blob.type });
+                fileListArray.push(file);
+            } catch (err) {
+                console.error('Ошибка загрузки изображения: ', err);
+            }
+        }
+    }
+
+    if (imageInput) {
+        const dataTransfer = new DataTransfer();
+        for (let i = fileListArray.length - 1; i >= 0; i--) {
+            dataTransfer.items.add(fileListArray[i]);
+        }
+        imageInput.files = dataTransfer.files;
     }
 });
 
@@ -21,79 +56,148 @@ document.addEventListener('change', function(event) {
         const imageInput = event.target;
         const modal = imageInput.closest('.modal');
         const previewContainer = modal.querySelector('.modal-list-images');
+        const previewLabel = previewContainer.querySelector('label');
+        const addImgText = previewLabel.querySelector('span');
+        const addImgIcon = previewLabel.querySelector('img');
 
-        const previewContainerLabel = previewContainer.querySelector(`label`);
-        previewContainerLabel.style.display = 'none';
+        if (!modal.fileListArray) {
+            modal.fileListArray = [];
+        }
+
+        const fileListArray = modal.fileListArray;
 
         if (imageInput.files && imageInput.files.length > 0) {
-            const fileListArray = Array.from(imageInput.files);
-            console.log(fileListArray.length);
+            const newFiles = Array.from(imageInput.files);
 
-            fileListArray.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgWrapper = document.createElement('span');
-                    imgWrapper.style.position = 'relative';
-                    imgWrapper.style.marginRight = '10px';
-                    imgWrapper.style.display = 'inline-block';
-                    imgWrapper.style.maxWidth = '400px';
-                    imgWrapper.style.height = '100%';
+            if (fileListArray.length + newFiles.length > MAX_IMAGES) {
+                const allowed = MAX_IMAGES - fileListArray.length;
+                if (allowed <= 0) {
+                    showError(`Можно загрузить не более ${MAX_IMAGES} изображений.`);
+                    imageInput.value = '';
+                    return;
+                } else {
+                    showError(`Можно добавить только ${allowed} изображений.`);
+                    newFiles.splice(allowed);
+                }
+            }
 
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.objectFit = 'cover';
-                    img.style.height = '100%';
-                    img.style.borderRadius = '5px';
+            let count_correct_files = 0;
 
-                    const closeButton = document.createElement('span');
-                    closeButton.textContent = '×';
-                    closeButton.style.position = 'absolute';
-                    closeButton.style.top = '5px';
-                    closeButton.style.right = '5px';
-                    closeButton.style.background = 'rgba(0, 0, 0, 0.5)';
-                    closeButton.style.color = 'white';
-                    closeButton.style.borderRadius = '50%';
-                    closeButton.style.width = '20px';
-                    closeButton.style.height = '20px';
-                    closeButton.style.display = 'flex';
-                    closeButton.style.justifyContent = 'center';
-                    closeButton.style.alignItems = 'center';
-                    closeButton.style.cursor = 'pointer';
-                    closeButton.style.fontSize = '16px';
+            newFiles.forEach(file => {
+                const alreadyAdded = fileListArray.some(
+                    f => f.name === file.name && f.size === file.size
+                );
 
-                    closeButton.addEventListener('click', function() {
-                        // Обработчик удаления изображения
-                        // есть проблема: если быстро нажимать на крестики, то js не успевает удалять изображания
-                        imgWrapper.remove();
-                        fileListArray.splice(index, 1);
+                if (!alreadyAdded) {
+                    if (!file.type.startsWith('image/')) {
+                        showError(`Файл "${file.name}" не является изображением и не будет добавлен.`);
+                        return;
+                    }
+                    count_correct_files += 1;
 
-                        const dataTransfer = new DataTransfer();
-                        fileListArray.forEach(file => dataTransfer.items.add(file));
-                        imageInput.files = dataTransfer.files;
+                    fileListArray.push(file);
 
-                        if (imageInput.files.length === 0) {
-                            previewContainerLabel.style.display = 'flex';
-                        }
-                    });
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imgWrapper = document.createElement('span');
+                        imgWrapper.classList.add('modal-img-wrapper');
+                        imgWrapper.dataset.name = file.name;
+                        imgWrapper.dataset.size = file.size;
 
-                    imgWrapper.appendChild(img);
-                    imgWrapper.appendChild(closeButton);
-                    previewContainer.appendChild(imgWrapper);
-                };
-                reader.readAsDataURL(file);
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+
+                        const closeButton = document.createElement('span');
+                        closeButton.classList.add('modal-img-close-btn');
+                        closeButton.textContent = '×';
+
+                        imgWrapper.appendChild(img);
+                        imgWrapper.appendChild(closeButton);
+                        previewLabel.after(imgWrapper);
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
+
+            if (count_correct_files > 0) {
+                addImgText.style.display = 'none';
+                addImgIcon.style.display = 'inline';
+                previewLabel.style.width = '48px';
+                previewLabel.style.height = 'auto';
+                previewLabel.style.margin = 'auto 30px';
+            }
+
+            const dataTransfer = new DataTransfer();
+            fileListArray.forEach(file => dataTransfer.items.add(file));
+            imageInput.files = dataTransfer.files;
+        }
+    }
+});
+
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal-img-close-btn')) {
+        const closeButton = event.target;
+        const imgWrapper = closeButton.closest('.modal-img-wrapper');
+        const modal = closeButton.closest('.modal');
+        const previewContainer = modal.querySelector('.modal-list-images');
+        const previewLabel = previewContainer.querySelector('label');
+        const addImgText = previewLabel.querySelector('span');
+        const addImgIcon = previewLabel.querySelector('img');
+        const imageInput = modal.querySelector('input[type="file"]');
+
+        if (!modal.fileListArray) return;
+        const fileListArray = modal.fileListArray;
+
+        const fileName = imgWrapper.dataset.name;
+        const fileSize = parseInt(imgWrapper.dataset.size, 10);
+
+        // Удаляем элемент с интерфейса
+        imgWrapper.remove();
+
+        // Удаляем файл из массива
+        const indexToRemove = fileListArray.findIndex(
+            f => f.name === fileName && f.size === fileSize
+        );
+        if (indexToRemove !== -1) {
+            fileListArray.splice(indexToRemove, 1);
+        }
+
+        // Обновляем input.files
+        const dataTransfer = new DataTransfer();
+        fileListArray.forEach(f => dataTransfer.items.add(f));
+        imageInput.files = dataTransfer.files;
+
+        // Сброс отображения кнопки добавления изображения, если все изображения удалены
+        if (imageInput.files.length === 0) {
+            addImgText.style.display = 'inline';
+            addImgIcon.style.display = 'none';
+            previewLabel.removeAttribute('style');
         }
     }
 });
 
 
 // Область предпросмотра изображений можно прокручивать по горизонтали с помощью колеса мыши.
-document.addEventListener('DOMContentLoaded', function() {
-    const previewContainer = document.querySelector('.modal-list-images');
-    if (previewContainer) {
-        previewContainer.addEventListener('wheel', function(event) {
-            event.preventDefault();
-            previewContainer.scrollLeft += event.deltaY;
-        });
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    // При показе любой модалки
+    document.addEventListener('shown.bs.modal', function (event) {
+        const modal = event.target;
+        const previewContainer = modal.querySelector('.modal-list-images');
+
+        if (previewContainer) {
+            // Удаляем предыдущий обработчик, если есть
+            previewContainer.removeEventListener('wheel', previewContainer._wheelHandler || (() => {}));
+
+            // Создаем и сохраняем обработчик, чтобы можно было удалить позже
+            const wheelHandler = function (e) {
+                e.preventDefault();
+                previewContainer.scrollLeft += e.deltaY;
+            };
+
+            previewContainer._wheelHandler = wheelHandler;
+            previewContainer.addEventListener('wheel', wheelHandler);
+        }
+    });
 });
+
